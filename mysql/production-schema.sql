@@ -4,7 +4,7 @@ create database if not exists risk_bg;
 use risk_bg;
 
 create table game_role(
-	role_id int primary key auto_increment,
+	role_id int not null primary key auto_increment,
 	`role` varchar(20) not null
 );
 
@@ -45,13 +45,13 @@ create table microtransaction(
     price int not null
 );
 
-create table game_user_microtransaction(
-	user_id varchar(36) not null,
+create table user_profile_microtransaction(
+	profile_id varchar(36) not null,
     micro_id int not null,
-    equiped boolean default(0),
-    constraint fk_game_user_microtransaction_user_id
-		foreign key (user_id)
-        references game_user(user_id),
+    equiped boolean not null default(0),
+    constraint fk_user_profile_microtransaction_profile_id
+		foreign key (profile_id)
+        references user_profile(profile_id),
 	constraint fk_game_user_microtransaction_micro_id
 		foreign key (micro_id)
         references microtransaction(micro_id)
@@ -67,7 +67,7 @@ create table countries(
 -- useful potentially for expansion of game beyond computer players
 	create table player(
 		player_id int not null primary key auto_increment,
-        player_order varchar(15)
+        player_order varchar(15) not null
     ); 
     
     
@@ -79,10 +79,10 @@ create table game(
 
 create table game_user_player(
 	game_id int not null,
-    user_id varchar(36) not null,
+    user_id varchar(36) null,
     player_id int not null,
     constraint pk_game_user_player
-		primary key(game_id, user_id, player_id),
+		primary key(game_id, player_id),
 	constraint fk_game_user_player_game_id
 		foreign key(game_id)
         references game(game_id),
