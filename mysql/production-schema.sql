@@ -57,42 +57,57 @@ create table game_user_microtransaction(
         references microtransaction(micro_id)
 );
 
-create table game_state(
-	game_state_id int not null primary key auto_increment,
-    country varchar(50) not null,
-    player_possession int not null,
-    army int not null
+create table countries(
+	country_id int not null primary key,
+    country varchar(50) not null
 );
+
 
 -- unsure if this table is necessary or if this is how we want to implement it
 -- useful potentially for expansion of game beyond computer players
-	create table players(
-		players_id int not null primary key auto_increment,
-        player_one varchar(36) not null,
-        player_two varchar(36) not null,
-		player_three varchar(36) not null,
-        player_four varchar(36),
-        player_five varchar(36),
-        player_six varchar(36)
+	create table player(
+		player_id int not null primary key auto_increment,
+        player_order varchar(15)
     ); 
     
-
+    
 create table game(
 	game_id int not null primary key auto_increment,
-    user_id varchar(36) not null,
-    game_state_id int not null,
-    players_id int not null,
     time_elapsed int not null,
-    player_turn int not null,
-    constraint fk_game_user_id
-		foreign key (user_id)
+    player_turn int not null
+);
+
+create table game_user_player(
+	game_id int not null,
+    user_id varchar(36) not null,
+    player_id int not null,
+    constraint pk_game_user_player
+		primary key(game_id, user_id, player_id),
+	constraint fk_game_user_player_game_id
+		foreign key(game_id)
+        references game(game_id),
+	constraint fk_game_user_player_user_id
+		foreign key(user_id)
         references game_user(user_id),
-	constraint fk_game_game_state_id 
-		foreign key (game_state_id)
-        references game_state(game_state_id),
-	constraint fk_game_players_id 
-		foreign key (players_id)
-        references players(players_id)
+	constraint fk_game_user_player_player_id
+		foreign key(player_id)
+        references player(player_id)
+	);
+        
+
+create table game_state(
+	game_id int not null,
+    country_id int not null,
+    player_possession int not null,
+    army int not null,
+    constraint pk_game_state
+		primary key(game_id, country_id),
+	constraint fk_game_state_game_id
+		foreign key(game_id)
+        references game(game_id),
+	constraint fk_game_state_country_id
+		foreign key(country_id)
+        references countries(country_id)
 );
 
 
@@ -100,6 +115,61 @@ create table game(
 insert into game_role (`role`) values
 	('ADMIN'),
     ('USER');
+
+    
+insert into player (player_order) values
+	('player one'),
+    ('player two'),
+    ('player three'),
+    ('player four'),
+    ('player five'),
+    ('player six');
+    
+    
+insert into countries (country_id, country) values
+	(0, 'ALASKA'),
+    (1, 'NW_TERRITORY'),
+    (2, 'ALBERTA'),
+    (3, 'WestUS'),
+    (4, 'EastUS'),
+    (5, 'ONTARIO'),
+    (6, 'QUEBEC'),
+    (7, 'GREENLAND'),
+    (8, 'CENTRAL_AMERICA'),
+    (9, 'VENEZUELA'),
+    (10, 'PERU'),
+    (11, 'BRAZIL'),
+    (12, 'ARGENTINA'),
+    (13, 'N_AFRICA'),
+    (14, 'EYGYPT'),
+    (15, 'E_AFRICA'),
+    (16, 'CONGO'),
+    (17, 'S_AFRICA'),
+    (18, 'MADAGASCAR'),
+    (19, 'ICELAND'),
+    (20, 'G_BRITAIN'),
+    (21, 'SCANDINAVIA'),
+    (22, 'W_EUROPE'),
+    (23, 'S_EUROPE'),
+    (24, 'N_EUROPE'),
+    (25, 'UKRAINE'),
+    (26, 'URAL'),
+    (27, 'AFGHANISTAN'),
+    (28, 'MID_EAST'),
+    (29, 'SIBERIA'),
+    (30, 'YAKURSK'),
+    (31, 'KAMCHATKA'),
+    (32, 'IRKUTSK'),
+    (33, 'JAPAN'),
+    (34, 'MONGOLIA'),
+    (35, 'CHINA'),
+    (36, 'INDIA'),
+    (37, 'SIAM'),
+    (38, 'INDONESIA'),
+    (39, 'NEW_GUINEA'),
+    (40, 'E_AUSTRALIA'),
+    (41, 'W_AUSTRALIA');
+
     
 
     
