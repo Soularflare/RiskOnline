@@ -41,7 +41,8 @@ create table user_profile(
 
 create table microtransaction(
 	micro_id int not null primary key auto_increment,
-    product varchar(250) not null
+    product varchar(250) not null,
+    price int not null
 );
 
 create table game_user_microtransaction(
