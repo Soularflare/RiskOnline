@@ -9,9 +9,9 @@ public interface CountryRepository {
 
     Country findById(int gameId, int countryId);
 
-    Country add(Country country);
+    boolean add(Country country);
 
     boolean update(Country country);
 
-    boolean deleteById(int countryId);
+    boolean deleteAllById(int gameId);
 }

@@ -1,7 +1,10 @@
 package learn.risk_online.models;
 
+import java.util.Objects;
+
 public class Country {
 
+    private int gameId;
     private int countryId;
     private String countryName;
     private int playerPossession;
@@ -14,6 +17,14 @@ public class Country {
         this.countryName = countryName;
         this.playerPossession = playerPossession;
         this.army = army;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public int getCountryId() {
@@ -46,5 +57,18 @@ public class Country {
 
     public void setArmy(int army) {
         this.army = army;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return countryId == country.countryId && playerPossession == country.playerPossession && army == country.army && Objects.equals(countryName, country.countryName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryId, countryName, playerPossession, army);
     }
 }
