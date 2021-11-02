@@ -65,10 +65,10 @@ create table countries(
 
 -- unsure if this table is necessary or if this is how we want to implement it
 -- useful potentially for expansion of game beyond computer players
-	create table player(
-		player_id int not null primary key auto_increment,
-        player_order varchar(15) not null
-    ); 
+-- 	create table player(
+-- 		player_id int not null primary key auto_increment,
+--         player_order varchar(15) not null
+--     ); 
     
     
 create table game(
@@ -77,23 +77,22 @@ create table game(
     player_turn int not null
 );
 
-create table game_user_player(
+create table game_player(
 	game_id int not null,
+	turn_order int not null,
     user_id varchar(36) null,
-    player_id int not null,
     constraint pk_game_user_player
-		primary key(game_id, player_id),
+		primary key(game_id, turn_order),
 	constraint fk_game_user_player_game_id
 		foreign key(game_id)
         references game(game_id),
 	constraint fk_game_user_player_user_id
 		foreign key(user_id)
-        references game_user(user_id),
-	constraint fk_game_user_player_player_id
-		foreign key(player_id)
-        references player(player_id)
-	);
-        
+        references game_user(user_id)
+-- 	constraint fk_game_user_player_player_id
+-- 		foreign key(player_id)
+--         references player(player_id)
+	);        
 
 create table game_state(
 	game_id int not null,
@@ -117,13 +116,13 @@ insert into game_role (`role`) values
     ('USER');
 
     
-insert into player (player_order) values
-	('player one'),
-    ('player two'),
-    ('player three'),
-    ('player four'),
-    ('player five'),
-    ('player six');
+-- insert into player (player_order) values
+-- 	('player one'),
+--     ('player two'),
+--     ('player three'),
+--     ('player four'),
+--     ('player five'),
+--     ('player six');
     
     
 insert into countries (country_id, country) values
