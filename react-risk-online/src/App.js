@@ -2,6 +2,9 @@ import Home from './Home';
 import Login from './Login';
 import Profile from './Profile';
 import GameForm from './GameForm';
+import Games from './Games';
+import Game from './Game';
+import Avatars from './Avatars';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 function App() {
@@ -16,16 +19,16 @@ function App() {
         <Profile></Profile>
       </Route>
       <Route path="/game">
-        {/*<Game></Game>*/}
+        <Game></Game>
       </Route>
       <Route path="/gameform">
         <GameForm></GameForm>
       </Route>
       <Route path="/load">
-        {/* <Games></Games> */}
+        <Games></Games>
       </Route>
       <Route path="/avatars">
-        {/* <Avatars></Avatars> */}
+        <Avatars></Avatars>
       </Route>
       <Route path="/">
         <Home></Home>
