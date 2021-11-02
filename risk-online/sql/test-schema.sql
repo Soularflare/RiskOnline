@@ -191,7 +191,8 @@ insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
     insert into game(time_elapsed, player_turn) values
 	(111, 1),
     (30, 1),
-    (170, 1);
+    (170, 1),
+    (0, 1);
     
 insert into game_player(game_id, turn_order, user_id) values
 	(1, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),
@@ -346,7 +347,8 @@ alter table game auto_increment = 1;
 insert into game(time_elapsed, player_turn) values
 	(111, 1),
     (30, 1),
-    (170, 1);
+    (170, 1),
+    (0, 1);
     
 insert into game_player(game_id, turn_order, user_id) values
 	(1, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),

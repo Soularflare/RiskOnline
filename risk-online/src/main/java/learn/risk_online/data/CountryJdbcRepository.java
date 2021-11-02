@@ -54,12 +54,17 @@ public class CountryJdbcRepository implements CountryRepository{
                 "army = ? " +
                 "where game_id = ? and country_id = ?;";
 
-        return (jdbcTemplate.update(sql,country.getPlayerPossession(),
-                country.getArmy(), country.getGameId(), country.getCountryId()) > 0);
+        return (jdbcTemplate.update(sql,country.getPlayerPossession(), country.getArmy(),
+                country.getGameId(), country.getCountryId()) > 0);
     }
 
     @Override
-    public boolean deleteById(int countryId) {
-        return false;
+    public boolean deleteAllById(int gameId) {
+        final String sql = "delete from game_state " +
+                "where game_id = ?;";
+
+        return (jdbcTemplate.update(sql, gameId) > 0);
     }
+
+
 }

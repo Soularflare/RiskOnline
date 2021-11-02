@@ -13,5 +13,5 @@ public interface CountryRepository {
 
     boolean update(Country country);
 
-    boolean deleteById(int countryId);
+    boolean deleteAllById(int gameId);
 }
