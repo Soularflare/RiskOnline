@@ -11,7 +11,6 @@ create table game_role(
 );
 
 insert into game_role (`role`) values
-	('CPU'),
 	('ADMIN'),
     ('USER');
     
@@ -87,23 +86,23 @@ insert into microtransaction (micro_id, product, price) values
 select * from microtransaction;
 
 
-create table game_user_microtransaction(
-	user_id varchar(36) not null,
+create table user_profile_microtransaction(
+	profile_id varchar(36) not null,
     micro_id int not null,
     equiped boolean default(0),
-    constraint fk_game_user_microtransaction_user_id
-		foreign key (user_id)
-        references game_user(user_id),
+    constraint fk_user_profile_microtransaction_profile_id
+		foreign key (profile_id)
+        references user_profile(profile_id),
 	constraint fk_game_user_microtransaction_micro_id
 		foreign key (micro_id)
         references microtransaction(micro_id)
 );
 
-insert into game_user_microtransaction(user_id, micro_id, equiped) values
-	('4d980a71-3b3c-11ec-8708-0242ac110002', 1, 1),
-    ('4d980627-3b3c-11ec-8708-0242ac110002', 1, 0),
-    ('4d980627-3b3c-11ec-8708-0242ac110002', 2, 0),
-    ('4d980627-3b3c-11ec-8708-0242ac110002', 3, 1);
+insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
+	('69367ff8-3b3e-11ec-8708-0242ac110002', 1, 1),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 1, 0),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 2, 0),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 3, 1);
     
 
 create table countries(
@@ -158,20 +157,20 @@ insert into countries (country_id, country) values
 
 -- unsure if this table is necessary or if this is how we want to implement it
 -- useful potentially for expansion of game beyond computer players
-create table player(
-		player_id int not null primary key auto_increment,
-        player_order varchar(15)
-    ); 
+-- create table player(
+-- 		player_id int not null primary key auto_increment,
+--         player_order varchar(15)
+--     ); 
     
-insert into player (player_order) values
-	('player one'),
-    ('player two'),
-    ('player three'),
-    ('player four'),
-    ('player five'),
-    ('player six');
+-- insert into player (player_order) values
+-- 	('player one'),
+--     ('player two'),
+--     ('player three'),
+--     ('player four'),
+--     ('player five'),
+--     ('player six');
     
-  select * from player;  
+--   select * from player;  
     
 
 	
@@ -189,33 +188,35 @@ insert into game(time_elapsed, player_turn) values
 select * from game;
 
 
-create table game_user_player(
+create table game_player(
 	game_id int not null,
-    user_id varchar(36) not null,
-    player_id int not null,
+	turn_order int not null,
+    user_id varchar(36) null,
     constraint pk_game_user_player
-		primary key(game_id, user_id, player_id),
+		primary key(game_id, turn_order),
 	constraint fk_game_user_player_game_id
 		foreign key(game_id)
         references game(game_id),
 	constraint fk_game_user_player_user_id
 		foreign key(user_id)
-        references game_user(user_id),
-	constraint fk_game_user_player_player_id
-		foreign key(player_id)
-        references player(player_id)
+        references game_user(user_id)
+-- 	constraint fk_game_user_player_player_id
+-- 		foreign key(player_id)
+--         references player(player_id)
 	);
     
-    insert into game_user_player(game_id, user_id, player_id) values
-		(1, '4d980627-3b3c-11ec-8708-0242ac110002', 1),
-        (1, 'CPU', 2),
-        (1, 'CPU', 3),
-        (2, '4d980627-3b3c-11ec-8708-0242ac110002', 1),
-		(2, 'CPU', 2),
-        (2, 'CPU', 3),
-        (3, '4d980627-3b3c-11ec-8708-0242ac110002', 1),
-		(3, 'CPU', 2),
-        (3, 'CPU', 3);
+    insert into game_player(game_id,turn_order, user_id) values
+		(1, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),
+        (1, 2, null),
+        (1, 3, null),
+        (2, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),
+		(2, 2, null),
+        (2, 3, null),
+        (3, 1,'4d980627-3b3c-11ec-8708-0242ac110002'),
+		(3, 2, null),
+        (3, 3, null);
+        
+        select * from game_player;
         
         
 create table game_state(
