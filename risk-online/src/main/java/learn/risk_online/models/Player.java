@@ -1,23 +1,33 @@
 package learn.risk_online.models;
 
 public class Player {
-    private String player;
+    private int gameId;
+    private String userName;
+    private String userId;
     private int turnOrder;
 
-    public Player() {
+    public String getUserId() {
+        return userId;
     }
 
-    public Player(String player, int turnOrder) {
-        this.player = player;
-        this.turnOrder = turnOrder;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getPlayer() {
-        return player;
+    public int getGameId() {
+        return gameId;
     }
 
-    public void setPlayer(String player) {
-        this.player = player;
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getTurnOrder() {
