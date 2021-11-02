@@ -21,10 +21,10 @@ public class CountryJdbcRepository implements CountryRepository{
 
         final String sql = "select c.country_id, c.country, gs.player_possession, gs.army " +
                 "from countries c " +
-                "inner join game_state gs on c.country_id = gs.country_id" +
-                "where gs.game_id = ? and gs.country_id = ?;";
+                "inner join game_state gs on c.country_id = gs.country_id " +
+                "where gs.game_id = ?;";
 
-        return jdbcTemplate.query(sql, new CountryMapper());
+        return jdbcTemplate.query(sql, new CountryMapper(), gameId);
     }
 
     @Override
