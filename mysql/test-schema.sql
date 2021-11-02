@@ -77,12 +77,16 @@ create table microtransaction(
     price int not null
 );
 
-insert into microtransaction (micro_id, product, price) values
-	(1, 'Gummy Bear Avatar', 2),
-    (2, 'Black Bear Bow Tie Avatar', 1),
-    (3, 'Polar Bear Top Hat Avatar', 2),
-    (4, 'Ursa Major Avatar', 1);
-    
+delimiter //
+create procedure set_known_good_state()
+begin
+insert into microtransaction (product, price) values
+	('Gummy Bear Avatar', 2),
+    ('Black Bear Bow Tie Avatar', 1),
+    ('Polar Bear Top Hat Avatar', 2),
+    ('Ursa Major Avatar', 1);
+
+end // 
 select * from microtransaction;
 
 
