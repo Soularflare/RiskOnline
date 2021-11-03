@@ -17,11 +17,11 @@ public class AppUserController {
 
 //    @GetMapping("/{username}/{password}")
 //    public ResponseEntity<Object> findByUserData(@PathVariable String username, @PathVariable String password){
-//        Result<AppUser> result =service.findByUserData(username, password);
-//        if (result.isSuccess()) {
-//            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+//
+//        if (service.findByUserData(username, password);) {
+//            return new ResponseEntity<>(result.getPayload(), HttpStatus.NO_CONTENT);
 //        }
-//        return ErrorResponse.build(result);
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //    }
 
 //    @PostMapping("/{username}/{password}")

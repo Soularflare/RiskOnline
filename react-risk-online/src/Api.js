@@ -2,7 +2,7 @@ const url =  "http://localhost:8080/api";
 
 export async function findByUserData(username, password){
     const response = await fetch(url + "/" + username + "/" + password);
-    if(response.status === 200) {
+    if(response.status === 204) {
         return response.json();
     }
     throw new Error("Invalid user");
