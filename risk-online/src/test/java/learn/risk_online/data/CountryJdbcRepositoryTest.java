@@ -40,7 +40,7 @@ class CountryJdbcRepositoryTest {
         assertNotNull(alaska);
         assertEquals(alaska.getCountryName(), ("ALASKA"));
 
-        Country nAfrica = repository.findById(3, 13);
+        Country nAfrica = repository.findById(1, 13);
         assertNotNull(nAfrica);
         assertEquals(nAfrica.getCountryName(), "N_AFRICA");
     }

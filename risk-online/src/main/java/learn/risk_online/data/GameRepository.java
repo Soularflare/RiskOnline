@@ -9,7 +9,9 @@ public interface GameRepository {
 
     List<Game> findAll(String userId); //or playerId?
 
-    Game findById(int gameId);
+    Game findByGameId(int gameId);
+
+    Game findByUserAndGameId(String userId, int gameId);
 
     Game add(Game game);
 

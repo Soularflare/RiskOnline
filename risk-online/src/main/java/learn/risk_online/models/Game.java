@@ -1,6 +1,7 @@
 package learn.risk_online.models;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Game {
 
@@ -61,5 +62,18 @@ public class Game {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return gameId == game.gameId && timeElapsed == game.timeElapsed && playerTurn == game.playerTurn && Objects.equals(countryList, game.countryList) && Objects.equals(players, game.players);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameId, timeElapsed, playerTurn, countryList, players);
     }
 }

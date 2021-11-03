@@ -1,3 +1,4 @@
+ 
 drop database if exists risk_bg_test;
 create database if not exists risk_bg_test;
 
@@ -176,17 +177,17 @@ insert into user_profile (profile_id, user_id, total_games, wins, game_time) val
 	('69367d6d-3b3e-11ec-8708-0242ac110002', '4d980627-3b3c-11ec-8708-0242ac110002', 2, 1, 200),
     ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0);
     
-insert into microtransaction (micro_id, product, price) values
-	(1, 'Gummy Bear Avatar', 2),
-    (2, 'Black Bear Bow Tie Avatar', 1),
-    (3, 'Polar Bear Top Hat Avatar', 2),
-    (4, 'Ursa Major Avatar', 1);
+insert into microtransaction (product, price) values
+	('Gummy Bear Avatar', 2),
+    ('Black Bear Bow Tie Avatar', 1),
+    ('Polar Bear Top Hat Avatar', 2),
+    ('Ursa Major Avatar', 1);
     
 insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
 	('69367ff8-3b3e-11ec-8708-0242ac110002', 1, 1),
     ('69367d6d-3b3e-11ec-8708-0242ac110002', 1, 0),
     ('69367d6d-3b3e-11ec-8708-0242ac110002', 2, 0),
-    ('69367d6d-3b3e-11ec-8708-0242ac110002', 3, 1);    
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 3, 1);
     
     insert into game(time_elapsed, player_turn) values
 	(111, 1),
@@ -338,11 +339,26 @@ delimiter //
 create procedure set_known_good_state()
 begin
 
+delete from user_profile_microtransaction;
+alter table user_profile_microtransaction auto_increment = 1;
+delete from microtransaction;
+alter table microtransaction auto_increment = 1;
 delete from game_state;
 delete from game_player;
 delete from game;
 alter table game auto_increment = 1;
 
+insert into microtransaction (product, price) values
+	('Gummy Bear Avatar', 2),
+    ('Black Bear Bow Tie Avatar', 1),
+    ('Polar Bear Top Hat Avatar', 2),
+    ('Ursa Major Avatar', 1);
+    
+insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
+	('69367ff8-3b3e-11ec-8708-0242ac110002', 1, 1),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 1, 0),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 2, 0),
+    ('69367d6d-3b3e-11ec-8708-0242ac110002', 3, 1);
 
 insert into game(time_elapsed, player_turn) values
 	(111, 1),
@@ -492,6 +508,10 @@ insert into game_state (game_id, country_id, player_possession, army) values
     end //
     delimiter ;
     
+    set sql_safe_updates = 0;
+	call set_known_good_state();
+	set sql_safe_updates = 1;
+    
     select * from game_user;
 	select * from game_role;
 	select * from game_user_role;    
@@ -500,15 +520,4 @@ insert into game_state (game_id, country_id, player_possession, army) values
 	select * from game_player;
     select * from game_state;
     select * from game;
-
-    
-
-
-
-
-    
-
-
-
-
 
