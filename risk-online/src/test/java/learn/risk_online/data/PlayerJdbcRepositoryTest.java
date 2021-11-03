@@ -18,7 +18,7 @@ class PlayerJdbcRepositoryTest {
     PlayerJdbcRepository repository;
 
     @Autowired
-    SetKnowGoodState knowGoodState;
+    KnownGoodState knowGoodState;
 
     @BeforeEach
     void setup(){ knowGoodState.set(); }
