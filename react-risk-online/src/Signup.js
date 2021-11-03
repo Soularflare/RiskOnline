@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import {findByUserData} from './Api';
 import UserContext from "./UserContext";
+import {AddUser} from './Api';
 
 function Login() {
     const [userData, setUserData] = useState({
@@ -20,7 +20,7 @@ function Login() {
   
       const onSubmit = (evt) => {
           evt.preventDefault();
-          findByUserData(userData.username, userData.password)
+          AddUser(userData.username, userData.password)
           .then(() => {
             user.login(userData);
             history.push("/");
@@ -30,7 +30,7 @@ function Login() {
 
     return(
         <div className="container mt-5">
-            <h1 className="offset-5" style={{color: '#f7544d'}}>Login</h1>
+            <h1 className="offset-5" style={{color: '#f7544d'}}>Sign up</h1>
             <form onSubmit={onSubmit}>
             <div className="form-group row">
                 <div className="col-4 offset-4">
@@ -41,15 +41,15 @@ function Login() {
             <div className="form-group row">
             <div className="col-4 offset-4">
             <label for="password" className="form-label">Password</label>
-            <input className="form-control" type="password" name="password" value={userData.password} onChange={onChange}></input>
+            <input className="form-control" type="text" name="password" value={userData.password} onChange={onChange}></input>
             </div>
             </div>
             <div className="mt-3 offset-4">
-            <button type="submit" className="btn btn-primary ms-2">Login</button>
-            <Link to="/signup" className="btn btn-primary" style={{marginLeft: '275px'}}>Sign up</Link>
+            <button type="submit" className="btn btn-primary me-1">Sign Up</button>
+            <Link to="/login" className="btn btn-secondary ms-1">Back</Link>
             </div>
             </form>
-            <Link to="/" className="btn btn-secondary offset-4" style={{marginTop: '100px'}}>Cancel</Link>
+            
         </div>
     );
 };
