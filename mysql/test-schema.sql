@@ -1,3 +1,4 @@
+ 
 drop database if exists risk_bg_test;
 create database if not exists risk_bg_test;
 
@@ -34,6 +35,7 @@ create table user_profile(
     total_games int not null default(0),
     wins int not null default(0),
     game_time int not null default(0),
+    points int not null default(0),
     constraint fk_user_profile_user_id
 		foreign key (user_id)
         references game_user(user_id)
@@ -172,9 +174,9 @@ insert into game_user_role (user_id, role_id) values
 	('4d980a71-3b3c-11ec-8708-0242ac110002', 1),
     ('4d980627-3b3c-11ec-8708-0242ac110002', 2);
 
-insert into user_profile (profile_id, user_id, total_games, wins, game_time) values
-	('69367d6d-3b3e-11ec-8708-0242ac110002', '4d980627-3b3c-11ec-8708-0242ac110002', 2, 1, 200),
-    ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0);
+insert into user_profile (profile_id, user_id, total_games, wins, game_time, points) values
+	('69367d6d-3b3e-11ec-8708-0242ac110002', '4d980627-3b3c-11ec-8708-0242ac110002', 2, 1, 200, 1000),
+    ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100);
     
 insert into microtransaction (product, price) values
 	('Gummy Bear Avatar', 2),
@@ -191,7 +193,8 @@ insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
     insert into game(time_elapsed, player_turn) values
 	(111, 1),
     (30, 1),
-    (170, 1);
+    (170, 1),
+    (0, 1);
     
 insert into game_player(game_id, turn_order, user_id) values
 	(1, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),
@@ -341,10 +344,15 @@ delete from user_profile_microtransaction;
 alter table user_profile_microtransaction auto_increment = 1;
 delete from microtransaction;
 alter table microtransaction auto_increment = 1;
+delete from user_profile;
 delete from game_state;
 delete from game_player;
 delete from game;
 alter table game auto_increment = 1;
+
+insert into user_profile (profile_id, user_id, total_games, wins, game_time, points) values
+	('69367d6d-3b3e-11ec-8708-0242ac110002', '4d980627-3b3c-11ec-8708-0242ac110002', 2, 1, 200, 1000),
+    ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100);
 
 insert into microtransaction (product, price) values
 	('Gummy Bear Avatar', 2),
@@ -361,7 +369,8 @@ insert into user_profile_microtransaction(profile_id, micro_id, equiped) values
 insert into game(time_elapsed, player_turn) values
 	(111, 1),
     (30, 1),
-    (170, 1);
+    (170, 1),
+    (0, 1);
     
 insert into game_player(game_id, turn_order, user_id) values
 	(1, 1, '4d980627-3b3c-11ec-8708-0242ac110002'),
@@ -517,3 +526,4 @@ insert into game_state (game_id, country_id, player_possession, army) values
 	select * from game_player;
     select * from game_state;
     select * from game;
+

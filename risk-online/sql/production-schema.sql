@@ -34,6 +34,7 @@ create table user_profile(
     total_games int not null default(0),
     wins int not null default(0),
     game_time int not null default(0),
+    points int not null default(0),
     constraint fk_user_profile_user_id
 		foreign key (user_id)
         references game_user(user_id)
