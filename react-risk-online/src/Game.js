@@ -1,7 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
 function Game() {
+    const [playerTurn, setPlayerTurn] = useState("");
 
+    const start = evt => {
+        if(playerTurn === ""){
+            const startbtn = document.getElementById("start");
+            startbtn.innerHTML = "End Turn";
+        }
+    };
 
     return(
         <div className="container-fluid mx-0">
@@ -78,7 +86,7 @@ function Game() {
                     <button className="btn btn-primary">Action</button>
                 </div>
                 <div className="col-4 offset-1">
-                    <button className="btn btn-primary">Start/End Turn</button>
+                    <button className="btn btn-primary" id="start" onClick={start}>Start</button>
                 </div>
             </div>
         </div>
