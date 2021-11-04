@@ -16,31 +16,26 @@ function MapSVG() {
         switch (number) {
             case 1:
                 newColors[index] = "#FF0000";
-                setColors([...newColors]);
-                break;
+                  break;
             case 2:
                 newColors[index] = "#0000FF";
-                setColors([...newColors]);
                 break;
             case 3:
-                newColors[index] = "#FFFF00";
-                setColors([...newColors]);
+                newColors[index] = "#FFFF00";           
                 break;
             case 4:
                 newColors[index] = "#008000";
-                setColors([...newColors]);
                 break;
             case 5:
                 newColors[index] = "#FFA500";
-                setColors([...newColors]);
                 break;
             case 6:
                 newColors[index] = "#DDA0DD";
-                setColors([...newColors]);
                 break;
             default:
                 break;
         }
+        setColors([...newColors]);
 
     }
 
