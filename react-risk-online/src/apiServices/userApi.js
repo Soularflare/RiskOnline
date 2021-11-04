@@ -24,3 +24,4 @@ export async function AddUser(username, password){
     throw new Error("User already exists");
 
 };
+

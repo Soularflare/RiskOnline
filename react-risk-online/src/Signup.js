@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import UserContext from "./UserContext";
-import {AddUser} from './Api';
+import {AddUser} from './apiServices/userApi';
 
 function Login() {
     const [userData, setUserData] = useState({
