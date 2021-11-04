@@ -1,10 +1,56 @@
+import { useState } from "react";
+
+const startColors = ["#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
+"#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
+"#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
+"#fff", "#fff", "#fff", "#fff"]
+
 function MapSVG() {
+    const[colors, setColors] = useState(startColors);
+
+    const handleClick = (evt) => {
+        let number = Math.floor(Math.random() * 6) + 1;
+        const index = evt.target.id;
+        const newColors = colors;
+        
+        switch (number) {
+            case 1:
+                newColors[index] = "#FF0000";
+                setColors([...newColors]);
+                break;
+            case 2:
+                newColors[index] = "#0000FF";
+                setColors([...newColors]);
+                break;
+            case 3:
+                newColors[index] = "#FFFF00";
+                setColors([...newColors]);
+                break;
+            case 4:
+                newColors[index] = "#008000";
+                setColors([...newColors]);
+                break;
+            case 5:
+                newColors[index] = "#FFA500";
+                setColors([...newColors]);
+                break;
+            case 6:
+                newColors[index] = "#DDA0DD";
+                setColors([...newColors]);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
 
     function ALASKA(props) {
         return (
-            <g {...props}>
-                <path
-                    fill="#fff"
+            <g  {...props}>
+                <path id="0"
+                    fill={colors[0]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -51,8 +97,8 @@ function MapSVG() {
     function NW_TERRITORY(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="1"
+                    fill={colors[1]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -99,9 +145,9 @@ function MapSVG() {
     function ALBERTA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="2"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[2]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -154,8 +200,8 @@ function MapSVG() {
         return (
             <g {...props}>
 
-                <path
-                    fill="#fff"
+                <path id="3"
+                    fill={colors[3]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -205,8 +251,8 @@ function MapSVG() {
     function EastUS(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="4"
+                    fill={colors[4]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -256,8 +302,8 @@ function MapSVG() {
     function ONTARIO(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="5"
+                    fill={colors[5]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -304,8 +350,8 @@ function MapSVG() {
     function QUEBEC(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="6"
+                    fill={colors[6]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -352,8 +398,8 @@ function MapSVG() {
     function GREENLAND(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="7"
+                    fill={colors[7]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -402,8 +448,8 @@ function MapSVG() {
     function CENTRAL_AMERICA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="8"
+                    fill={colors[8]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#ebeb08"
@@ -454,8 +500,8 @@ function MapSVG() {
     function VENEZUELA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="9"
+                    fill={colors[9]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#f5a500"
@@ -503,8 +549,8 @@ function MapSVG() {
         return (
             <g {...props}>
 
-                <path
-                    fill="#fff"
+                <path id="10"
+                    fill={colors[10]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#f5a500"
@@ -551,8 +597,8 @@ function MapSVG() {
     function BRAZIL(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="11"
+                    fill={colors[11]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#f5a500"
@@ -599,8 +645,8 @@ function MapSVG() {
     function ARGENTINA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="12"
+                    fill={colors[12]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#f5a500"
@@ -648,8 +694,8 @@ function MapSVG() {
     function N_AFRICA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="13"
+                    fill={colors[13]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -696,12 +742,11 @@ function MapSVG() {
             </g>
         );
     }
-    function EYGYPT(props) {
+    function EGYPT(props) {
         return (
             <g {...props}>
-
-                <path
-                    fill="#fff"
+                <path id="14"
+                    fill={colors[14]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -739,7 +784,7 @@ function MapSVG() {
                     }}
                 >
                     <tspan x="89.32" y="87.433">
-                        EYGYPT
+                        EGYPT
                     </tspan>
                 </text>
             </g>
@@ -748,8 +793,8 @@ function MapSVG() {
     function E_AFRICA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="15"
+                    fill={colors[15]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -799,8 +844,8 @@ function MapSVG() {
     function CONGO(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="16"
+                    fill={colors[16]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -847,8 +892,8 @@ function MapSVG() {
     function S_AFRICA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="17"
+                    fill={colors[17]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -898,8 +943,8 @@ function MapSVG() {
     function MADAGASCAR(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="18"
+                    fill={colors[18]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="red"
@@ -947,8 +992,8 @@ function MapSVG() {
     function ICELAND(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="19"
+                    fill={colors[19]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1004,8 +1049,8 @@ function MapSVG() {
     function G_BRITAIN(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="20"
+                    fill={colors[20]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1064,9 +1109,9 @@ function MapSVG() {
     function SCANDINAVIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="21"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[21]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1116,9 +1161,9 @@ function MapSVG() {
     function W_EUROPE(props) {
         return (
             <g {...props}>
-                <path
+                <path id="22"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[22]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1173,9 +1218,9 @@ function MapSVG() {
     function S_EUROPE(props) {
         return (
             <g {...props}>
-                <path
+                <path id="23"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[23]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1230,9 +1275,9 @@ function MapSVG() {
     function N_EUROPE(props) {
         return (
             <g {...props}>
-                <path
+                <path id="24"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[24]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1287,9 +1332,9 @@ function MapSVG() {
     function UKRAINE(props) {
         return (
             <g {...props}>
-                <path
+                <path id="25"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[25]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#0061ff"
@@ -1342,9 +1387,9 @@ function MapSVG() {
     function URAL(props) {
         return (
             <g {...props}>
-                <path
+                <path id="26"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[26]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1396,9 +1441,9 @@ function MapSVG() {
     function AFGHANISTAN(props) {
         return (
             <g {...props}>
-                <path
+                <path id="27"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[27]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1450,9 +1495,9 @@ function MapSVG() {
     function MID_EAST(props) {
         return (
             <g {...props}>
-                <path
+                <path id="28"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[28]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1507,9 +1552,9 @@ function MapSVG() {
     function SIBERIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="29"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[29]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1561,9 +1606,9 @@ function MapSVG() {
     function YAKURSK(props) {
         return (
             <g {...props}>
-                <path
+                <path id="30"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[30]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1615,9 +1660,9 @@ function MapSVG() {
     function KAMCHATKA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="31"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[31]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1669,9 +1714,9 @@ function MapSVG() {
     function IRKUTSK(props) {
         return (
             <g {...props}>
-                <path
+                <path id="32"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[32]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1723,8 +1768,8 @@ function MapSVG() {
     function JAPAN(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="33"
+                    fill={colors[33]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1773,9 +1818,9 @@ function MapSVG() {
     function MONGOLIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="34"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[34]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1827,9 +1872,9 @@ function MapSVG() {
     function CHINA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="35"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[35]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1881,9 +1926,9 @@ function MapSVG() {
     function INDIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="36"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[36]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#00a300"
@@ -1934,9 +1979,9 @@ function MapSVG() {
     }
     function SIAM(props) {
         return (<g {...props}>
-            <path
+            <path id="37"
                 style={{ marker: "none" }}
-                fill="#fff"
+                fill={colors[37]}
                 fillOpacity="1"
                 fillRule="evenodd"
                 stroke="#00a300"
@@ -1989,8 +2034,8 @@ function MapSVG() {
     function INDONESIA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="38"
+                    fill={colors[38]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#7800a7"
@@ -2037,8 +2082,8 @@ function MapSVG() {
     function NEW_GUINEA(props) {
         return (
             <g {...props}>
-                <path
-                    fill="#fff"
+                <path id="39"
+                    fill={colors[39]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#7800a7"
@@ -2088,9 +2133,9 @@ function MapSVG() {
     function E_AUSTRALIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="40"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[40]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#7800a7"
@@ -2145,9 +2190,9 @@ function MapSVG() {
     function W_AUSTRALIA(props) {
         return (
             <g {...props}>
-                <path
+                <path id="41"
                     style={{ marker: "none" }}
-                    fill="#fff"
+                    fill={colors[41]}
                     fillOpacity="1"
                     fillRule="evenodd"
                     stroke="#7800a7"
@@ -2395,53 +2440,53 @@ function MapSVG() {
             <g>
                 <BACKGROUND_BOARD />
 
-                <ALASKA />
-                <NW_TERRITORY />
-                <ALBERTA />
-                <ONTARIO />
-                <QUEBEC />
-                <CENTRAL_AMERICA />
-                <WestUS />
-                <EastUS />
-                <GREENLAND />
+                <ALASKA key="0" onClick={handleClick}/>
+                <NW_TERRITORY key="1" onClick={handleClick} />
+                <ALBERTA key="2" onClick={handleClick}/>
+                <ONTARIO key="3" onClick={handleClick}/>
+                <QUEBEC key="4" onClick={handleClick}/>
+                <CENTRAL_AMERICA key="5" onClick={handleClick}/>
+                <WestUS key="6" onClick={handleClick}/>
+                <EastUS key="7" onClick={handleClick}/>
+                <GREENLAND key="8" onClick={handleClick}/>
 
-                <BRAZIL />
-                <ARGENTINA />
-                <PERU />
-                <VENEZUELA />
+                <BRAZIL key="9" onClick={handleClick}/>
+                <ARGENTINA key="10" onClick={handleClick}/>
+                <PERU key="11" onClick={handleClick}/>
+                <VENEZUELA key="12" onClick={handleClick}/>
 
-                <S_AFRICA />
-                <CONGO />
-                <E_AFRICA />
-                <MADAGASCAR />
-                <EYGYPT />
-                <N_AFRICA />
+                <S_AFRICA key="13" onClick={handleClick}/>
+                <CONGO key="14" onClick={handleClick}/>
+                <E_AFRICA key="15" onClick={handleClick}/>
+                <MADAGASCAR key="16" onClick={handleClick}/>
+                <EGYPT key="17" onClick={handleClick}/>
+                <N_AFRICA key="18" onClick={handleClick}/>
 
-                <G_BRITAIN />
-                <N_EUROPE />
-                <W_EUROPE />
-                <UKRAINE />
-                <S_EUROPE />
-                <SCANDINAVIA />
-                <ICELAND />
+                <G_BRITAIN key="19" onClick={handleClick}/>
+                <N_EUROPE key="20" onClick={handleClick}/>
+                <W_EUROPE key="21" onClick={handleClick}/>
+                <UKRAINE key="22" onClick={handleClick}/>
+                <S_EUROPE key="23" onClick={handleClick}/>
+                <SCANDINAVIA key="24" onClick={handleClick}/>
+                <ICELAND key="25" onClick={handleClick}/>
 
-                <SIAM />
-                <INDIA />
-                <CHINA />
-                <AFGHANISTAN />
-                <MID_EAST />
-                <URAL />
-                <SIBERIA />
-                <MONGOLIA />
-                <IRKUTSK />
-                <KAMCHATKA />
-                <YAKURSK />
-                <JAPAN />
+                <SIAM key="26" onClick={handleClick}/>
+                <INDIA key="27" onClick={handleClick}/>
+                <CHINA key="28" onClick={handleClick}/>
+                <AFGHANISTAN key="29" onClick={handleClick}/>
+                <MID_EAST key="30" onClick={handleClick}/>
+                <URAL key="31" onClick={handleClick}/>
+                <SIBERIA key="32" onClick={handleClick}/>
+                <MONGOLIA key="33" onClick={handleClick}/>
+                <IRKUTSK key="34" onClick={handleClick}/>
+                <KAMCHATKA key="35" onClick={handleClick}/>
+                <YAKURSK key="36" onClick={handleClick}/>
+                <JAPAN key="37" onClick={handleClick}/>
 
-                <E_AUSTRALIA />
-                <W_AUSTRALIA />
-                <INDONESIA />
-                <NEW_GUINEA />
+                <E_AUSTRALIA key="38" onClick={handleClick}/>
+                <W_AUSTRALIA key="39" onClick={handleClick}/>
+                <INDONESIA key="40" onClick={handleClick}/>
+                <NEW_GUINEA key="41" onClick={handleClick}/>
 
                 <path
                     fill="none"
