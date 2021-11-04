@@ -1,26 +1,28 @@
 package learn.risk_online.data;
 
 import learn.risk_online.data.mappers.AppUserMapper;
-import learn.risk_online.data.mappers.MicrotransactionMapper;
+import learn.risk_online.data.mappers.PlayerMapper;
+import learn.risk_online.data.mappers.ProfileMapper;
 import learn.risk_online.models.AppUser;
+import learn.risk_online.models.Player;
+import learn.risk_online.models.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class AppUserJdbcRepository implements AppUserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final GameJdbcRepository gamerepo;
+    private final ProfileJdbcRepository profilerepo;
 
-    public AppUserJdbcRepository(JdbcTemplate jdbcTemplate) {
+    public AppUserJdbcRepository(JdbcTemplate jdbcTemplate, GameJdbcRepository gamerepo, ProfileJdbcRepository profilerepo) {
         this.jdbcTemplate = jdbcTemplate;
+        this.gamerepo = gamerepo;
+        this.profilerepo = profilerepo;
     }
 
     @Override
@@ -65,6 +67,28 @@ public class AppUserJdbcRepository implements AppUserRepository {
 
     @Override
     public boolean deleteById(String id) {
+        final String sql1 = "select gp.game_id, gp.turn_order, gp.user_id, gu.user_name " +
+                "from game_player gp " +
+                "left outer join game_user gu on gu.user_id = gp.user_id " +
+                "where gp.user_id = ?;";
+        List<Player> stuff= jdbcTemplate.query(sql1, new PlayerMapper(),id);
+        for(Player p :stuff)
+        {
+            gamerepo.deleteById(p.getGameId());
+        }
+
+        final String sql2 = "select up.profile_id, gu.user_id, up.total_games, " +
+                "up.wins, up.game_time, up.points, gu.user_name " +
+                "from user_profile up " +
+                "inner join game_user gu on gu.user_id = up.user_id " +
+                "where up.user_id = ?;";
+        List<Profile> stuff2= jdbcTemplate.query(sql2, new ProfileMapper(),id);
+        for(Profile p :stuff2)
+        {
+            profilerepo.deleteByProfileId(p.getProfileId());
+        }
+        final String sql3 = "delete from game_user_role where user_id = ?;";
+        jdbcTemplate.update(sql3, id);
         final String sql = "delete from game_user where user_id = ?;";
         return jdbcTemplate.update(sql, id) > 0;
     }
