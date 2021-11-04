@@ -1,13 +1,73 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
+import {saveGame} from './apiServices/gameApi'
 function Game() {
-    const [playerTurn, setPlayerTurn] = useState("");
+    const history = useHistory();
+    const [playerTurn, setPlayerTurn] = useState([]);
+    const [userId, setUserId] = useState(0);
+
+    useEffect(() => {
+        if(playerTurn.length === 0){
+            getPlayers()
+            .then(players => setPlayerTurn(players))
+            .catch((err) => console.log(err.toString()));
+        }
+        else if (playerTurn[0] === userId){
+            document.getElementById("start").removeAttribute("disabled");
+            document.getElementById("start").style.opacity = "1.0";
+        } else {
+            document.getElementById("start").setAttribute("disabled", "disabled");
+            
+            cpuTurn();
+        }
+    });
+
+    const cpuTurn = () => {
+
+
+
+        //switch to next player
+        playerTurn.push(playerTurn.shift());
+    };
 
     const start = evt => {
-        if(playerTurn === ""){
+        if(playerTurn.length === 0){
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
+            //setup
+
+        } else if (playerTurn === "player"){
+            // switch to cpu turns
+            playerTurn.push(playerTurn.shift());
+        }
+    };
+
+    const save = evt => {
+        saveGame(game, country, player)
+        .then(() => history.push("/"))
+        .catch((err) => console.log(err.toString()));
+    };
+
+    const action = evt => {
+        const actionbtn = document.getElementById("action");
+        if(actionbtn.innerHTML === "attack"){
+
+        }
+        else if(actionbtn.innerHTML === "confirm attack"){
+
+        } 
+        else if(actionbtn.innerHTML === "reinforce"){
+
+        }
+        else if(actionbtn.innerHTML === "confirm reinforce"){
+
+        }
+        else if(actionbtn.innerHTML === "move"){
+
+        }
+        else if(actionbtn.innerHTML === "confirm move"){
+
         }
     };
 
@@ -20,7 +80,7 @@ function Game() {
                     <h2 className="col-6 ps-0" style={{color: '#f7544d'}}>Username</h2>
                     </div>
                     <div className="row">
-                        <button className="btn btn-primary col-5" >Save Game</button>
+                        <button className="btn btn-primary col-5" onClick={save}>Save Game</button>
                         <Link to="/" className="btn btn-secondary col-5" >Quit Game</Link>
                     </div>
                     <div className="row">
@@ -83,7 +143,8 @@ function Game() {
             </div>
             <div className="row">
                 <div className="col-4">
-                    <button className="btn btn-primary">Action</button>
+                    <button className="btn btn-primary" onClick={action}>Action</button>
+                    <button className="btn btn-secondary">Done</button>
                 </div>
                 <div className="col-4 offset-1">
                     <button className="btn btn-primary" id="start" onClick={start}>Start</button>

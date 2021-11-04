@@ -34,7 +34,6 @@ function GameForm(){
             <label for="players" className="form-label">Number of Players</label>
             <select className="form-select" name="players" required>
                 <option selected>Select the number of players</option>
-                <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
