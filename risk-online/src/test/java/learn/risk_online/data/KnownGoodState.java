@@ -16,9 +16,9 @@ public class KnownGoodState {
         if (!hasRun) {
             hasRun = true;
             jdbcTemplate.update("call set_known_good_state();");
-            jdbcTemplate.update("SET FOREIGN_KEY_CHECKS=0;");
-            jdbcTemplate.update("call set_known_good_state_App_user();");
-            jdbcTemplate.update("SET FOREIGN_KEY_CHECKS=1;");
+            //jdbcTemplate.update("SET FOREIGN_KEY_CHECKS=0;");
+            //jdbcTemplate.update("call set_known_good_state_App_user();");
+           // jdbcTemplate.update("SET FOREIGN_KEY_CHECKS=1;");
 
         }
     }

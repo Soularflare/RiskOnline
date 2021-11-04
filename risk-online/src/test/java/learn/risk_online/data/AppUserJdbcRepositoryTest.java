@@ -26,7 +26,7 @@ class AppUserJdbcRepositoryTest {
     @Test
     void shouldFindAll() {
         //Microtransaction microt = makeMicrot(1);
-        assertEquals(repository.findAll().size(),2);
+        assertEquals(repository.findAll().size(),3);
     }
 
     @Test
@@ -44,7 +44,7 @@ class AppUserJdbcRepositoryTest {
 
     @Test
     void shouldUpdate() {
-        AppUser user = new AppUser("hi","userfakethesecond","pass",false);
+        AppUser user = new AppUser("4d980a71-3b3c-11ec-8708-0242ac110002","userfakethesecond","pass",false);
         assertTrue(repository.update(user));
     }
 
