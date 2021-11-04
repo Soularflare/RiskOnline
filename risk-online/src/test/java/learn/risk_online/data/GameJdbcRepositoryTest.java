@@ -17,10 +17,10 @@ class GameJdbcRepositoryTest {
     GameJdbcRepository repository;
 
     @Autowired
-    SetKnowGoodState knowGoodState;
+    KnownGoodState knownGoodState;
 
     @BeforeEach
-    void setup(){ knowGoodState.set(); }
+    void setup(){ knownGoodState.set(); }
 
 
     //Retrieval Tests

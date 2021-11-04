@@ -50,7 +50,7 @@ public class CountryJdbcRepository implements CountryRepository{
                 "army = ? " +
                 "where game_id = ? and country_id = ?;";
 
-        return (jdbcTemplate.update(sql,country.getPlayerPossession(), country.getArmy(),
+        return (jdbcTemplate.update(sql, country.getPlayerPossession(), country.getArmy(),
                 country.getGameId(), country.getCountryId()) > 0);
     }
 

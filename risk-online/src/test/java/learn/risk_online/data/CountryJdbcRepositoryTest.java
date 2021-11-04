@@ -17,7 +17,7 @@ class CountryJdbcRepositoryTest {
     CountryJdbcRepository repository;
 
     @Autowired
-    SetKnowGoodState knowGoodState;
+    KnownGoodState knowGoodState;
 
     @BeforeEach
     void setup(){

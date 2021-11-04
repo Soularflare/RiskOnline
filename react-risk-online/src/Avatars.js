@@ -21,6 +21,7 @@ function Avatars(){
         if(img.style.opacity === "0.4"){
             select.innerHTML = "Purchase";
             cost.innerHTML = "100 Points";
+
         } else {
             select.innerHTML = "Equip";
             cost.innerHTML = "Owned";
