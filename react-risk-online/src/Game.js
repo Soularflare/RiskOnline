@@ -1,27 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
-import {saveGame} from './apiServices/gameApi'
+import {saveGame} from './apiServices/gameApi';
+import {useHistory} from "react-router";
 function Game() {
     const history = useHistory();
     const [playerTurn, setPlayerTurn] = useState([]);
     const [userId, setUserId] = useState(0);
+    const [game, setGame] = useState({});
+    const [country, setCountry] = useState({});
+    const [player, setPlayer] = useState({});
+    const [actionState, setActionState] = useState("");
 
     useEffect(() => {
         if(playerTurn.length === 0){
-            getPlayers()
-            .then(players => setPlayerTurn(players))
-            .catch((err) => console.log(err.toString()));
+            // document.getElementById("action").setAttribute("disabled", "disabled");
+            // document.getElementById("action").style.opacity = "0.0";
         }
         else if (playerTurn[0] === userId){
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
+            //setup reinforcement phase
+            setActionState("reinforce");
+            document.getElementById("action").removeAttribute("disabled");
+            document.getElementById("action").style.opacity = "1.0";
         } else {
             document.getElementById("start").setAttribute("disabled", "disabled");
-            
+            document.getElementById("start").style.opacity = "0.4";
             cpuTurn();
         }
     });
+
+    useEffect(() => {
+        
+            document.getElementById("action").innerHTML = actionState;
+        
+    }, );
 
     const cpuTurn = () => {
 
@@ -35,9 +49,13 @@ function Game() {
         if(playerTurn.length === 0){
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
+            setActionState("reinforce");
+            document.getElementById("action").innerHTML = actionState;
             //setup
 
         } else if (playerTurn === "player"){
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.0";
             // switch to cpu turns
             playerTurn.push(playerTurn.shift());
         }
@@ -50,23 +68,57 @@ function Game() {
     };
 
     const action = evt => {
-        const actionbtn = document.getElementById("action");
-        if(actionbtn.innerHTML === "attack"){
-
+        
+        if(actionState === "attack"){
+            //attack functionality
+            setActionState("confirm attack");
+            
         }
-        else if(actionbtn.innerHTML === "confirm attack"){
-
+        else if(actionState === "confirm attack"){
+            //save attack state
+            
+            // if(attacks > 0){
+            //     setActionState("attack");
+            // }
+            // else {
+                setActionState("move");
+            //}
         } 
-        else if(actionbtn.innerHTML === "reinforce"){
-
+        else if(actionState === "reinforce"){
+            
+            setActionState("confirm reinforce");
         }
-        else if(actionbtn.innerHTML === "confirm reinforce"){
-
+        else if(actionState === "confirm reinforce"){
+            //set reinforcements
+            // if(reinforcements > 0){
+            //     setActionState("reinforce");
+            // }
+            // else {
+                setActionState("attack");
+            //}
         }
-        else if(actionbtn.innerHTML === "move"){
+        else if(actionState === "move"){
 
+            setActionState("confirm move");
         }
-        else if(actionbtn.innerHTML === "confirm move"){
+        else if(actionState === "confirm move"){
+
+            setActionState("move");
+        }
+    };
+
+    const done = evt => {
+        //skip immediately to next phase
+       
+
+        if(actionState === "reinforce" || actionState === "confirm reinforce"){
+            setActionState("attack");
+        }
+        else if( actionState === "attack" || actionState === "confirm attack"){
+            setActionState("move");
+        }
+        else {
+            //highlight endturn btn
 
         }
     };
@@ -143,8 +195,8 @@ function Game() {
             </div>
             <div className="row">
                 <div className="col-4">
-                    <button className="btn btn-primary" onClick={action}>Action</button>
-                    <button className="btn btn-secondary">Done</button>
+                    <button className="btn btn-primary" id="action" onClick={action}>Action</button>
+                    <button className="btn btn-secondary" onClick={done}>Done</button>
                 </div>
                 <div className="col-4 offset-1">
                     <button className="btn btn-primary" id="start" onClick={start}>Start</button>
