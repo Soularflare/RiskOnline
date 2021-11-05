@@ -53,7 +53,7 @@ function App() {
       <Route path="/profile/:userId">
         <Profile></Profile>
       </Route>
-      <Route path="/game">
+      <Route path="/game/:numPlayers/:chosenColor">
         <Game></Game>
       </Route>
       <Route path="/gameform">

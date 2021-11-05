@@ -1,60 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const startColors = ["#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
     "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
     "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff",
-    "#fff", "#fff", "#fff", "#fff"]
+    "#fff", "#fff", "#fff", "#fff"];
 
-// const playerList = [
-//     {player1: { "color": "red", "countries": [0, 1, 2, 3, 4, 5, 6] }},
-//     {player2: { "color": "orange", "countries": [7, 8, 9, 10, 11, 12, 13] }},
-//     {player3: { "color": "yellow", "countries": [14, 15, 16, 17, 18, 19, 20] }},
-//     {player4: { "color": "blue", "countries": [21, 22, 23, 24, 25, 26, 27] }},
-//     {player5: { "color": "green", "countries": [28, 29, 30, 31, 32, 33, 34] }},
-//     {player6: { "color": "white", "countries": [35, 36, 37, 38, 39, 40, 41] }},
-// ];
+const startTroops = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-// const playerList = [
-//     {player1: { color: "red", countries: [0, 1, 2, 3, 4, 5, 6] }},
-//     {player2: { color: "orange", countries: [7, 8, 9, 10, 11, 12, 13] }},
-//     {player3: { color: "yellow", countries: [14, 15, 16, 17, 18, 19, 20] }},
-//     {player4: { color: "blue", countries: [21, 22, 23, 24, 25, 26, 27] }},
-//     {player5: { color: "green", countries: [28, 29, 30, 31, 32, 33, 34] }},
-//     {player6: { color: "white", countries: [35, 36, 37, 38, 39, 40, 41] }},
-// ];
+const playerListTest = [
+    { color: "#fff", countries: [{ id: 0, army: 0 }, { id: 1, army: 0 }, { id: 2, army: 0 }, { id: 3, army: 0 }, { id: 4, army: 0 }, { id: 5, army: 0 }, { id: 6, army: 0 }] },
+    { color: "#fff", countries: [{ id: 7, army: 0 }, { id: 8, army: 0 }, { id: 9, army: 0 }, { id: 10, army: 0 }, { id: 11, army: 0 }, { id: 12, army: 0 }, { id: 13, army: 0 }] },
+    { color: "#fff", countries: [{ id: 14, army: 0 }, { id: 15, army: 0 }, { id: 16, army: 0 }, { id: 17, army: 0 }, { id: 18, army: 0 }, { id: 19, army: 0 }, { id: 20, army: 0 }] },
+    { color: "#fff", countries: [{ id: 21, army: 0 }, { id: 22, army: 0 }, { id: 23, army: 0 }, { id: 24, army: 0 }, { id: 25, army: 0 }, { id: 26, army: 0 }, { id: 27, army: 0 }] },
+    { color: "#fff", countries: [{ id: 28, army: 0 }, { id: 29, army: 0 }, { id: 30, army: 0 }, { id: 31, army: 0 }, { id: 32, army: 0 }, { id: 33, army: 0 }, { id: 34, army: 0 }] },
+    { color: "#fff", countries: [{ id: 35, army: 0 }, { id: 36, army: 0 }, { id: 37, army: 0 }, { id: 38, army: 0 }, { id: 39, army: 0 }, { id: 40, army: 0 }, { id: 41, army: 0 }] }
+];
 
 
-function MapSVG() {
-    // const[players, setPlayers] = useState([]);
+
+
+function MapSVG({ playerList, onCountrySelect }) {
+
+    const [players, setPlayers] = useState([]);
     const [colors, setColors] = useState(startColors);
+    const [troops, setTroops] = useState(startTroops);
 
-    // const createTerColors = () => {
-    //     let newColors = [...colors];
+    const createTerColors = () => {
+        let newColors = [...colors];
+        let newToops = [...troops];
 
-    //     for(let x = 0; x < players.length; x++){
-    //         let player = players[x];
-    //         let pColor = player.color;
+        for (let x = 0; x < players.length; x++) {
+            let player = players[x];
+            let pColor = player.color;
+            let pCountries = [...player.countries];
+            for (let y = 0; y < pCountries.length; y++) {
+                let cID = pCountries[y].id;
+                let cArmy = pCountries[y].army;
+                newColors[cID] = pColor;
+                newToops[cID] = cArmy;
+            }
+            setColors([...newColors]);
+            setTroops([...newToops]);
+        }
+    }
 
-    //         console.log(player);
-    //         console.log(pColor);
-    //     }
-    // for(let x = 0; x < players.length; x++){
-    //     let playerColor = players[x].color;
-    //     let playerTer = [...players[x].countries];
-    //     for(let y = 0; y < playerTer.length; y++){
-    //         let id = players[x].countries[y];
-    //         newColors[id] = playerColor;
-    //     }
-    // }
-    // setColors([...newColors]);
-    // }
+    useEffect(() => {
+        if (playerList < 3) {
+            setPlayers(playerListTest);
+        } else {
+            setPlayers(playerList);
+        }
+        createTerColors();
 
-    // const handleClick = () => {
-    //     setPlayers([...playerList]);
-    //     createTerColors();
-    // }
-
-
+    }, [playerList, createTerColors]);
 
     function ALASKA(props) {
         return (
@@ -97,8 +95,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="86.877">
+                    <tspan x="89.32" y="81.877">
                         ALASKA
+                    </tspan>
+                    <tspan x="100" y="90.877">
+                        {troops[0]}
                     </tspan>
                 </text>
             </g>
@@ -145,8 +146,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="89.32" y="83.433">
                         NORTHWEST TERRITORY
+                    </tspan>
+                    <tspan x="130" y="91.877">
+                        {troops[1]}
                     </tspan>
                 </text>
             </g>
@@ -199,8 +203,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="89.32" y="82.433">
                         ALBERTA
+                    </tspan>
+                    <tspan x="105" y="91.877">
+                        {troops[2]}
                     </tspan>
                 </text>
             </g>
@@ -248,11 +255,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="99.32" y="87.433">
                         WESTERN{" "}
                     </tspan>
                     <tspan x="89.32" y="96.667">
                         UNITED STATES
+                    </tspan>
+                    <tspan x="115" y="105.877">
+                        {troops[3]}
                     </tspan>
                 </text>
             </g>
@@ -299,11 +309,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="107.32" y="82.433">
                         EASTERN{" "}
                     </tspan>
-                    <tspan x="89.32" y="96.667">
+                    <tspan x="99.32" y="91.667">
                         UNITED STATES
+                    </tspan>
+                    <tspan x="120" y="100.877">
+                        {troops[4]}
                     </tspan>
                 </text>
             </g>
@@ -350,8 +363,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="89.32" y="82.433">
                         ONTARIO
+                    </tspan>
+                    <tspan x="105" y="91.877">
+                        {troops[5]}
                     </tspan>
                 </text>
             </g>
@@ -398,8 +414,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="89.32" y="82.433">
                         QUEBEC
+                    </tspan>
+                    <tspan x="104" y="91.877">
+                        {troops[6]}
                     </tspan>
                 </text>
             </g>
@@ -451,6 +470,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         GREENLAND
                     </tspan>
+                    <tspan x="113" y="97.877">
+                        {troops[7]}
+                    </tspan>
                 </text>
             </g>
         )
@@ -496,11 +518,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
-                        CENTRAL{" "}
+                    <tspan x="50.32" y="87.433">
+                        CENTRAL
                     </tspan>
-                    <tspan x="89.32" y="96.667">
+                    <tspan x="50.32" y="96.667">
                         AMERICA
+                    </tspan>
+                    <tspan x="105" y="92.877">
+                        {troops[8]}
                     </tspan>
                 </text>
             </g>
@@ -551,6 +576,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         VENEZUELA
                     </tspan>
+                    <tspan x="111" y="95.877">
+                        {troops[9]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -600,6 +628,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         PERU
                     </tspan>
+                    <tspan x="99" y="95">
+                        {troops[10]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -647,6 +678,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         BRAZIL
+                    </tspan>
+                    <tspan x="101" y="97">
+                        {troops[11]}
                     </tspan>
                 </text>
             </g>
@@ -696,6 +730,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         ARGENTINA
                     </tspan>
+                    <tspan x="108" y="97">
+                        {troops[12]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -742,11 +779,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="89.32" y="82.433">
                         NORTH{" "}
                     </tspan>
-                    <tspan x="89.32" y="96.667">
+                    <tspan x="89.32" y="91.667">
                         AFRICA
+                    </tspan>
+                    <tspan x="100" y="100">
+                        {troops[13]}
                     </tspan>
                 </text>
             </g>
@@ -795,6 +835,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         EGYPT
+                    </tspan>
+                    <tspan x="99" y="95">
+                        {troops[14]}
                     </tspan>
                 </text>
             </g>
@@ -847,6 +890,9 @@ function MapSVG() {
                     <tspan x="89.32" y="96.667">
                         AFRICA
                     </tspan>
+                    <tspan x="99" y="105">
+                        {troops[15]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -894,6 +940,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         CONGO
+                    </tspan>
+                    <tspan x="101" y="96">
+                        {troops[16]}
                     </tspan>
                 </text>
             </g >
@@ -946,6 +995,9 @@ function MapSVG() {
                     <tspan x="89.32" y="96.667">
                         AFRICA
                     </tspan>
+                    <tspan x="99" y="106">
+                        {troops[17]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -993,6 +1045,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         MADAGASCAR
+                    </tspan>
+                    <tspan x="111" y="97">
+                        {troops[18]}
                     </tspan>
                 </text>
             </g>
@@ -1051,6 +1106,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         ICELAND
+                    </tspan>
+                    <tspan x="99" y="95">
+                        {troops[19]}
                     </tspan>
                 </text>
             </g>
@@ -1112,6 +1170,9 @@ function MapSVG() {
                     <tspan x="89.32" y="96.667">
                         BRITAIN
                     </tspan>
+                    <tspan x="99" y="105">
+                        {troops[20]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -1161,8 +1222,11 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
+                    <tspan x="90.5" y="87.433">
                         SCANDINAVIA
+                    </tspan>
+                    <tspan x="99" y="97">
+                        {troops[21]}
                     </tspan>
                 </text>
             </g>
@@ -1216,10 +1280,13 @@ function MapSVG() {
                     }}
                 >
                     <tspan x="89.32" y="87.433">
-                        WESTERN{" "}
+                        WESTERN
                     </tspan>
                     <tspan x="89.32" y="96.667">
                         EUROPE
+                    </tspan>
+                    <tspan x="103" y="105">
+                        {troops[22]}
                     </tspan>
                 </text>
             </g>
@@ -1272,11 +1339,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
-                        SOUTHERN{" "}
+                    <tspan x="85.32" y="87.433">
+                        SOUTHERN
                     </tspan>
                     <tspan x="89.32" y="96.667">
                         EUROPE
+                    </tspan>
+                    <tspan x="127" y="96.5">
+                        {troops[23]}
                     </tspan>
                 </text>
             </g>
@@ -1329,11 +1399,14 @@ function MapSVG() {
                         whiteSpace: "pre",
                     }}
                 >
-                    <tspan x="89.32" y="87.433">
-                        NORTHERN{" "}
+                    <tspan x="89.32" y="82.433">
+                        NORTHERN
                     </tspan>
-                    <tspan x="89.32" y="96.667">
+                    <tspan x="89.32" y="91.667">
                         EUROPE
+                    </tspan>
+                    <tspan x="103" y="100">
+                        {troops[24]}
                     </tspan>
                 </text>
             </g>
@@ -1388,6 +1461,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         UKRAINE
+                    </tspan>
+                    <tspan x="103" y="97">
+                        {troops[25]}
                     </tspan>
                 </text>
             </g>
@@ -1444,6 +1520,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         URAL
                     </tspan>
+                    <tspan x="97" y="97">
+                        {troops[26]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -1497,6 +1576,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         AFGHANISTAN
+                    </tspan>
+                    <tspan x="115" y="97">
+                        {troops[27]}
                     </tspan>
                 </text>
             </g>
@@ -1552,8 +1634,11 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         MIDDLE{" "}
                     </tspan>
-                    <tspan x="89.32" y="96.667">
+                    <tspan x="93.32" y="96.667">
                         EAST
+                    </tspan>
+                    <tspan x="99" y="106">
+                        {troops[28]}
                     </tspan>
                 </text>
             </g>
@@ -1609,6 +1694,9 @@ function MapSVG() {
                     <tspan x="89.32" y="87.433">
                         SIBERIA
                     </tspan>
+                    <tspan x="101" y="97">
+                        {troops[29]}
+                    </tspan>
                 </text>
             </g>
         );
@@ -1662,6 +1750,9 @@ function MapSVG() {
                 >
                     <tspan x="89.32" y="87.433">
                         YAKURSK
+                    </tspan>
+                    <tspan x="102" y="96">
+                        {troops[30]}
                     </tspan>
                 </text>
             </g>

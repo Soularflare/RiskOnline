@@ -178,8 +178,8 @@ const startGame = (playerNumber, colorChoice) => {
 // 1 : attacker loses one
 // 2 : attacker loses two 
 // 3 : defender loses one
-// 4 : deroll loses two 
-function attadiceck(attackdice, defenderdice) {
+// 4 : defender loses two 
+function rolldice(attackdice, defenderdice) {
     let highestattack = 0;
     let highestdefend = 0;
     const attackerrolls = [];
@@ -226,14 +226,42 @@ function attadiceck(attackdice, defenderdice) {
             }
             attackerrolls.sort();
             defenderrolls.sort();
-
-,attackdice, dattackerid, efenderdice            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
+            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
                 if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+                    return 4;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+                    return 0;
+                }
+                else
+                {
+                    return 2;
+                }
+            }
+        }
+    }
+}
+            
+
  
 
 function changeOwner(defendingCountry,attackerid){
-    for ()
-    switch(){
+
+    let defenderid = getplayerid(defendingCountry);
+
+
+    switch(attackerid){
+        case 0:
+            cont newcountries = 
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
         case 1:
             player1.countries[player1.countries.size] = defendingCountry;
             break;
@@ -249,46 +277,59 @@ function changeOwner(defendingCountry,attackerid){
         case 5:
             player1.countries[player1.countries.size] = defendingCountry;
             break;
-        case 6:
-            player1.countries[player1.countries.size] = defendingCountry;
-            break;
     }
 
 }
 
-function updateTroops(defendingCountry, troopsLost)
+function updateTroops(Country, troopsLost,defender, attackerid)
 {      
-    if(defendingCountry.army <= troopsLost)
+    if(defender && Country.army <= troopsLost)
     {
-        changeOwner(defendingCountry,attackerid);
+        changeOwner(Country,attackerid);
     }
     else{
-        defendingCountry.army = defendingCountry.army -troopslost;
+        Country.army = Country.army-troopslost;
+    }
+    if(defender)
+    {
+        let defenderid = getplayerid(defendingCountry);
+    
+    }
+    
+}
+
+
+function attack(attackingCountry, defendingCountry,attackdice) { 
+    const defenderdice;
+    const attackerid = getplayerid(attackingCountry);
+    if(defendingCountry.army>=2)
+    {
+        defenderdice = 2;
+    } 
+    else{
+        defenderdice =1;
+    }
+    const result = rolldice(attackdice, defenderdice);
+    if(result == 0)
+    {
+        updateTroops(attackingCountry,1,false);
+        updateTroops(defendingCountry,1,true);
+    }
+    else if(result == 1)
+    {
+        updateTroops(attackingCountry,1,false);
+    }
+    else if(result == 2)
+    {
+        updateTroops(attackingCountry,2,false);
+    }
+    else if(result == 3)
+    {
+        updateTroops(defendingCountry,1,true);
+    }
+    else if(result == 4)
+    {
+        updateTroops(defendingCountry,2,true);
     }
 
 }
-
-                   return 4;
-                }
-                else {
-                    return 0;
-                }
-            }
-            else {
-                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                    return 0;
-                }
-                else {
-                    return 2;
-                }
-            }
-
-        }
-
-    }
-
-}
-
-function rolldicattackingCountry, defendingCountryeat
-    ta kck() { }
-
