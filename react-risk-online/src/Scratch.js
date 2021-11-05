@@ -227,9 +227,48 @@ function attadiceck(attackdice, defenderdice) {
             attackerrolls.sort();
             defenderrolls.sort();
 
-            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
+,attackdice, dattackerid, efenderdice            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
                 if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                    return 4;
+ 
+
+function changeOwner(defendingCountry,attackerid){
+    for ()
+    switch(){
+        case 1:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+        case 2:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+        case 3:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+        case 4:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+        case 5:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+        case 6:
+            player1.countries[player1.countries.size] = defendingCountry;
+            break;
+    }
+
+}
+
+function updateTroops(defendingCountry, troopsLost)
+{      
+    if(defendingCountry.army <= troopsLost)
+    {
+        changeOwner(defendingCountry,attackerid);
+    }
+    else{
+        defendingCountry.army = defendingCountry.army -troopslost;
+    }
+
+}
+
+                   return 4;
                 }
                 else {
                     return 0;

@@ -5,6 +5,7 @@ const player4 = { color: "color", countries: [] };
 const player5 = { color: "color", countries: [] };
 const player6 = { color: "color", countries: [] };
 
+
 const startGame = (playerNumber, colorChoice) => {
 
     let y = 2;
@@ -166,4 +167,26 @@ const startGame = (playerNumber, colorChoice) => {
             break;
     }
 
+}
+startGame(3, "blue");
+
+console.log("player 1");
+console.log(player1.color);
+for (let x = 0; x < player1.countries.length; x++) {
+    console.log(player1.countries[x].id);
+    console.log(player1.countries[x].army);
+}
+
+console.log("player 2");
+console.log(player2.color);
+for (let x = 0; x < player2.countries.length; x++) {
+    console.log(player2.countries[x].id);
+    console.log(player2.countries[x].army);
+}
+
+console.log("player 3");
+console.log(player3.color);
+for (let x = 0; x < player3.countries.length; x++) {
+    console.log(player3.countries[x].id);
+    console.log(player3.countries[x].army);
 }
