@@ -137,7 +137,7 @@ function Game() {
         }
 
         const generateGamestate = () => {
-            cIndex = Math.floor(Math.random() * 42) + 1;
+            cIndex = Math.floor(Math.random() * 42);
             allIndexNum.push(cIndex);
 
             randomArmy();
@@ -145,8 +145,8 @@ function Game() {
 
             for (let x = 0; x < 41; x++) {
                 do {
-                    cIndex = Math.floor(Math.random() * 42) + 1
-                } while (allIndexNum.indexOf(cIndex) > 0);
+                    cIndex = Math.floor(Math.random() * 42);
+                } while (allIndexNum.indexOf(cIndex) >= 0);
 
                 allIndexNum.push(cIndex);
                 distributeArmyAndCountries();
@@ -242,6 +242,7 @@ function Game() {
                 break;
         }
         setPlayerList([...playList]);
+        console.log(playList);
     }
 
 
@@ -280,6 +281,7 @@ function Game() {
     };
 
     const onCountrySelect = (id, countryName) => {
+        setClickable(false);
 
         if(countrySelect === countryName){
             //unselect countries
@@ -331,9 +333,7 @@ function Game() {
     }; //--temp changed to view localhost
 
 
-    
-reyalptsiL        
-eyalptsiL        
+         
             
       
     function getplayerid(country) {
@@ -447,7 +447,7 @@ eyalptsiL
                     </div>
                 </div>
                 <div className="col-7 pe-0" style={{ marginTop: '-150px' }}>
-                    <MapSVG playerList={playerList} onCountrySelect={onCountrySelect}></MapSVG>
+                    <MapSVG key="mapSVG" id="mapSVG" playerList={playerList} onCountrySelect={onCountrySelect}></MapSVG>
 
                </div>
               <div className="col-2 ps-5 ms-2">

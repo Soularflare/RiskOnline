@@ -26,9 +26,9 @@ function GameForm() {
             <form onSubmit={onSubmit}>
                 <div className="form-group row">
                     <div className="col-4 offset-4">
-                        <label for="color" className="form-label">Color</label>
+                        <label htmlFor="color" className="form-label">Color</label>
                         <select className="form-select" name="color" onChange={onChange} required>
-                            <option selected>Choose a color</option>
+                            <option defaultValue>Choose a color</option>
                             <option value="blue">blue</option>
                             <option value="green">green</option>
                             <option value="purple">purple</option>
@@ -42,9 +42,9 @@ function GameForm() {
                 </div>
                 <div className="form-group row">
                     <div className="col-4 offset-4">
-                        <label for="players" className="form-label">Number of Players</label>
+                        <label htmlFor="players" className="form-label">Number of Players</label>
                         <select className="form-select" name="players" onChange={onChange} required>
-                            <option selected>Select the number of players</option>
+                            <option defaultValue>Select the number of players</option>
                             <option value={3}>3</option>
                             <option value={4}>4</option>
                             <option value={5}>5</option>
