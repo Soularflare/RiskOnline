@@ -273,7 +273,7 @@ function Game() {
                 playSize.push(i);
                 
             }
-            setPlayerTurn(...playSize);
+            setPlayerTurn([...playSize]);
          
 
         } else if (playerTurn === 0){
@@ -285,7 +285,7 @@ function Game() {
     };
 
     const onCountrySelect = (id, countryName) => {
-        setClickable(false);
+        //setClickable(false);
 
         if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
             //validate
@@ -318,12 +318,7 @@ function Game() {
     }; //--temp changed to view localhost
 
 
-<<<<<<< HEAD
-    
-       
-=======
          
->>>>>>> 5ee6f7bea177fc23fc9a5a4bf899fdb5f3637c5c
             
       
     function getplayerid(country) {
