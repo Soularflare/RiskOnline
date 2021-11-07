@@ -35,13 +35,13 @@ function Game() {
             document.getElementById("start").style.opacity = "0.4";
             cpuTurn();
         }
-    });
+    }, [playerTurn]);
 
     useEffect(() => {
         
             document.getElementById("action").innerHTML = actionState;
          
-    }, );
+    }, [actionState]);
 
     useEffect(() => {
         if(playerList[0].countries.length == 0){
@@ -89,17 +89,17 @@ function Game() {
             switch (y) {
                 case 1:
                     randomArmy();
-                    player1.countries.push({ id: `${cIndex}`, army: `${randArmy}` });
+                    player1.countries.push({ id: `${cIndex}`, army: randArmy });
                     y++;
                     break;
                 case 2:
                     randomArmy();
-                    player2.countries.push({ id: `${cIndex}`, army: `${randArmy}` });
+                    player2.countries.push({ id: `${cIndex}`, army: randArmy });
                     y++;
                     break;
                 case 3:
                     randomArmy();
-                    player3.countries.push({ id: `${cIndex}`, army: `${randArmy}` });
+                    player3.countries.push({ id: `${cIndex}`, army: randArmy });
                     y++;
                     if (playerNumber === 3) {
                         y = 1;
@@ -107,7 +107,7 @@ function Game() {
                     break;
                 case 4:
                     randomArmy();
-                    player4.countries.push({ id: `${cIndex}`, army: `${randArmy}` });
+                    player4.countries.push({ id: `${cIndex}`, army: randArmy });
                     y++;
                     if (playerNumber === 4) {
                         y = 1;
@@ -115,7 +115,7 @@ function Game() {
                     break;
                 case 5:
                     randomArmy();
-                    player5.countries.push({ id: `${cIndex}`, army: `${randArmy}` });
+                    player5.countries.push({ id: `${cIndex}`, army: randArmy });
                     y++;
                     if (playerNumber === 5) {
                         y = 1;
@@ -123,7 +123,7 @@ function Game() {
                     break;
                 case 6:
                     randomArmy();
-                    player6.countries.push({ id: `${cIndex}`, army: `${randArmy}` })
+                    player6.countries.push({ id: `${cIndex}`, army: randArmy })
                     y++;
                     if (playerNumber === 6) {
                         y = 1;
@@ -137,7 +137,7 @@ function Game() {
             allIndexNum.push(cIndex);
 
             randomArmy();
-            player1.countries.push({ id: `${cIndex}`, army: `${randArmy}` })
+            player1.countries.push({ id: `${cIndex}`, army: randArmy })
 
             for (let x = 0; x < 41; x++) {
                 do {
@@ -238,7 +238,7 @@ function Game() {
                 break;
         }
         setPlayerList([...playList]);
-        console.log(playList);
+        
     }
 
 
@@ -291,11 +291,12 @@ function Game() {
             //validate
 
             setCountrySelect(id);
-            //highlight country
+            
 
             //enable reinforce
             document.getElementById("action").removeAttribute("disabled");
             document.getElementById("action").style.opacity = "1.0";
+            
         }
         
         else if(actionState === "confirm attack" || actionState === "confirm move"){
@@ -303,7 +304,7 @@ function Game() {
 
             setCountryTarget(id);
 
-            //enable reinforce
+            //enable action
             document.getElementById("action").removeAttribute("disabled");
             document.getElementById("action").style.opacity = "1.0";
         }
@@ -371,21 +372,22 @@ function Game() {
         } 
         else if(actionState === "reinforce"){
             // set reinforcements
-            console.log(playerList);
+
             const tmp = reinforcements - troopCount;
             setReinforcements(tmp)
             const playList = playerList;
             const userPlayer = playList[0];
             for (let i = 0; i < userPlayer.countries.length; i++) {
                 if(userPlayer.countries[i].id == countrySelect){
-                    userPlayer.countries.army += troopCount;
+                    userPlayer.countries[i].army += troopCount;
+                    
                 }
                 
             }
             playList[0] = userPlayer;
+            
             setPlayerList([...playList]);
             setTroopCount(0);
-            console.log(playerList); 
             if(reinforcements > 0){
                 document.getElementById("action").setAttribute("disabled", "disabled");
                 document.getElementById("action").style.opacity = "0.4";
@@ -400,7 +402,26 @@ function Game() {
             setActionState("confirm move");
         }
         else if(actionState === "confirm move"){
-
+            const playList = playerList;
+            const userPlayer = playList[0];
+            for (let i = 0; i < userPlayer.countries.length; i++) {
+                if(userPlayer.countries[i].id == countrySelect){
+                    userPlayer.countries[i].army -= troopCount;
+                    
+                }
+                
+            }
+            for (let i = 0; i < userPlayer.countries.length; i++) {
+                if(userPlayer.countries[i].id == countryTarget){
+                    userPlayer.countries[i].army += troopCount;
+                    
+                }
+                
+            }
+            playList[0] = userPlayer;
+            
+            setPlayerList([...playList]);
+            setTroopCount(0);
             setActionState("move");
         }
     };
