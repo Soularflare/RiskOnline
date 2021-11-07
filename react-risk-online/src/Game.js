@@ -321,33 +321,18 @@ function Game() {
 
          
             
-      
-    function getplayerid(country) {
-        const id = country.id;
-        
-        for(let i=0;i<playerList.length;i++)
-        {
-            const playerCountries = playerList[i].countries;
-            for(let j=0;j<playerCountries.length;j++)
-            {
-                if(playerCountries[j].id == id)
-                {
-                    return i;
-                }
-            }
-        }
-        return 0;
-    }
-    function replacecountry(){
 
-    }
+
+    
     const action = evt => {
         
         if(actionState === "attack"){
-            let attackerid = 0;
-            let defenderid = 0;
+            let attackingCountry = { id: 0, army:10 };
+            let defendingCountry = { id: 1, army:4 };
+            let attackdice = 3;
             //attack functionality
-
+            console.log("Attacking beginning");
+            attack(attackingCountry, defendingCountry,attackdice);
             //select country to attack from
 
             //api call to get countries for which to attack 
