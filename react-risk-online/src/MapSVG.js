@@ -68,9 +68,9 @@ function MapSVG({ playerList, onCountrySelect }) {
         onCountrySelect(evt.target.id, countryNames[evt.target.id]);
         setOpacity([...newOpacity]);
 
-        if(clickable === false){
-            setOpacity([...gameOpacity]);
-        }
+        // if(clickable === false){
+        //     setOpacity([...gameOpacity]);
+        // }
     }
 
 
