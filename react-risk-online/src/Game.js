@@ -11,29 +11,25 @@ function Game() {
     const [playerTurn, setPlayerTurn] = useState([]);
     const [userId, setUserId] = useState(0);
     const [gameId, setGameId] = useState(0);
-    const [country, setCountry] = useState({id: {}, army: {}});
     const [actionState, setActionState] = useState("");
-    const [countrySelect, setCountrySelect] = useState("");
-    const [countryTarget, setCountryTarget] = useState("");
-    const [playerList, setPlayerList] = useState([]);
+    const [countrySelect, setCountrySelect] = useState(null);
+    const [countryTarget, setCountryTarget] = useState(null);
+    const [playerList, setPlayerList] = useState([{color: "color", countries: []}]);
     const {numPlayers, chosenColor} = useParams();
     const [troopCount, setTroopCount] = useState(0);
+    const [reinforcements, setReinforcements] = useState(0);
 
     useEffect(() => {
-        if (playerTurn[0] === 0) {
-            // document.getElementById("action").setAttribute("disabled", "disabled");
-            // document.getElementById("action").style.opacity = "0.0";
-        
-            // getPlayers()
-            // .then(players => setPlayerTurn(players))
-            // .catch((err) => console.log(err.toString())); -temp changed to get npm start to work
-        }
-        else if (playerTurn[0] === userId) {
+        if (playerTurn[0] === 0 || playerTurn.length == 0) {
+            
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
             //setup reinforcement phase
             setActionState("reinforce");
+            document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
+            //set reinforcement amount
+            
         } else {
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
@@ -254,24 +250,32 @@ function Game() {
     };
 
     const addTroops = evt => {
-        setTroopCount(troopCount++);
+        const tmp = troopCount + 1;
+        setTroopCount(tmp);
     }
 
     const subTroops = evt => {
-        setTroopCount(troopCount--);
+        const tmp = troopCount - 1;
+        setTroopCount(tmp);
     }
 
     const start = evt => {
-        if (playerTurn.length === 0) {
+        if (playerTurn.length === 0) {                          
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
             setActionState("reinforce");
             document.getElementById("action").innerHTML = actionState;
             //setup
             startGame(numPlayers, chosenColor);
+            const playSize = []
+            for (let i = 0; i < playerList.length; i++) {
+                playSize.push(i);
+                
+            }
+            setPlayerTurn(...playSize);
          
 
-        } else if (playerTurn === "player"){
+        } else if (playerTurn === 0){
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.0";
             // switch to cpu turns
@@ -281,46 +285,27 @@ function Game() {
 
     const onCountrySelect = (id, countryName) => {
 
-        if(countrySelect === countryName){
-            //unselect countries
-            setCountrySelect("");
-            setCountryTarget("");
-            //unhighlight selected countries
+        if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
+            //validate
 
-            //disable action
-            document.getElementById("action").setAttribute("disabled", "disabled");
-            document.getElementById("action").style.opacity = "0.4";
-        } else if(countrySelect === ""){
-             //verify country is valid
-                // if(!isValid(player, id)){
-             //     break;
-            // }
-        
+            setCountrySelect(id);
             //highlight country
-            setCountrySelect(countryName);
-        } else if(countryTarget === countryName){
-            //unselect country
-            setCountryTarget("");
-            //unhighlight selected country
 
-            //disable action
-            document.getElementById("action").setAttribute("disabled", "disabled");
-            document.getElementById("action").style.opacity = "0.4";
-        } else if(countryTarget === ""){
-                //verify country is valid
-                // if(!isValid(player, id)){
-                //     break;
-                // }
-            setCountryTarget(countryName);
-            
-            //highlight target country
-
-            //enable action
+            //enable reinforce
             document.getElementById("action").removeAttribute("disabled");
             document.getElementById("action").style.opacity = "1.0";
         }
         
-        
+        else if(actionState === "confirm attack" || actionState === "confirm move"){
+            //validate
+
+            setCountryTarget(id);
+
+            //enable reinforce
+            document.getElementById("action").removeAttribute("disabled");
+            document.getElementById("action").style.opacity = "1.0";
+        }
+            
 
     };
 
@@ -332,18 +317,18 @@ function Game() {
 
 
     
-reyalptsiL        
-eyalptsiL        
+       
             
       
     function getplayerid(country) {
         const id = country.id;
-        for(let i=0;i<player.length;i++)
+        
+        for(let i=0;i<playerList.length;i++)
         {
-            playercountries = player[i].countries;
-            for(let j=0;j<playercoutries.length;j++)
+            const playerCountries = playerList[i].countries;
+            for(let j=0;j<playerCountries.length;j++)
             {
-                if(playercountries[j].id == id)
+                if(playerCountries[j].id == id)
                 {
                     return i;
                 }
@@ -384,17 +369,30 @@ eyalptsiL
             //}
         } 
         else if(actionState === "reinforce"){
-            
-            setActionState("confirm reinforce");
-        }
-        else if(actionState === "confirm reinforce"){
-            //set reinforcements
-            // if(reinforcements > 0){
-            //     setActionState("reinforce");
-            // }
-            // else {
+            // set reinforcements
+            console.log(playerList);
+            const tmp = reinforcements - troopCount;
+            setReinforcements(tmp)
+            const playList = playerList;
+            const userPlayer = playList[0];
+            for (let i = 0; i < userPlayer.countries.length; i++) {
+                if(userPlayer.countries[i].id == countrySelect){
+                    userPlayer.countries.army += troopCount;
+                }
+                
+            }
+            playList[0] = userPlayer;
+            setPlayerList([...playList]);
+            setTroopCount(0);
+            console.log(playerList); 
+            if(reinforcements > 0){
+                document.getElementById("action").setAttribute("disabled", "disabled");
+                document.getElementById("action").style.opacity = "0.4";
+                setActionState("reinforce");
+            }
+            else {
                 setActionState("attack");
-            //}
+            }
         }
         else if(actionState === "move"){
 
@@ -437,9 +435,9 @@ eyalptsiL
                     <div className="row">
                         <h2 className="offset-2 mt-4">User's Turn</h2>
                         <h5 className="offset-2 mt-">[Action phase]</h5>
-                        <h5 className="offset-1 mt-4">Reinforcements/Troops: x</h5>
+                        <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
                         <p className="border border-dark" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
-                        <p className="border col-1 offset-5" id="troopNum">{troupCount}</p>
+                        <p className="border col-1 offset-5" id="troopNum">{troopCount}</p>
                         <div>
                             <button className="col-1 btn btn-primary me-2 offset-4" id="troopMinus" onClick={subTroops}>-</button>
                             <button className="col-1 btn btn-primary ms-2" id="troopPlus" onClick={addTroops}>+</button>
