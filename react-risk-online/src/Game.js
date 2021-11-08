@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
-import {saveGame} from './apiServices/gameApi';
-import {useHistory} from "react-router";
+import { saveGame } from './apiServices/gameApi';
+import { useHistory } from "react-router";
+import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
 
 
 
@@ -14,14 +15,16 @@ function Game() {
     const [actionState, setActionState] = useState("");
     const [countrySelect, setCountrySelect] = useState(null);
     const [countryTarget, setCountryTarget] = useState(null);
-    const [playerList, setPlayerList] = useState([{color: "color", countries: []}]);
-    const {numPlayers, chosenColor} = useParams();
+    const [playerList, setPlayerList] = useState([{ color: "color", countries: [] }]);
+    const { numPlayers, chosenColor } = useParams();
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
 
+    const [clickableCountries, setClickableCountries] = useState([0, 1, 2, 3]);
+
     useEffect(() => {
-        if (playerTurn[0] === 0 || playerTurn.length == 0) {
-            
+        if (playerTurn[0] === 0 || playerTurn.length >= 0) {
+
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
             //setup reinforcement phase
@@ -29,32 +32,72 @@ function Game() {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             //set reinforcement amount
-            
+
+
+            if (playerTurn.length > 0) {
+
+                let clickable = [];
+                let pCountries = [...playerList[playerTurn[0]].countries];
+                for (let y = 0; y < pCountries.length; y++) {
+                    let cID = pCountries[y].id;
+                    clickable.push(cID);
+                }
+                setClickableCountries(clickable);
+                
+                const currentPlayer = playerList[playerTurn[0]];
+                const total = Math.floor(currentPlayer.countries.length / 3);
+
+                if (checkAsia(currentPlayer)) {
+                    total = total + 7;
+                }
+                if (checkNAmerica(currentPlayer)) {
+                    total = total + 5;
+                }
+                if (checkEurope(currentPlayer)) {
+                    total = total + 5;
+                }
+                if (checkAfrica(currentPlayer)) {
+                    total = total + 3;
+                }
+                if (checkSAmerica(currentPlayer)) {
+                    total = total + 2;
+                }
+                if (checkAustralia(currentPlayer)) {
+                    total = total + 2;
+                }
+
+                if (total <= 3) {
+                    setReinforcements(3);
+                } else {
+                    setReinforcements(total);
+                }
+            }
         } else {
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
+            setClickableCountries([]);
             cpuTurn();
         }
     }, [playerTurn]);
 
     useEffect(() => {
-        
-            document.getElementById("action").innerHTML = actionState;
-         
+
+        document.getElementById("action").innerHTML = actionState;
+
     }, [actionState]);
 
     useEffect(() => {
-        if(playerList[0].countries.length == 0){
+        if (playerList[0].countries.length == 0) {
             //loss condition
         }
-        else if (playerList[0].countries.length == 42){
+        else if (playerList[0].countries.length == 42) {
             //win condition
         }
-     
-    },[playerList] );
 
-    
-    function startGame(playerNumber, colorChoice){
+    }, [playerList]);
+
+
+    function startGame(playerNumber, colorChoice) {
 
         const player1 = { color: "color", countries: [] };
         const player2 = { color: "color", countries: [] };
@@ -159,7 +202,7 @@ function Game() {
             colorIndex = Math.floor(Math.random() * colors.length);
             player2.color = colors[colorIndex];
             colors.splice(colorIndex, 1);
-           
+
             colorIndex = Math.floor(Math.random() * colors.length);
             player3.color = colors[colorIndex];
             colors.splice(colorIndex, 1);
@@ -187,7 +230,7 @@ function Game() {
                 //35-14 = 21 >>> every country gets at least one
                 assignableTroops = 21;
                 generateGamestate();
-                assignColors();              
+                assignColors();
                 playList.push(player1);
                 playList.push(player2);
                 playList.push(player3);
@@ -241,10 +284,99 @@ function Game() {
         setPlayerList([...playList]);
     }
 
+    const countriesToReinforce = () => {
+        // need to run countries owned through matrix to get countries to attack
+        // then run countries to attack through matrix again to get countries adj.
+        // then --->
+        // for (let x = 0; x < adjCountries.length; x++) { // loop potential reinforce countries and get owned countries by comparing to owned list
+        //     if (ownedCountries.indexOf(adjCountries[x]) >= 0) {
+        //         reinforceCountries.push(adjCountries[x]);
+        //     }
+        // }
+    }
+
+    const randomlyReinforce = (reinforceCountries, userPlayer, playList) => {
+        let rfs = reinforcements;
+        do {
+            let randAdd;
+            for (let x = 0; x < reinforceCountries.length; x++) {
+                if (rfs === 0) {
+                    randAdd = 0;
+                } else {
+                    randAdd = Math.floor(Math.random() * 3); // 0, 1, 2 
+                    if (randAdd > rfs) {
+                        randAdd = rfs;
+                    }
+                    rfs = rfs - randAdd;
+
+                    for (let i = 0; i < userPlayer.countries.length; i++) {
+                        if (userPlayer.countries[i].id == reinforceCountries[x]) {
+                            userPlayer.countries[i].army += rfs;
+                        }
+                    }
+                    playList[playerTurn[0]] = userPlayer;
+                }
+            }
+        } while (rfs > 0);
+
+    }
+
+    const cpuAttack = (reinforceCountries, atkCountry, enemyCountry, firstAttack) => {
+        let atkArmy;
+        let attackNumber;
+
+        if (!firstAttack) {
+            atkArmy = parseInt(atkCountry.army);
+        }
+
+        if (firstAttack === true || Math.random() <= 0.2 || atkArmy <= 1) {
+            do {
+                let num = Math.floor(Math.random() * reinforceCountries.length);
+                atkCountry = reinforceCountries[num];
+                atkArmy = parseInt(atkCountry.army);
+            } while (atkArmy <= 1); //chooses from border countries with armies > 1
+        } //else use atkCountry again for attack
+
+        do {
+            attackNumber = Math.floor(Math.random() * 3) + 1;
+        } while (atkArmy - attackNumber <= 1); //chooses appropriate dice number based on army avaliable
+
+        // enemyCountry; //need to get from matrix function
+
+        // feed attackNumber, attackCountry, defendCountry into Attack function
+    }
 
     const cpuTurn = () => {
+        const reinforceCountries = [];
+        const playList = playerList;
+        const userPlayer = playList[playerTurn[0]];
+        countriesToReinforce(); // gets list of owned border countries -- needs finishing
+        randomlyReinforce(reinforceCountries, userPlayer, playList); // reinforce computer countries
 
+        setPlayerList([...playList]); //maybe move ???
 
+        let firstAttack = true;
+        let atkCountry;
+        let enemyCountry;
+
+        do {
+            for (let x = 0; x < reinforceCountries.length; x++) {
+                let a = parseInt(reinforceCountries[x].army);
+                if (a < 2) {
+                    reinforceCountries.slice(x, 1);
+                }
+            }
+
+            if (reinforceCountries.length !== 0) {
+                cpuAttack(reinforceCountries, atkCountry, enemyCountry, firstAttack);
+            }
+
+            firstAttack = false;
+
+            // need to evaluate whether attacked country was taken to update attacks
+            // setPlayerList??? 
+
+        } while (Math.random() <= 0.75 && reinforceCountries.length > 0);
 
         //switch to next player
         playerTurn.push(playerTurn.shift());
@@ -261,7 +393,7 @@ function Game() {
     }
 
     const start = evt => {
-        if (playerTurn.length === 0) {                          
+        if (playerTurn.length === 0) {
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
             setActionState("reinforce");
@@ -271,12 +403,9 @@ function Game() {
             const playSize = []
             for (let i = 0; i < playerList.length; i++) {
                 playSize.push(i);
-                
             }
             setPlayerTurn([...playSize]);
-         
-
-        } else if (playerTurn === 0){
+        } else if (playerTurn === 0) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.0";
             // switch to cpu turns
@@ -284,22 +413,22 @@ function Game() {
         }
     };
 
-    const onCountrySelect = (id, countryName) => {
+    const onCountrySelect = (id) => {
         //setClickable(false);
 
-        if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
+        if (actionState === "reinforce" || actionState === "attack" || actionState === "move") {
             //validate
 
             setCountrySelect(id);
-            
+
 
             //enable reinforce
             document.getElementById("action").removeAttribute("disabled");
             document.getElementById("action").style.opacity = "1.0";
-            
+
         }
-        
-        else if(actionState === "confirm attack" || actionState === "confirm move"){
+
+        else if (actionState === "confirm attack" || actionState === "confirm move") {
             //validate
 
             setCountryTarget(id);
@@ -308,7 +437,7 @@ function Game() {
             document.getElementById("action").removeAttribute("disabled");
             document.getElementById("action").style.opacity = "1.0";
         }
-            
+
 
     };
 
@@ -319,16 +448,13 @@ function Game() {
     }; //--temp changed to view localhost
 
 
-         
+
     function getplayerid(country) {
         const id = country.id;
-        for(let i=0;i<playerList.length;i++)
-        {
+        for (let i = 0; i < playerList.length; i++) {
             const playercountries = playerList[i].countries;
-            for(let j=0;j<playercountries.length;j++)
-            {
-                if(playercountries[j].id == id)
-                {
+            for (let j = 0; j < playercountries.length; j++) {
+                if (playercountries[j].id == id) {
                     return i;
                 }
             }
@@ -336,219 +462,203 @@ function Game() {
         return -1;
     }
 
-    
-
-//On change Owner I am taking in the defending country and an attacker id. The defending country
- //will be added to the other countries at the player index attackerid. The defending country must then
- //also be matched to its owner and removed
-
- function changeOwner(defendingCountry,attackerid, defenderid){
-
-    let playList = playerList;
-    console.log(playList);
-
-    newcountries = playerList[attackerid].countries; 
-    newcountries[newcountries.length] = defendingCountry;
-    player = playerList[attackerid];
-    player.countries = newcountries;
-    playList[attackerid] = player;
 
 
-    let newcountries = playerList[defenderid].countries;
-    let index; 
-    for(let i = 0;i<newcountries;i++)
-    {
-        if(newcountries[i].id = defendingCountry.id)
-        {
-            index = i;
-        }
-    }
-    newcountries.splice(index,1);
-    let player = playerList[defenderid];
-    player.countries = newcountries;
-    playList[defenderid] = player;
+    //On change Owner I am taking in the defending country and an attacker id. The defending country
+    //will be added to the other countries at the player index attackerid. The defending country must then
+    //also be matched to its owner and removed
 
-    setPlayerList(playList);
- }
+    function changeOwner(defendingCountry, attackerid, defenderid) {
 
- function updateTroops(Country, troopsLost,defender, attackerid)
-{      
-    if(defender && Country.army <= troopsLost)
-    {
-        let defenderid = getplayerid(Country);
-        changeOwner(Country,attackerid,defenderid);
-    }
-    else{
-        Country.army = Country.army-troopsLost;
-        let id = -1;
-        if(defender)
-        {
-            id = getplayerid(Country);
-        }
-        else{
-            id = attackerid
-        }
-        let newcountries = playerList[id].countries; 
+        let playList = playerList;
+        console.log(playList);
+
+        newcountries = playerList[attackerid].countries;
+        newcountries[newcountries.length] = defendingCountry;
+        player = playerList[attackerid];
+        player.countries = newcountries;
+        playList[attackerid] = player;
+
+
+        let newcountries = playerList[defenderid].countries;
         let index;
-        for(let i = 0;i<newcountries;i++)
-        {
-            if(newcountries[i].id =Country.id)
-            {
+        for (let i = 0; i < newcountries; i++) {
+            if (newcountries[i].id = defendingCountry.id) {
                 index = i;
             }
         }
-        newcountries.splice(index,1);
-        let player = playerList[id];
+        newcountries.splice(index, 1);
+        let player = playerList[defenderid];
         player.countries = newcountries;
-    }
-    
-}
+        playList[defenderid] = player;
 
-//Will return an integer corresponding to the result of the attack 
-// 0 : both lose one troop
-// 1 : attacker loses one
-// 2 : attacker loses two 
-// 3 : defender loses one
-// 4 : defender loses two 
-function rolldice(attackdice, defenderdice) {
-    let highestattack = 0;
-    let highestdefend = 0;
-    const attackerrolls = [];
-    const defenderrolls = [];
-    if (attackdice < 2) {
-        highestattack = Math.floor(Math.random() * 6);
-        if (highestdefend < 2) {
-            highestdefend = Math.floor(Math.random() * 6);
-        }
-        else {
-            highestdefend = Math.max(Math.floor(Math.random() * 6), Math.floor(Math.random() * 6));
-        }
-        if (highestattack > highestdefend) {
-            return 3;
-        }
-        else {
-            return 1;
-        }
+        setPlayerList(playList);
     }
-    else {
-        for (let i = 0; i < attackdice; i++) {
-            let random = Math.floor(Math.random() * 6);
-            attackerrolls[i] = random;
+
+    function updateTroops(Country, troopsLost, defender, attackerid) {
+        if (defender && Country.army <= troopsLost) {
+            let defenderid = getplayerid(Country);
+            changeOwner(Country, attackerid, defenderid);
         }
-        if (defenderdice < 2) {
-            highestdefend = Math.floor(Math.random() * 6);
-            for (let j = 0; j < attackerrolls.length; j++) {
-                let random = Math.floor(Math.random() * 6);
-                if (random > highestattack) {
-                    highestattack = random;
+        else {
+            Country.army = Country.army - troopsLost;
+            let id = -1;
+            if (defender) {
+                id = getplayerid(Country);
+            }
+            else {
+                id = attackerid
+            }
+            let newcountries = playerList[id].countries;
+            let index;
+            for (let i = 0; i < newcountries; i++) {
+                if (newcountries[i].id = Country.id) {
+                    index = i;
                 }
+            }
+            newcountries.splice(index, 1);
+            let player = playerList[id];
+            player.countries = newcountries;
+        }
+
+    }
+
+    //Will return an integer corresponding to the result of the attack 
+    // 0 : both lose one troop
+    // 1 : attacker loses one
+    // 2 : attacker loses two 
+    // 3 : defender loses one
+    // 4 : defender loses two 
+    function rolldice(attackdice, defenderdice) {
+        let highestattack = 0;
+        let highestdefend = 0;
+        const attackerrolls = [];
+        const defenderrolls = [];
+        if (attackdice < 2) {
+            highestattack = Math.floor(Math.random() * 6);
+            if (highestdefend < 2) {
+                highestdefend = Math.floor(Math.random() * 6);
+            }
+            else {
+                highestdefend = Math.max(Math.floor(Math.random() * 6), Math.floor(Math.random() * 6));
             }
             if (highestattack > highestdefend) {
                 return 3;
             }
             else {
-                return 2;
+                return 1;
             }
         }
         else {
-            for (let i = 0; i < defenderdice; i++) {
+            for (let i = 0; i < attackdice; i++) {
                 let random = Math.floor(Math.random() * 6);
-                defenderrolls[i] = random;
+                attackerrolls[i] = random;
             }
-            attackerrolls.sort();
-            defenderrolls.sort();
-            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
-                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                    return 4;
+            if (defenderdice < 2) {
+                highestdefend = Math.floor(Math.random() * 6);
+                for (let j = 0; j < attackerrolls.length; j++) {
+                    let random = Math.floor(Math.random() * 6);
+                    if (random > highestattack) {
+                        highestattack = random;
+                    }
                 }
-                else
-                {
-                    return 0;
+                if (highestattack > highestdefend) {
+                    return 3;
                 }
-            }
-            else
-            {
-                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                    return 0;
-                }
-                else
-                {
+                else {
                     return 2;
+                }
+            }
+            else {
+                for (let i = 0; i < defenderdice; i++) {
+                    let random = Math.floor(Math.random() * 6);
+                    defenderrolls[i] = random;
+                }
+                attackerrolls.sort();
+                defenderrolls.sort();
+                if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
+                    if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+                        return 4;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                else {
+                    if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+                        return 0;
+                    }
+                    else {
+                        return 2;
+                    }
                 }
             }
         }
     }
-}
 
- function attack(attackingCountry, defendingCountry,attackdice) { 
-    let defenderdice;
-    const attackerid = getplayerid(attackingCountry);
-    if(defendingCountry.army>=2)
-    {
-        defenderdice = 2;
-    } 
-    else{
-        defenderdice =1;
-    }
-    const result = rolldice(attackdice, defenderdice);
-    if(result == 0)
-    {
-        updateTroops(attackingCountry,1,false,attackerid);
-        updateTroops(defendingCountry,1,true,attackerid);
-    }
-    else if(result == 1)
-    {
-        updateTroops(attackingCountry,1,false,attackerid);
-    }
-    else if(result == 2)
-    {
-        updateTroops(attackingCountry,2,false,attackerid);
-    }
-    else if(result == 3)
-    {
-        updateTroops(defendingCountry,1,true,attackerid);
-    }
-    else if(result == 4)
-    {
-        updateTroops(defendingCountry,2,true,attackerid);
+    function attack(attackingCountry, defendingCountry, attackdice) {
+        let defenderdice;
+        const attackerid = getplayerid(attackingCountry);
+        if (defendingCountry.army >= 2) {
+            defenderdice = 2;
+        }
+        else {
+            defenderdice = 1;
+        }
+        const result = rolldice(attackdice, defenderdice);
+        if (result == 0) {
+            updateTroops(attackingCountry, 1, false, attackerid);
+            updateTroops(defendingCountry, 1, true, attackerid);
+        }
+        else if (result == 1) {
+            updateTroops(attackingCountry, 1, false, attackerid);
+        }
+        else if (result == 2) {
+            updateTroops(attackingCountry, 2, false, attackerid);
+        }
+        else if (result == 3) {
+            updateTroops(defendingCountry, 1, true, attackerid);
+        }
+        else if (result == 4) {
+            updateTroops(defendingCountry, 2, true, attackerid);
+        }
+
     }
 
-}        
 
 
-    
     const action = evt => {
-        
-        if(actionState === "attack"){
-            let attackingCountry = { id: 0, army:10 };
-            let defendingCountry = { id: 1, army:4 };
+
+        if (actionState === "attack") {
+            let attackingCountry = { id: 0, army: 10 };
+            let defendingCountry = { id: 1, army: 4 };
             let attackdice = 3;
             //attack functionality
             console.log("Attacking beginning");
-            attack(attackingCountry, defendingCountry,attackdice);
+            attack(attackingCountry, defendingCountry, attackdice);
             //select country to attack from
 
             //api call to get countries for which to attack 
 
             //player must select number of die to roll as an attacker 
             setActionState("confirm attack");
-            
+
         }
-        else if(actionState === "confirm attack"){
+        else if (actionState === "confirm attack") {
             let attackerid = 0;
             let defenderid = 0;
             //call attack(attackingCountry, defendingCountry,attackdice)
 
             //save attack state
-            
+
             //if(attacks > 0){
             //     setActionState("attack");
             // }
             // else {
-                setActionState("move");
+            setActionState("move");
             //}
-        } 
-        else if(actionState === "reinforce"){
+        }
+        else if (actionState === "reinforce") {
             // set reinforcements
 
             const tmp = reinforcements - troopCount;
@@ -556,17 +666,16 @@ function rolldice(attackdice, defenderdice) {
             const playList = playerList;
             const userPlayer = playList[0];
             for (let i = 0; i < userPlayer.countries.length; i++) {
-                if(userPlayer.countries[i].id == countrySelect){
+                if (userPlayer.countries[i].id == countrySelect) {
                     userPlayer.countries[i].army += troopCount;
-                    
+
                 }
-                
             }
             playList[0] = userPlayer;
-            
+
             setPlayerList([...playList]);
             setTroopCount(0);
-            if(reinforcements > 0){
+            if (reinforcements > 0) {
                 document.getElementById("action").setAttribute("disabled", "disabled");
                 document.getElementById("action").style.opacity = "0.4";
                 setActionState("reinforce");
@@ -575,29 +684,29 @@ function rolldice(attackdice, defenderdice) {
                 setActionState("attack");
             }
         }
-        else if(actionState === "move"){
+        else if (actionState === "move") {
 
             setActionState("confirm move");
         }
-        else if(actionState === "confirm move"){
+        else if (actionState === "confirm move") {
             const playList = playerList;
             const userPlayer = playList[0];
             for (let i = 0; i < userPlayer.countries.length; i++) {
-                if(userPlayer.countries[i].id == countrySelect){
+                if (userPlayer.countries[i].id == countrySelect) {
                     userPlayer.countries[i].army -= troopCount;
-                    
+
                 }
-                
+
             }
             for (let i = 0; i < userPlayer.countries.length; i++) {
-                if(userPlayer.countries[i].id == countryTarget){
+                if (userPlayer.countries[i].id == countryTarget) {
                     userPlayer.countries[i].army += troopCount;
-                    
+
                 }
-                
+
             }
             playList[0] = userPlayer;
-            
+
             setPlayerList([...playList]);
             setTroopCount(0);
             setActionState("move");
@@ -606,12 +715,12 @@ function rolldice(attackdice, defenderdice) {
 
     const done = evt => {
         //skip immediately to next phase
-       
 
-        if(actionState === "reinforce" || actionState === "confirm reinforce"){
+
+        if (actionState === "reinforce" || actionState === "confirm reinforce") {
             setActionState("attack");
         }
-        else if( actionState === "attack" || actionState === "confirm attack"){
+        else if (actionState === "attack" || actionState === "confirm attack") {
             setActionState("move");
         }
         else {
@@ -645,11 +754,11 @@ function rolldice(attackdice, defenderdice) {
                     </div>
                 </div>
                 <div className="col-7 pe-0" style={{ marginTop: '-150px' }}>
-                    <MapSVG key="mapSVG" id="mapSVG" playerList={playerList} onCountrySelect={onCountrySelect}></MapSVG>
+                    <MapSVG key="mapSVG" id="mapSVG" playerList={playerList} onCountrySelect={onCountrySelect} clickableCountries={clickableCountries}></MapSVG>
 
-               </div>
-              <div className="col-2 ps-5 ms-2">
-<p>player x attacked country y and won</p>
+                </div>
+                <div className="col-2 ps-5 ms-2">
+                    <p>player x attacked country y and won</p>
                     <p>player x attacked country y and lost</p>
                     <p>player x attacked country y and lost</p>
                     <p>player x attacked country y and won</p>
