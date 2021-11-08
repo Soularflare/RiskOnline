@@ -494,30 +494,22 @@ function Game() {
     }
 
 
+//On change Owner I am taking in the defending country and an attacker id. The defending country
+ //will be added to the other countries at the player index attackerid. The defending country must then
+ //also be matched to its owner and removed
 
-<<<<<<< HEAD
  function changeOwner(defendingCountry,attackerid, defenderid){
     console.log("reaches here");
     let playList = playerList;
     console.log(playList);
-=======
-    //On change Owner I am taking in the defending country and an attacker id. The defending country
-    //will be added to the other countries at the player index attackerid. The defending country must then
-    //also be matched to its owner and removed
 
-    function changeOwner(defendingCountry, attackerid, defenderid) {
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
+    newcountries = playerList[attackerid].countries; 
+    newcountries[newcountries.length] = defendingCountry;
+    player = playerList[attackerid];
+    player.countries = newcountries;
+    playList[attackerid] = player;
 
-        let playList = playerList;
-        console.log(playList);
 
-        newcountries = playerList[attackerid].countries;
-        newcountries[newcountries.length] = defendingCountry;
-        player = playerList[attackerid];
-        player.countries = newcountries;
-        playList[attackerid] = player;
-
-<<<<<<< HEAD
     let newcountries = playerList[defenderid].countries;
     let index; 
     for(let i = 0;i<newcountries;i++)
@@ -567,18 +559,10 @@ function Game() {
         {
             if(newcountries[i].id =Country.id)
             {
-=======
-
-        let newcountries = playerList[defenderid].countries;
-        let index;
-        for (let i = 0; i < newcountries; i++) {
-            if (newcountries[i].id = defendingCountry.id) {
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
                 index = i;
                 console.log("updates");
             }
         }
-<<<<<<< HEAD
         newcountries.splice(index,1);
         newcountries.splice(index,0,Country);
         console.log("New countries");
@@ -614,44 +598,11 @@ function rolldice(attackdice, defenderdice) {
         }
         if (highestattack > highestdefend) {
             return 3;
-=======
-        newcountries.splice(index, 1);
-        let player = playerList[defenderid];
-        player.countries = newcountries;
-        playList[defenderid] = player;
-
-        setPlayerList(playList);
-    }
-
-    function updateTroops(Country, troopsLost, defender, attackerid) {
-        if (defender && Country.army <= troopsLost) {
-            let defenderid = getplayerid(Country);
-            changeOwner(Country, attackerid, defenderid);
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
         }
         else {
-            Country.army = Country.army - troopsLost;
-            let id = -1;
-            if (defender) {
-                id = getplayerid(Country);
-            }
-            else {
-                id = attackerid
-            }
-            let newcountries = playerList[id].countries;
-            let index;
-            for (let i = 0; i < newcountries; i++) {
-                if (newcountries[i].id = Country.id) {
-                    index = i;
-                }
-            }
-            newcountries.splice(index, 1);
-            let player = playerList[id];
-            player.countries = newcountries;
+            return 1;
         }
-
     }
-<<<<<<< HEAD
     else {
         for (let i = 0; i < attackdice; i++) {
             let random = Math.floor(Math.random() * 6);
@@ -662,41 +613,18 @@ function rolldice(attackdice, defenderdice) {
             attackerrolls.sort();
             console.log("Attacker rolls: "+ attackerrolls);
             highestattack = attackerrolls[attackerrolls.length-1];
-=======
-
-    //Will return an integer corresponding to the result of the attack 
-    // 0 : both lose one troop
-    // 1 : attacker loses one
-    // 2 : attacker loses two 
-    // 3 : defender loses one
-    // 4 : defender loses two 
-    function rolldice(attackdice, defenderdice) {
-        let highestattack = 0;
-        let highestdefend = 0;
-        const attackerrolls = [];
-        const defenderrolls = [];
-        if (attackdice < 2) {
-            highestattack = Math.floor(Math.random() * 6);
-            if (highestdefend < 2) {
-                highestdefend = Math.floor(Math.random() * 6);
-            }
-            else {
-                highestdefend = Math.max(Math.floor(Math.random() * 6), Math.floor(Math.random() * 6));
-            }
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
             if (highestattack > highestdefend) {
                 return 3;
             }
             else {
-                return 1;
+                return 2;
             }
         }
         else {
-            for (let i = 0; i < attackdice; i++) {
+            for (let i = 0; i < defenderdice; i++) {
                 let random = Math.floor(Math.random() * 6);
-                attackerrolls[i] = random;
+                defenderrolls[i] = random;
             }
-<<<<<<< HEAD
             attackerrolls.sort();
             defenderrolls.sort();
             console.log("Attacker rolls: "+ attackerrolls);
@@ -704,57 +632,24 @@ function rolldice(attackdice, defenderdice) {
             if (attackerrolls[attackerrolls.length - 1] > defenderrolls[defenderrolls.length - 1]) {
                 if (attackerrolls[attackerrolls.length - 2] > defenderrolls[defenderrolls.length - 2]) {
                     return 4;
-=======
-            if (defenderdice < 2) {
-                highestdefend = Math.floor(Math.random() * 6);
-                for (let j = 0; j < attackerrolls.length; j++) {
-                    let random = Math.floor(Math.random() * 6);
-                    if (random > highestattack) {
-                        highestattack = random;
-                    }
                 }
-                if (highestattack > highestdefend) {
-                    return 3;
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
-                }
-                else {
-                    return 2;
+                else
+                {
+                    return 0;
                 }
             }
-<<<<<<< HEAD
             else
             {
                 if (attackerrolls[attackerrolls.length - 2] > defenderrolls[defenderrolls.length - 2]) {
                     return 0;
-=======
-            else {
-                for (let i = 0; i < defenderdice; i++) {
-                    let random = Math.floor(Math.random() * 6);
-                    defenderrolls[i] = random;
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
                 }
-                attackerrolls.sort();
-                defenderrolls.sort();
-                if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
-                    if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                        return 4;
-                    }
-                    else {
-                        return 0;
-                    }
-                }
-                else {
-                    if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
-                        return 0;
-                    }
-                    else {
-                        return 2;
-                    }
+                else
+                {
+                    return 2;
                 }
             }
         }
     }
-<<<<<<< HEAD
 }
 
  function attack(attackingCountry, defendingCountry,attackdice) { 
@@ -789,37 +684,9 @@ function rolldice(attackdice, defenderdice) {
     else if(result == 4)
     {
         updateTroops(defendingCountry,2,true,attackerid);
-=======
-
-    function attack(attackingCountry, defendingCountry, attackdice) {
-        let defenderdice;
-        const attackerid = getplayerid(attackingCountry);
-        if (defendingCountry.army >= 2) {
-            defenderdice = 2;
-        }
-        else {
-            defenderdice = 1;
-        }
-        const result = rolldice(attackdice, defenderdice);
-        if (result == 0) {
-            updateTroops(attackingCountry, 1, false, attackerid);
-            updateTroops(defendingCountry, 1, true, attackerid);
-        }
-        else if (result == 1) {
-            updateTroops(attackingCountry, 1, false, attackerid);
-        }
-        else if (result == 2) {
-            updateTroops(attackingCountry, 2, false, attackerid);
-        }
-        else if (result == 3) {
-            updateTroops(defendingCountry, 1, true, attackerid);
-        }
-        else if (result == 4) {
-            updateTroops(defendingCountry, 2, true, attackerid);
-        }
-
->>>>>>> a6fe299c8cdfa474a5e409544bf6a32190592f0b
     }
+
+}      
 
 
 
