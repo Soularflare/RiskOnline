@@ -428,7 +428,7 @@ function Game() {
     };
 
     const onCountrySelect = (id) => {
-        //setClickable(false);
+       
 
         const playercountries = playerList[0].countries;
         if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
@@ -472,10 +472,10 @@ function Game() {
     };
 
     const save = (evt) => {
-        //     saveGame(gameId, country, player, playerTurn)
-        //     .then(() => history.push("/"))
-        //     .catch((err) => console.log(err.toString()));
-    }; //--temp changed to view localhost
+            saveGame(gameId, userId, playerList, playerTurn)
+            .then(() => history.push("/"))
+            .catch((err) => console.log(err.toString()));
+    }; 
 
 
 

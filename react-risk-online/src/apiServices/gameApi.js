@@ -1,22 +1,22 @@
 const url =  `${process.env.REACT_APP_API_URL}`;
 
 
-export async function saveGame(game, country, player){
+export async function saveGame(gameId, userId, playerList, playerTurn){
     if(game.gameId > 0){
-        return updateGame(game, country, player);
+        return updateGame(gameId, userId, playerList, playerTurn);
     } else {
-        return addGame(game, country, player);
+        return addGame(userId, playerList, playerTurn);
     }
 };
 
-async function addGame(game, country, player) {
+async function addGame(userId, playerList, playerTurn) {
     const init = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify(game)
+        body: JSON.stringify()
     }
 
     const response = await fetch(url, init);
