@@ -1,11 +1,22 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react/cjs/react.development";
+import {fetchUserInfo} from './apiServices/userApi';
 
-function Profile(){
+
+
+function Profile({userData}){
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        fetchUserInfo(userData)
+            .then((info) => setUserInfo(info))
+            .catch((err) => console.log(err.toString()));
+    });
     return(
         <div>
             <div className="container">
                 <img src="?" alt="profile avatar" className="offset-4"/>
-                <h1 className="offset-5" style={{color: '#f7544d'}}>Username</h1>
+                <h1 className="offset-5" style={{color: '#f7544d'}}>{userData.username}</h1>
             </div>
             <h4 className="offset-1">Player Statistics</h4>
             <table className="table table-striped table-bordered offset-1" style={{width: '75%'}}>
@@ -13,27 +24,27 @@ function Profile(){
                 <tbody>
                     <tr>
                         <th scope="row">Points</th>
-                        <td>a</td>
+                        <td>{userInfo.points}</td>
                     </tr>
                     <tr>
                         <th scope="row">Games Played</th>
-                        <td>x</td>
+                        <td>{userInfo.gamesPlayed}</td>
                     </tr>
                     <tr>
                         <th scope="row">Games Won</th>
-                        <td>y</td>
+                        <td>{userInfo.gamesWon}</td>
                     </tr>
                     <tr>
                         <th scope="row">Games Lost</th>
-                        <td>z</td>
+                        <td>{userInfo.gamesLost}</td>
                     </tr>
                     <tr>
                         <th scope="row">Win/Loss %</th>
-                        <td>x%</td>
+                        <td>{(userInfo.gamesWon/userInfo.gamesPlayed) * 100}%</td>
                     </tr>
                     <tr>
                         <th scope="row">Total Game Time</th>
-                        <td>x</td>
+                        <td>{userInfo.gameTime}</td>
                     </tr>
                 </tbody>
             </table>
