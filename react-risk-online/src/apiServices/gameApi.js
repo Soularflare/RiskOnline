@@ -2,7 +2,7 @@ const url =  `${process.env.REACT_APP_API_URL}`;
 
 
 export async function saveGame(gameId, userId, playerList, playerTurn){
-    if(game.gameId > 0){
+    if(gameId > 0){
         return updateGame(gameId, userId, playerList, playerTurn);
     } else {
         return addGame(userId, playerList, playerTurn);

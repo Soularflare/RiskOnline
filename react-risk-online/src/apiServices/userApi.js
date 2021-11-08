@@ -25,3 +25,34 @@ export async function AddUser(username, password){
 
 };
 
+export async function fetchPts(userData){
+    const init = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(userData)
+    }
+    const response = await fetch(url + "/points", init);
+    if(response.status === 200) {
+        return response.json();
+    }
+    throw new Error("User does not exist");
+};
+
+export async function savePts(userData, num){
+    const init = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(userData)
+    }
+    const response = await fetch(url + "/points/" + num, init);
+    if(response.status === 200) {
+        return response.json();
+    }
+    throw new Error("User does not exist");
+};

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
 import { saveGame } from './apiServices/gameApi';
+import { fetchPts, savePts } from './apiServices/userApi';
 import { useHistory } from "react-router";
 import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
 
@@ -104,10 +105,16 @@ function Game({userData}) {
             document.getElementById("start").style.opacity = "0.4";
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
-            infoData.innerHTML = "You Win"
+            infoData.innerHTML = "You Win! +10 Points"
+            addPts(10);
         }
 
     }, [playerList]);
+
+    const addPts = (num) => {
+        num += fetchPts(userData);
+        savePts(userData, num);
+    };
 
 
     function startGame(playerNumber, colorChoice) {

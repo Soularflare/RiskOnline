@@ -18,7 +18,7 @@ public class AppUserController {
 //    @GetMapping("/{username}/{password}")
 //    public ResponseEntity<Object> findByUserData(@PathVariable String username, @PathVariable String password){
 //
-//        if (service.findByUserData(username, password);) {
+//        if (service.findByUserData(username, password)) {
 //            return new ResponseEntity<>(result.getPayload(), HttpStatus.NO_CONTENT);
 //        }
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
