@@ -674,7 +674,7 @@ function rolldice(attackdice, defenderdice) {
                         <h2 className="offset-2 mt-4">User's Turn</h2>
                         <h5 className="offset-2 mt-">[Action phase]</h5>
                         <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
-                        <p className="border border-dark" id="info" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
+                        <p className="border border-dark" id="info" style={{ marginTop: '100px' }}></p>
                         <p className="border col-1 offset-5" id="troopNum">{troopCount}</p>
                         <div>
                             <button className="col-1 btn btn-primary me-2 offset-4" id="troopMinus" onClick={subTroops}>-</button>
@@ -701,27 +701,27 @@ function rolldice(attackdice, defenderdice) {
                         <tbody>
                             <tr>
                                 <th>North America</th>
-                                <td>x</td>
+                                <td>5</td>
                             </tr>
                             <tr>
                                 <th>South America</th>
-                                <td>x</td>
+                                <td>2</td>
                             </tr>
                             <tr>
                                 <th>Europe</th>
-                                <td>x</td>
+                                <td>5</td>
                             </tr>
                             <tr>
                                 <th>Africa</th>
-                                <td>x</td>
+                                <td>3</td>
                             </tr>
                             <tr>
                                 <th>Asia</th>
-                                <td>x</td>
+                                <td>7</td>
                             </tr>
                             <tr>
                                 <th>Australia</th>
-                                <td>x</td>
+                                <td>2</td>
                             </tr>
                         </tbody>
                     </table>
