@@ -20,7 +20,7 @@ function Game() {
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
 
-    const [clickableCountries, setClickableCountries] = useState([0, 1, 2, 3]);
+    const [clickableCountries, setClickableCountries] = useState([]);
 
     useEffect(() => {
         if (playerTurn[0] === 0 || playerTurn.length >= 0) {
@@ -472,7 +472,7 @@ function Game() {
 
     };
 
-    const save = evt => {
+    const save = (evt) => {
         //     saveGame(gameId, country, player, playerTurn)
         //     .then(() => history.push("/"))
         //     .catch((err) => console.log(err.toString()));
