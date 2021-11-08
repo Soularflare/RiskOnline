@@ -65,6 +65,7 @@ function Game() {
      
     },[playerList] );
 
+    
     function startGame(playerNumber, colorChoice){
 
         const player1 = { color: "color", countries: [] };
@@ -250,7 +251,6 @@ function Game() {
                 break;
         }
         setPlayerList([...playList]);
-        
     }
 
 
