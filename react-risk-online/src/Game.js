@@ -711,7 +711,8 @@ function Game() {
             setPlayerList([...playList]);
             setTroopCount(0);
             
-            if(reinforcements > 0){
+            if(tmp > 0){
+                
                 setActionState("reinforce");
             }
             else {
@@ -783,7 +784,7 @@ function Game() {
                     </div>
                     <div className="row">
                         <h2 className="offset-2 mt-4">User's Turn</h2>
-                        <h5 className="offset-2 mt-">[Action phase]</h5>
+                        <h5 className="offset-2 mt-">{actionState}</h5>
                         <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
                         <p className="border border-dark" id="info" style={{ marginTop: '100px' }}></p>
                         <p className="border col-1 offset-5" id="troopNum">{troopCount}</p>
