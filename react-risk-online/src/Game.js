@@ -7,7 +7,7 @@ import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, chec
 
 
 
-function Game() {
+function Game({userData}) {
     const history = useHistory();
     const [playerTurn, setPlayerTurn] = useState([]);
     const [userId, setUserId] = useState(0);
@@ -23,8 +23,9 @@ function Game() {
     const [clickableCountries, setClickableCountries] = useState([0, 1, 2, 3]);
 
     useEffect(() => {
-        if (playerTurn[0] === 0 || playerTurn.length >= 0) {
-
+        
+        if (playerTurn[0] === 0 || playerTurn.length === 0) {
+            
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
             //setup reinforcement phase
@@ -34,8 +35,8 @@ function Game() {
             //set reinforcement amount
 
 
-            if (playerTurn.length > 0) {
-
+            
+            if(playerTurn.length > 0){
                 let clickable = [];
                 let pCountries = [...playerList[playerTurn[0]].countries];
                 for (let y = 0; y < pCountries.length; y++) {
@@ -72,6 +73,7 @@ function Game() {
                     setReinforcements(total);
                 }
             }
+            
         } else {
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
@@ -89,7 +91,7 @@ function Game() {
     useEffect(() => {
         
         const infoData = document.getElementById("info");
-        if(playerList[0].countries.length == 0 && playerTurn.length != 0){
+        if(playerList[0].countries.length == 0 && playerTurn.length > 1){
             //loss condition 
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
@@ -395,13 +397,17 @@ function Game() {
     };
 
     const addTroops = evt => {
-        const tmp = troopCount + 1;
-        setTroopCount(tmp);
+        if(troopCount < 3){
+            const tmp = troopCount + 1;
+            setTroopCount(tmp);
+        }
     }
 
     const subTroops = evt => {
-        const tmp = troopCount - 1;
-        setTroopCount(tmp);
+        if(troopCount > 0){
+            const tmp = troopCount - 1;
+            setTroopCount(tmp);
+        }
     }
 
     const start = evt => {
@@ -727,7 +733,7 @@ function rolldice(attackdice, defenderdice) {
         } 
         else if(actionState === "reinforce"){
             // set reinforcements
-
+            if(reinforcements >= troopCount){
             const tmp = reinforcements - troopCount;
             setReinforcements(tmp)
             const playList = playerList;
@@ -750,6 +756,10 @@ function rolldice(attackdice, defenderdice) {
             else {
                 setActionState("attack");
             }
+            }
+            else {
+                setActionState("reinforce");
+            }
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
         }
@@ -762,16 +772,21 @@ function rolldice(attackdice, defenderdice) {
         else if (actionState === "confirm move") {
             const playList = playerList;
             const userPlayer = playList[0];
+            let tmpTroops = troopCount;
             for (let i = 0; i < userPlayer.countries.length; i++) {
                 if (userPlayer.countries[i].id == countrySelect) {
-                    userPlayer.countries[i].army -= troopCount;
+                    if(userPlayer.countries[i].army > tmpTroops){
+                    userPlayer.countries[i].army -= tmpTroops;
+                    } else {
+                        tmpTroops = 0;
+                    }
 
                 }
 
             }
             for (let i = 0; i < userPlayer.countries.length; i++) {
                 if (userPlayer.countries[i].id == countryTarget) {
-                    userPlayer.countries[i].army += troopCount;
+                    userPlayer.countries[i].army += tmpTroops;
 
                 }
 
@@ -808,14 +823,14 @@ function rolldice(attackdice, defenderdice) {
                 <div className="col-2">
                     <div className="row border border-dark border-2">
                         <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt="user_avatar" />
-                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>Username</h2>
+                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData? userData.username : "Username"}</h2>
                     </div>
                     <div className="row">
                         <button className="btn btn-primary col-5" onClick={save}>Save Game</button>
                         <Link to="/" className="btn btn-secondary col-5" >Quit Game</Link>
                     </div>
                     <div className="row">
-                        <h2 className="offset-2 mt-4">User's Turn</h2>
+                        <h2 className="offset-2 mt-4">{playerTurn[0] === 0 ? "User's" : "Player" + playerTurn[0] + "'s"} Turn</h2>
                         <h5 className="offset-2 mt-">{actionState}</h5>
                         <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
                         <p className="border border-dark" id="info" style={{ marginTop: '100px' }}></p>
@@ -831,11 +846,10 @@ function rolldice(attackdice, defenderdice) {
 
                 </div>
                 <div className="col-2 ps-5 ms-2">
-                    <p>player x attacked country y and won</p>
-                    <p>player x attacked country y and lost</p>
-                    <p>player x attacked country y and lost</p>
-                    <p>player x attacked country y and won</p>
-                    <p>player x attacked country y and won</p>
+                    <div id="playerChat">
+                        <p></p>
+                    </div>
+                    
                     <table className="table table-striped table-bordered" style={{ marginTop: '400px' }}>
                         <thead>
                             <tr>

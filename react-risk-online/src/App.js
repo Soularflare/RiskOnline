@@ -54,7 +54,7 @@ function App() {
         <Profile></Profile>
       </Route>
       <Route path="/game/:numPlayers/:chosenColor">
-        <Game></Game>
+        <Game userData={userData}></Game>
       </Route>
       <Route path="/gameform">
         <GameForm></GameForm>
