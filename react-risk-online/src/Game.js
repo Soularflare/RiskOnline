@@ -46,7 +46,7 @@ function Game() {
     useEffect(() => {
         
         const infoData = document.getElementById("info");
-        if(playerList[0].countries.length == 0){
+        if(playerList[0].countries.length == 0 && playerTurn.length != 0){
             //loss condition 
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
