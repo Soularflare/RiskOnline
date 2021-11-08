@@ -44,11 +44,23 @@ function Game() {
     }, [actionState]);
 
     useEffect(() => {
+        
+        const infoData = document.getElementById("info");
         if(playerList[0].countries.length == 0){
-            //loss condition
+            //loss condition 
+            document.getElementById("start").setAttribute("disabled", "disabled");
+            document.getElementById("start").style.opacity = "0.4";
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            infoData.innerHTML = "You Lose"
         }
         else if (playerList[0].countries.length == 42){
-            //win condition
+            //win condition 
+            document.getElementById("start").setAttribute("disabled", "disabled");
+            document.getElementById("start").style.opacity = "0.4";
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            infoData.innerHTML = "You Win"
         }
      
     },[playerList] );
@@ -276,39 +288,56 @@ function Game() {
             setPlayerTurn([...playSize]);
          
 
-        } else if (playerTurn === 0){
+        } else if (playerTurn[0] === 0){
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.0";
             // switch to cpu turns
             playerTurn.push(playerTurn.shift());
+            
         }
     };
 
     const onCountrySelect = (id, countryName) => {
         //setClickable(false);
 
+        const playercountries = playerList[0].countries;
         if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
-            //validate
-
-            setCountrySelect(id);
+            //validate 
+            
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            for (let i = 0; i < playercountries.length; i++) {
+                if(playercountries[i].id == id){
+                    setCountrySelect(id);
+                    document.getElementById("action").removeAttribute("disabled");
+                    document.getElementById("action").style.opacity = "1.0";
+                }
+                
+            }
             
 
-            //enable reinforce
-            document.getElementById("action").removeAttribute("disabled");
-            document.getElementById("action").style.opacity = "1.0";
-            
         }
         
         else if(actionState === "confirm attack" || actionState === "confirm move"){
-            //validate
-
-            setCountryTarget(id);
-
-            //enable action
-            document.getElementById("action").removeAttribute("disabled");
-            document.getElementById("action").style.opacity = "1.0";
-        }
             
+            if(actionState === "confirm attack"){
+                //attack validation
+                setCountryTarget(id);
+                document.getElementById("action").removeAttribute("disabled");
+                document.getElementById("action").style.opacity = "1.0";
+            } else {
+                document.getElementById("action").setAttribute("disabled", "disabled");
+                document.getElementById("action").style.opacity = "0.4";  
+            for (let i = 0; i < playercountries.length; i++) {
+                if(playercountries[i].id == id){
+                    setCountryTarget(id);
+                    document.getElementById("action").removeAttribute("disabled");
+                    document.getElementById("action").style.opacity = "1.0";
+                }
+            }
+           
+        }
+    }
 
     };
 
@@ -532,6 +561,8 @@ function rolldice(attackdice, defenderdice) {
 
             //player must select number of die to roll as an attacker 
             setActionState("confirm attack");
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
             
         }
         else if(actionState === "confirm attack"){
@@ -547,6 +578,8 @@ function rolldice(attackdice, defenderdice) {
             // else {
                 setActionState("move");
             //}
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         } 
         else if(actionState === "reinforce"){
             // set reinforcements
@@ -566,18 +599,21 @@ function rolldice(attackdice, defenderdice) {
             
             setPlayerList([...playList]);
             setTroopCount(0);
+            
             if(reinforcements > 0){
-                document.getElementById("action").setAttribute("disabled", "disabled");
-                document.getElementById("action").style.opacity = "0.4";
                 setActionState("reinforce");
             }
             else {
                 setActionState("attack");
             }
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
         else if(actionState === "move"){
 
             setActionState("confirm move");
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
         else if(actionState === "confirm move"){
             const playList = playerList;
@@ -601,6 +637,8 @@ function rolldice(attackdice, defenderdice) {
             setPlayerList([...playList]);
             setTroopCount(0);
             setActionState("move");
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
     };
 
@@ -636,7 +674,7 @@ function rolldice(attackdice, defenderdice) {
                         <h2 className="offset-2 mt-4">User's Turn</h2>
                         <h5 className="offset-2 mt-">[Action phase]</h5>
                         <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
-                        <p className="border border-dark" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
+                        <p className="border border-dark" id="info" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
                         <p className="border col-1 offset-5" id="troopNum">{troopCount}</p>
                         <div>
                             <button className="col-1 btn btn-primary me-2 offset-4" id="troopMinus" onClick={subTroops}>-</button>
