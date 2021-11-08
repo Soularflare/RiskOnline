@@ -19,7 +19,6 @@ function Game() {
     const { numPlayers, chosenColor } = useParams();
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
-
     const [clickableCountries, setClickableCountries] = useState([]);
 
     useEffect(() => {
@@ -512,7 +511,7 @@ function Game() {
 
     let newcountries = playerList[defenderid].countries;
     let index; 
-    for(let i = 0;i<newcountries;i++)
+    for(let i = 0; i<newcountries; i++)
     {
         if(newcountries[i].id = defendingCountry.id)
         {
