@@ -343,7 +343,7 @@ function Game() {
  //also be matched to its owner and removed
 
  function changeOwner(defendingCountry,attackerid, defenderid){
-
+    console.log("reaches here");
     let playList = playerList;
     console.log(playList);
 
@@ -371,8 +371,15 @@ function Game() {
     setPlayerList(playList);
  }
 
- function updateTroops(Country, troopsLost,defender, attackerid)
-{      
+ function updateTroops(Country, troopsLost,defender,attackerid)
+{     
+    console.log("Country: " + Country.id + " " + Country.army);
+    console.log("troopsLost: " + troopsLost);
+    console.log("defender: " + defender);
+    console.log("attackerid" + attackerid);
+    let playList = playerList;
+    console.log(playList);
+
     if(defender && Country.army <= troopsLost)
     {
         let defenderid = getplayerid(Country);
@@ -380,26 +387,36 @@ function Game() {
     }
     else{
         Country.army = Country.army-troopsLost;
-        let id = -1;
+        console.log("Country army is: ", Country.army);
+        let id;
         if(defender)
         {
             id = getplayerid(Country);
         }
         else{
-            id = attackerid
+            id = attackerid;
         }
         let newcountries = playerList[id].countries; 
+        
         let index;
-        for(let i = 0;i<newcountries;i++)
+        for(let i = 0;i<newcountries.length;i++)
         {
             if(newcountries[i].id =Country.id)
             {
                 index = i;
+                console.log("updates");
             }
         }
         newcountries.splice(index,1);
+        newcountries.splice(index,0,Country);
+        console.log("New countries");
+        console.log(newcountries);
         let player = playerList[id];
         player.countries = newcountries;
+        playList[id] = player;
+        console.log("This is next playlist: ");
+        console.log(playList);
+        setPlayerList([...playList]);
     }
     
 }
@@ -413,8 +430,8 @@ function Game() {
 function rolldice(attackdice, defenderdice) {
     let highestattack = 0;
     let highestdefend = 0;
-    const attackerrolls = [];
-    const defenderrolls = [];
+    let attackerrolls = [];
+    let defenderrolls = [];
     if (attackdice < 2) {
         highestattack = Math.floor(Math.random() * 6);
         if (highestdefend < 2) {
@@ -437,12 +454,9 @@ function rolldice(attackdice, defenderdice) {
         }
         if (defenderdice < 2) {
             highestdefend = Math.floor(Math.random() * 6);
-            for (let j = 0; j < attackerrolls.length; j++) {
-                let random = Math.floor(Math.random() * 6);
-                if (random > highestattack) {
-                    highestattack = random;
-                }
-            }
+            attackerrolls.sort();
+            console.log("Attacker rolls: "+ attackerrolls);
+            highestattack = attackerrolls[attackerrolls.length-1];
             if (highestattack > highestdefend) {
                 return 3;
             }
@@ -457,8 +471,10 @@ function rolldice(attackdice, defenderdice) {
             }
             attackerrolls.sort();
             defenderrolls.sort();
-            if (attackerrolls[attackerrolls.size - 1] > defenderrolls[defenderrolls.size - 1]) {
-                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+            console.log("Attacker rolls: "+ attackerrolls);
+            console.log("Defender rolls: "+ defenderrolls);
+            if (attackerrolls[attackerrolls.length - 1] > defenderrolls[defenderrolls.length - 1]) {
+                if (attackerrolls[attackerrolls.length - 2] > defenderrolls[defenderrolls.length - 2]) {
                     return 4;
                 }
                 else
@@ -468,7 +484,7 @@ function rolldice(attackdice, defenderdice) {
             }
             else
             {
-                if (attackerrolls[attackerrolls.size - 2] > defenderrolls[defenderrolls.size - 2]) {
+                if (attackerrolls[attackerrolls.length - 2] > defenderrolls[defenderrolls.length - 2]) {
                     return 0;
                 }
                 else
@@ -491,6 +507,7 @@ function rolldice(attackdice, defenderdice) {
         defenderdice =1;
     }
     const result = rolldice(attackdice, defenderdice);
+    console.log("Result is " + result);
     if(result == 0)
     {
         updateTroops(attackingCountry,1,false,attackerid);
