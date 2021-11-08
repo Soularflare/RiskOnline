@@ -43,7 +43,7 @@ function Game() {
                     clickable.push(cID);
                 }
                 setClickableCountries(clickable);
-                
+
                 const currentPlayer = playerList[playerTurn[0]];
                 const total = Math.floor(currentPlayer.countries.length / 3);
 
@@ -87,11 +87,23 @@ function Game() {
     }, [actionState]);
 
     useEffect(() => {
-        if (playerList[0].countries.length == 0) {
-            //loss condition
+        
+        const infoData = document.getElementById("info");
+        if(playerList[0].countries.length == 0 && playerTurn.length != 0){
+            //loss condition 
+            document.getElementById("start").setAttribute("disabled", "disabled");
+            document.getElementById("start").style.opacity = "0.4";
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            infoData.innerHTML = "You Lose"
         }
-        else if (playerList[0].countries.length == 42) {
-            //win condition
+        else if (playerList[0].countries.length == 42){
+            //win condition 
+            document.getElementById("start").setAttribute("disabled", "disabled");
+            document.getElementById("start").style.opacity = "0.4";
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            infoData.innerHTML = "You Win"
         }
 
     }, [playerList]);
@@ -405,39 +417,58 @@ function Game() {
                 playSize.push(i);
             }
             setPlayerTurn([...playSize]);
-        } else if (playerTurn === 0) {
+         
+
+        } else if (playerTurn[0] === 0){
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.0";
             // switch to cpu turns
             playerTurn.push(playerTurn.shift());
+            
         }
     };
 
     const onCountrySelect = (id) => {
         //setClickable(false);
 
-        if (actionState === "reinforce" || actionState === "attack" || actionState === "move") {
-            //validate
-
-            setCountrySelect(id);
-
-
-            //enable reinforce
-            document.getElementById("action").removeAttribute("disabled");
-            document.getElementById("action").style.opacity = "1.0";
+        const playercountries = playerList[0].countries;
+        if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
+            //validate 
+            
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            for (let i = 0; i < playercountries.length; i++) {
+                if(playercountries[i].id == id){
+                    setCountrySelect(id);
+                    document.getElementById("action").removeAttribute("disabled");
+                    document.getElementById("action").style.opacity = "1.0";
+                }
+                
+            }
+            
 
         }
-
-        else if (actionState === "confirm attack" || actionState === "confirm move") {
-            //validate
-
-            setCountryTarget(id);
-
-            //enable action
-            document.getElementById("action").removeAttribute("disabled");
-            document.getElementById("action").style.opacity = "1.0";
+        
+        else if(actionState === "confirm attack" || actionState === "confirm move"){
+            
+            if(actionState === "confirm attack"){
+                //attack validation
+                setCountryTarget(id);
+                document.getElementById("action").removeAttribute("disabled");
+                document.getElementById("action").style.opacity = "1.0";
+            } else {
+                document.getElementById("action").setAttribute("disabled", "disabled");
+                document.getElementById("action").style.opacity = "0.4";  
+            for (let i = 0; i < playercountries.length; i++) {
+                if(playercountries[i].id == id){
+                    setCountryTarget(id);
+                    document.getElementById("action").removeAttribute("disabled");
+                    document.getElementById("action").style.opacity = "1.0";
+                }
+            }
+           
         }
-
+    }
 
     };
 
@@ -642,7 +673,9 @@ function Game() {
 
             //player must select number of die to roll as an attacker 
             setActionState("confirm attack");
-
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+            
         }
         else if (actionState === "confirm attack") {
             let attackerid = 0;
@@ -657,8 +690,10 @@ function Game() {
             // else {
             setActionState("move");
             //}
-        }
-        else if (actionState === "reinforce") {
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
+        } 
+        else if(actionState === "reinforce"){
             // set reinforcements
 
             const tmp = reinforcements - troopCount;
@@ -675,18 +710,21 @@ function Game() {
 
             setPlayerList([...playList]);
             setTroopCount(0);
-            if (reinforcements > 0) {
-                document.getElementById("action").setAttribute("disabled", "disabled");
-                document.getElementById("action").style.opacity = "0.4";
+            
+            if(reinforcements > 0){
                 setActionState("reinforce");
             }
             else {
                 setActionState("attack");
             }
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
         else if (actionState === "move") {
 
             setActionState("confirm move");
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
         else if (actionState === "confirm move") {
             const playList = playerList;
@@ -710,6 +748,8 @@ function Game() {
             setPlayerList([...playList]);
             setTroopCount(0);
             setActionState("move");
+            document.getElementById("action").setAttribute("disabled", "disabled");
+            document.getElementById("action").style.opacity = "0.4";
         }
     };
 
@@ -745,7 +785,7 @@ function Game() {
                         <h2 className="offset-2 mt-4">User's Turn</h2>
                         <h5 className="offset-2 mt-">[Action phase]</h5>
                         <h5 className="offset-1 mt-4">Reinforcements/Troops: {reinforcements}</h5>
-                        <p className="border border-dark" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
+                        <p className="border border-dark" id="info" style={{ marginTop: '100px' }}>InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText InfoText</p>
                         <p className="border col-1 offset-5" id="troopNum">{troopCount}</p>
                         <div>
                             <button className="col-1 btn btn-primary me-2 offset-4" id="troopMinus" onClick={subTroops}>-</button>
