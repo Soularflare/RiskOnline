@@ -8,7 +8,7 @@ const startColors = ["#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#fff", "#f
 const startTroops = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 const gameOpacity = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-    0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+    0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
 
 const playerListTest = [
     { color: "#fff", countries: [{ id: 0, army: 0 }, { id: 1, army: 0 }, { id: 2, army: 0 }, { id: 3, army: 0 }, { id: 4, army: 0 }, { id: 5, army: 0 }, { id: 6, army: 0 }] },
@@ -19,16 +19,16 @@ const playerListTest = [
     { color: "#fff", countries: [{ id: 35, army: 0 }, { id: 36, army: 0 }, { id: 37, army: 0 }, { id: 38, army: 0 }, { id: 39, army: 0 }, { id: 40, army: 0 }, { id: 41, army: 0 }] }
 ];
 
-const countryNames = ["Alaska", "Northwest Territory", "Alberta", "Western United States", "Eastern United States", "Ontario", "Quebec", "Greenland", "Central America", "Venezuela", "Peru", "Brazil", 
-"Argentina", "North Africa", "Egypt", "East Africa", "Congo", "South Africa", "Madagascar", "Iceland", "Great Britain", "Scandinavia", "West Europe", "South Europe", "North Europe", "Ukraine", "Ural",
-"Afghanistan", "Middle East", "Siberia", "Yakursk", "Kamchatka", "Irkutsk", "Japan", "Mongolia", "China", "India", "Siam", "Indonesia", "New Guinea", "Eastern Australia", "Western Australia"];
+// const countryNames = ["Alaska", "Northwest Territory", "Alberta", "Western United States", "Eastern United States", "Ontario", "Quebec", "Greenland", "Central America", "Venezuela", "Peru", "Brazil", 
+// "Argentina", "North Africa", "Egypt", "East Africa", "Congo", "South Africa", "Madagascar", "Iceland", "Great Britain", "Scandinavia", "West Europe", "South Europe", "North Europe", "Ukraine", "Ural",
+// "Afghanistan", "Middle East", "Siberia", "Yakursk", "Kamchatka", "Irkutsk", "Japan", "Mongolia", "China", "India", "Siam", "Indonesia", "New Guinea", "Eastern Australia", "Western Australia"];
 
-function MapSVG({ playerList, onCountrySelect }) {
+
+function MapSVG({ playerList, onCountrySelect, clickableCountries}) {
 
     const [colors, setColors] = useState(startColors);
     const [troops, setTroops] = useState(startTroops);
     const [opacity, setOpacity] = useState(gameOpacity);
-    const [selectOne, setSelectOne] = useState(null);
 
     const createTerColors = () => {
         let newColors = [...colors];
@@ -54,23 +54,14 @@ function MapSVG({ playerList, onCountrySelect }) {
         createTerColors();
     }, [playerList]);
 
-
     const handleClick = (evt) => {
         let newOpacity = [...opacity];
-        
-        if (selectOne === null) {
-            setSelectOne(evt.target.id);
+        // const num = parseInt(evt.target.id);
+        if (clickableCountries.indexOf(evt.target.id) >= 0) {
             newOpacity[evt.target.id] = 1;
-        } else {
-            newOpacity[evt.target.id] = 1;
-            setSelectOne(null);
+            onCountrySelect(evt.target.id);
         }
-        onCountrySelect(evt.target.id, countryNames[evt.target.id]);
         setOpacity([...newOpacity]);
-
-        // if(clickable === false){
-        //     setOpacity([...gameOpacity]);
-        // }
     }
 
 

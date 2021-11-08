@@ -177,7 +177,7 @@ function changeOwner(defendingCountry,attackerid){
 
     switch(attackerid){
         case 0:
-            cont newcountries = 
+            const newcountries = 
             player1.countries[player1.countries.size] = defendingCountry;
             break;
         case 1:
