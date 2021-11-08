@@ -563,7 +563,7 @@ function Game({userData}) {
         let index;
         for(let i = 0;i<newcountries.length;i++)
         {
-            if(newcountries[i].id =Country.id)
+            if(newcountries[i].id ==Country.id)
             {
                 index = i;
                 console.log("updates");
