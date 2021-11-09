@@ -20,13 +20,10 @@ public class CountryService {
     public Result<Country> addCountries(List<Country> countries){
         Result<Country> result = new Result<>();
 
-        if(countries == null){
-            result.addErrorMessage("Countries are required to save game");
-            return result;
-        }
+
 
         for(Country country : countries){
-            result = validate(country, countries);
+            result = validateCountries(country, countries);
             if(!result.isSuccess()){
                 return result;
             }
@@ -50,7 +47,7 @@ public class CountryService {
         }
 
         for(Country country : countries){
-            result = validate(country, countries);
+            result = validateCountries(country, countries);
             if(!result.isSuccess()){
                 return result;
             }
@@ -64,7 +61,7 @@ public class CountryService {
         return result;
     }
 
-    private Result<Country> validate(Country country, List<Country> countries) {
+    private Result<Country> validateCountries(Country country, List<Country> countries) {
         Result<Country> result = new Result<>();
 
         if(countries.size() < 42){

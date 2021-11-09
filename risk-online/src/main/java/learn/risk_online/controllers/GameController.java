@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/game")
@@ -15,6 +17,16 @@ public class GameController {
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
+    }
+
+    @GetMapping("/{gameId}")
+    public Game findByGameId(@PathVariable int gameId){
+        return gameService.findByGameId(gameId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Game> findGamesByUserId(@PathVariable String userId){
+        return gameService.findAllGames(userId);
     }
 
     @PostMapping
@@ -38,5 +50,13 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/{gameId}")
+    public ResponseEntity<Object> deleteById(@PathVariable int gameId){
+       if(gameService.deleteGameById(gameId)){
+           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+       }
+       return new ResponseEntity<>("delete failed", HttpStatus.BAD_REQUEST);
     }
 }

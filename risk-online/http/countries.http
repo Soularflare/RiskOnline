@@ -6,212 +6,212 @@ Content-Type: application/json
 Accept: application/json
 
 [{
-  "gameId": 2,
+  "gameId": 0,
   "countryId": 0,
   "playerPossession": 0,
   "army": 1
 }, {
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 1,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 2,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 3,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 4,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 5,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 6,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 7,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 8,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 9,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 10,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 11,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 12,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 13,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 14,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 15,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 16,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 17,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 18,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 19,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 20,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 21,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 22,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 23,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 24,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 25,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 26,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 27,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 28,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 29,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 30,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 31,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 32,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 33,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 34,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 35,
   "playerPossession": 1,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 36,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 37,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 38,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 39,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 40,
   "playerPossession": 0,
   "army": 1
 },{
-  "gameId": 1,
+  "gameId": 0,
   "countryId": 41,
   "playerPossession": 0,
   "army": 1

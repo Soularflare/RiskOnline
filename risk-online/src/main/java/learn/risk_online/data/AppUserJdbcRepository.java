@@ -8,6 +8,8 @@ import learn.risk_online.models.Player;
 import learn.risk_online.models.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -47,11 +49,26 @@ public class AppUserJdbcRepository implements AppUserRepository {
     }
 
     @Override
-    public boolean add(AppUser user) {
-        final String sql = " insert into game_user (user_name,password_hash,disabled) values (?,?,?);";
+    public AppUser findByUserName(String userName) {
+        final String sql = "select * from game_user where user_name = ?;";
+        try {
+            return jdbcTemplate.queryForObject(sql, new AppUserMapper(), userName);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
+    }
 
-        return (jdbcTemplate.update(sql,  user.getUserName(),user.getPassword(),
-                user.isDisabled()) > 0);
+    @Override
+    public AppUser add(AppUser user) {
+        final String sql = " insert into game_user (user_name,password_hash,disabled) values (?,?,?);";
+        boolean success = jdbcTemplate.update(sql,  user.getUserName(),user.getPassword(),
+                user.isDisabled()) > 0;
+
+        if(!success){
+            return null;
+        }
+
+        return findByUserName(user.getUserName());
 
     }
 

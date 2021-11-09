@@ -31,15 +31,22 @@ class AppUserJdbcRepositoryTest {
 
     @Test
     void shouldFindById() {
-        AppUser user = new AppUser("4d980627-3b3c-11ec-8708-0242ac110002", "user_name", "password_hash",false);
-        AppUser actual = repository.findById("4d980627-3b3c-11ec-8708-0242ac110002");
+        AppUser user = new AppUser("4d980a71-3b3c-11ec-8708-0242ac110055", "user_name", "$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2",false);
+        AppUser actual = repository.findById("4d980a71-3b3c-11ec-8708-0242ac110055");
         assertEquals(actual.getPassword(),user.getPassword());
     }
 
     @Test
+    void shouldFindByUserName(){
+        AppUser user = new AppUser("4d980a71-3b3c-11ec-8708-0242ac110055", "userName", "password_hash",false);
+        AppUser actual = repository.findByUserName("userName");
+        assertEquals(actual.getUserName(),user.getUserName());
+    }
+
+    @Test
     void shouldAdd() {
-        AppUser user = new AppUser("hi","userfake","pass",false);
-        assertTrue(repository.add(user));
+        AppUser user = new AppUser(null,"userfake","pass",false);
+        assertNotNull(repository.add(user));
     }
 
     @Test
