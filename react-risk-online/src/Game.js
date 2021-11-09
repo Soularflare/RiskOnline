@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
-import { saveGame } from './apiServices/gameApi';
+import { saveGame, loadGame } from './apiServices/gameApi';
 import { fetchPts, savePts } from './apiServices/userApi';
 import { useHistory } from "react-router";
 import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
@@ -12,12 +12,11 @@ function Game({userData}) {
     const history = useHistory();
     const [playerTurn, setPlayerTurn] = useState([]);
     const [userId, setUserId] = useState(0);
-    const [gameId, setGameId] = useState(0);
     const [actionState, setActionState] = useState("");
     const [countrySelect, setCountrySelect] = useState(null);
     const [countryTarget, setCountryTarget] = useState(null);
     const [playerList, setPlayerList] = useState([{ color: "color", countries: [] }]);
-    const { numPlayers, chosenColor } = useParams();
+    const { numPlayers, chosenColor, gameId } = useParams();
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
     const [clickableCountries, setClickableCountries] = useState([]);
@@ -98,6 +97,7 @@ function Game({userData}) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Lose"
+            //delete game
         }
         else if (playerList[0].countries.length == 42){
             //win condition 
@@ -107,6 +107,7 @@ function Game({userData}) {
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Win! +10 Points"
             addPts(10);
+            //delete game
         }
 
     }, [playerList]);
@@ -422,8 +423,15 @@ function Game({userData}) {
             startbtn.innerHTML = "End Turn";
             setActionState("reinforce");
             document.getElementById("action").innerHTML = actionState;
+            // if(userData){
+            //     getUserId(userData);
+            // }
             //setup
-            startGame(numPlayers, chosenColor);
+            if(gameId == 0){
+                startGame(numPlayers, chosenColor);
+            } else {
+                loadGame();
+            }
             const playSize = []
             for (let i = 0; i < playerList.length; i++) {
                 playSize.push(i);
@@ -485,10 +493,65 @@ function Game({userData}) {
     };
 
     const save = (evt) => {
-            saveGame(gameId, userId, playerList, playerTurn)
+
+        let players = [];
+        players.push({
+            'gameId': gameId,
+            'userId': userId,
+            'turnOrder': 0
+        })
+        
+        let countryList = [];
+        for (let i = 0; i < playerList.length; i++) {
+            for (let j = 0; j < playerList[i].length; j++) {
+                countryList.push({'gameId': gameId, "playerPossession": i, ...playerList[i].countries});
+                
+            }
+            
+        }
+        const gameObj = {
+            "gameId" : gameId,
+            "timeElapsed" : 0,
+            "playerTurn": playerTurn[0],
+            "countryList": countryList,
+            "players": players
+        };
+            saveGame(gameId, gameObj)
             .then(() => history.push("/"))
             .catch((err) => console.log(err.toString()));
     }; 
+
+    const load = () => {
+       loadGame()
+       .then((game) => {
+        const [gameState, players, countries] = game;
+        setPlayerTurn([...gameState.players.length]);
+
+        let pList = []
+        let colors = ["blue", "green", "purple", "red", "white", "black", "yellow", "orange"];
+        let color = "";
+        let countryList = [];
+        for (let i = 0; i < gameState.players.length; i++) {
+            color = colors.splice( Math.floor(Math.random() * colors.length),1)
+
+            for (let j = 0; j < countries.length; j++) {
+                if(countries[j].playerPossession == i){
+                    countryList.push({
+                        id: countries[j].countryId,
+                        army: countries[j].army
+                    });
+                }
+                
+            }
+            const player = {
+                "color": color,
+                "countries": countryList
+            }
+            pList.push(player);
+        }
+        setPlayerList(pList);
+       }).catch((err) => console.log(err.toString())); 
+    };
 
 
 
@@ -832,7 +895,7 @@ function rolldice(attackdice, defenderdice) {
                         <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData? userData.username : "Username"}</h2>
                     </div>
                     <div className="row">
-                        <button className="btn btn-primary col-5" onClick={save}>Save Game</button>
+                        {userData && <button className="btn btn-primary col-5" onClick={save}>Save Game</button>}
                         <Link to="/" className="btn btn-secondary col-5" >Quit Game</Link>
                     </div>
                     <div className="row">

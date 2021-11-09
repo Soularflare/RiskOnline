@@ -17,7 +17,7 @@ function GameForm() {
 
     const onSubmit = (evt) => {
         evt.preventDefault(); 
-        history.push(`/game/${startForm.players}/${startForm.color}`);
+        history.push(`/game/${startForm.players}/${startForm.color}/0`);
     };
 
     return (

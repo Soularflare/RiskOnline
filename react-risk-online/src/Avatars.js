@@ -30,6 +30,24 @@ function Avatars(){
         
     };
 
+    const selectAvatar = evt => {
+        const select = document.getElementById("select");
+        if(select.innerHTML === "Equip"){
+            saveAvatar();
+        } else {
+            buyAvatar();
+            saveAvatar();
+        }
+    };
+
+    const saveAvatar = () => {
+
+    }; 
+
+    const buyAvatar = () => {
+
+    };
+
     return(
         <div>
             <div >
@@ -44,27 +62,21 @@ function Avatars(){
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{height: '400px'}}>
             
-            <input type="image" id="1" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} />
-            <input type="image" id="2" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect}/>
-            <input type="image" id="3" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect}/>
-            <input type="image" id="4" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect}/>
-            <input type="image" id="5" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect}/>
-            <input type="image" id="6" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect}/>
-            <input type="image" id="7" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="8" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="9" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="10" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="11" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="12" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="13" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="14" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="15" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="16" src={require('./risk-map.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="3" src={require('./avatars/avatar3.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="4" src={require('./avatars/avatar4.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="5" src={require('./avatars/avatar5.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="6" src={require('./avatars/avatar6.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="7" src={require('./avatars/avatar7.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="8" src={require('./avatars/avatar8.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="9" src={require('./avatars/avatar9.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            
             
             </div>
             <h5 id="cost" className="offset-5">Owned</h5>
             <div className="offset-5 mt-5">
-            <button id="select" className="btn btn-primary">Select</button>
+            <button id="select" className="btn btn-primary" onClick={selectAvatar}>Select</button>
             <Link to="/profile/:userId" className="btn btn-secondary ">Back</Link>
             </div>
         </div>
