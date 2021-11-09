@@ -12,7 +12,8 @@ public class Country {
 
     public Country(){}
 
-    public Country(int countryId, String countryName, int playerPossession, int army) {
+    public Country(int gameId, int countryId, String countryName, int playerPossession, int army) {
+        this.gameId = gameId;
         this.countryId = countryId;
         this.countryName = countryName;
         this.playerPossession = playerPossession;

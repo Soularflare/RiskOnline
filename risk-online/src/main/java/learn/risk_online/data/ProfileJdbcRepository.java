@@ -3,6 +3,7 @@ package learn.risk_online.data;
 import learn.risk_online.data.mappers.ProfileMapper;
 import learn.risk_online.data.mappers.ProfileMicrotransactionMapper;
 import learn.risk_online.models.AppUser;
+import learn.risk_online.models.Game;
 import learn.risk_online.models.Profile;
 import learn.risk_online.models.ProfileMicrotransaction;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,12 +19,14 @@ public class ProfileJdbcRepository implements ProfileRepository{
 
     private final JdbcTemplate jdbcTemplate;
     private final ProfileMicrotransactionRepository pmRepository;
+    private final GameRepository gameRepository;
 
 
     public ProfileJdbcRepository(JdbcTemplate jdbcTemplate,
-                                 ProfileMicrotransactionRepository pmRepository) {
+                                 ProfileMicrotransactionRepository pmRepository, GameRepository gameRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.pmRepository = pmRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -56,6 +59,7 @@ public class ProfileJdbcRepository implements ProfileRepository{
 
         if(profile != null){
             addMicrotransactions(profile);
+            addGames(profile);
         }
 
         return profile;
@@ -114,5 +118,10 @@ public class ProfileJdbcRepository implements ProfileRepository{
         List<ProfileMicrotransaction> microtransactions = jdbcTemplate.query(sql,
                 new ProfileMicrotransactionMapper(), profile.getProfileId());
         profile.setMicrotransactions(microtransactions);
+    }
+
+    private void addGames(Profile profile){
+        List<Game> games = gameRepository.findAll(profile.getUserId());
+        profile.setOngoingGames(games);
     }
 }

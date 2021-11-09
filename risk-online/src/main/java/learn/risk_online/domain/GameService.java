@@ -31,10 +31,12 @@ public class GameService {
         if(!result.isSuccess()){
             return result;
         }
+
         if(game.getGameId() != 0){
             result.addErrorMessage("gameId cannot be set for adding new game");
             return result;
         }
+
         game = gameRepository.add(game);
         result.setPayload(game);
         return result;
@@ -45,7 +47,7 @@ public class GameService {
         if(!result.isSuccess()){
             return result;
         }
-        if(game.getGameId() == 0){
+        if(game.getGameId() <= 0){
             result.addErrorMessage("gameId required to update game");
             return result;
         }
@@ -65,8 +67,8 @@ public class GameService {
             result.addErrorMessage("Game cannot be null");
             return result;
         }
-        if(game.getPlayerTurn() < 0 || game.getPlayerTurn() > 6){
-            result.addErrorMessage("Player turn must be between 1 and 6");
+        if(game.getPlayerTurn() < 0 || game.getPlayerTurn() > 5){
+            result.addErrorMessage("Player turn must be between 0 and 5");
         }
         if(game.getTimeElapsed() < 0){
             result.addErrorMessage("Time elapsed cannot be negative");

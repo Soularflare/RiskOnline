@@ -37,6 +37,14 @@ class ProfileJdbcRepositoryTest {
         assertNotNull(profile);
         assertEquals(0, profile.getTotalGames());
         assertEquals(1, profile.getMicrotransactions().size());
+
+    }
+
+    @Test
+    void shouldFindByUserId2(){
+        Profile profile = repository.findByUserId("4d980627-3b3c-11ec-8708-0242ac110002");
+        assertNotNull(profile);
+        assertEquals(3, profile.getOngoingGames().size());
     }
 
     @Test

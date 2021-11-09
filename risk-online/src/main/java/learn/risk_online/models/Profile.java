@@ -11,6 +11,15 @@ public class Profile {
     private int gameTime;
     private int points;
     private List<ProfileMicrotransaction> microtransactions;
+    private List<Game> ongoingGames;
+
+    public List<Game> getOngoingGames() {
+        return ongoingGames;
+    }
+
+    public void setOngoingGames(List<Game> ongoingGames) {
+        this.ongoingGames = ongoingGames;
+    }
 
     public List<ProfileMicrotransaction> getMicrotransactions() {
         return microtransactions;

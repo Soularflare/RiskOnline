@@ -3,7 +3,9 @@ package learn.risk_online.domain;
 import learn.risk_online.data.PlayerRepository;
 import learn.risk_online.models.Player;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    @Transactional
     public Result<Player> addPlayers(List<Player> players){
         Result<Player> result = new Result<>();
 
@@ -24,6 +27,12 @@ public class PlayerService {
             return result;
         }
 
+        if(players.size() < 2){
+            result.addErrorMessage("Minimum of 2 players must be saved");
+            return result;
+        }
+
+
         for(Player player : players){
             result = validate(player, players);
             if(!result.isSuccess()){
@@ -31,15 +40,25 @@ public class PlayerService {
             }
         }
 
+        List<Player> playersWithUserId = new ArrayList<>();
         for(Player player : players){
-            if(player.getUserId() == null){
-                players.remove(player);
+            if(player.getUserId() != null){
+                playersWithUserId.add(player);
             }
         }
-        if(players.size() == 0){
+
+        if(playersWithUserId.size() == 0){
             result.addErrorMessage("At least one user id required to save game");
+            return result;
         }
 
+
+        for(Player player : players){
+            if(!playerRepository.add(player)){
+                result.addErrorMessage("failed to add players");
+                return result;
+            }
+        }
         return result;
     }
 
@@ -61,8 +80,13 @@ public class PlayerService {
            result.addErrorMessage("Players cannot have same turn order");
         }
 
-        if(player.getTurnOrder() < 0 || player.getTurnOrder() > 6){
-            result.addErrorMessage("Valid order is required");
+        if(!players.stream()
+                .allMatch(p -> p.getGameId() == player.getGameId())){
+            result.addErrorMessage("Players must have same game ID");
+        }
+
+        if(player.getTurnOrder() < 0 || player.getTurnOrder() >= 6){
+            result.addErrorMessage("Valid order number is required");
         }
 
         return result;
