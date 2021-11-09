@@ -27,6 +27,8 @@ public class AppUserService {
         return appUserRepository.findById(userID);
     }
 
+    public AppUser findByUserName(String username) {return appUserRepository.findByUserName(username);}
+
     public Result<AppUser> add(AppUser user){
 
         Result<AppUser> result = validateWithoutPassword(user);
