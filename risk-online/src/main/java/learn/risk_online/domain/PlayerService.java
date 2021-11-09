@@ -22,11 +22,6 @@ public class PlayerService {
     public Result<Player> addPlayers(List<Player> players){
         Result<Player> result = new Result<>();
 
-        if(players == null || players.isEmpty()){
-            result.addErrorMessage("Players are required for a game");
-            return result;
-        }
-
         if(players.size() < 2){
             result.addErrorMessage("Minimum of 2 players must be saved");
             return result;

@@ -4,6 +4,7 @@ import learn.risk_online.data.AppUserRepository;
 import learn.risk_online.models.AppUser;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class AppUserService {
 
     public AppUser findByUserName(String username) {return appUserRepository.findByUserName(username);}
 
+    @Transactional
     public Result<AppUser> add(AppUser user){
 
         Result<AppUser> result = validateWithoutPassword(user);
