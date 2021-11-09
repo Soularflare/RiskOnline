@@ -8,7 +8,7 @@ Accept: application/json
 
 [
 {"gameId": 1,
-"userId": null,
+"userId": "130db43f-418c-11ec-8708-0242ac110002",
 "turnOrder": 0},
 {"gameId": 1,
 "userId": null,

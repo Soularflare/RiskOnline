@@ -15,9 +15,9 @@ public class AppUserMapper implements RowMapper<AppUser> {
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         AppUser user = new AppUser();
         user.setUserId(rs.getString("user_id"));
-        user.setUserName("user_name");
-        user.setPassword("password_hash");
-        user.setDisabled(false);
+        user.setUserName(rs.getString("user_name"));
+        user.setPassword(rs.getString("password_hash"));
+        user.setDisabled(rs.getBoolean("disabled"));
         return user;
     }
 }

@@ -16,6 +16,12 @@ public class AppUser {
         this.password = password;
         this.disabled = disabled;
     }
+    public AppUser( String userName, String password, boolean disabled) {
+
+        this.userName = userName;
+        this.password = password;
+        this.disabled = disabled;
+    }
 
     public String getUserId() {
         return userId;
