@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useHistory } from "react-router";
 import MapSVG from './MapSVG.js';
 import { saveGame, loadGame, deleteGame } from './apiServices/gameApi';
 import { fetchPts, findByUserData, savePts } from './apiServices/userApi';
+import { useHistory } from "react-router";
 import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
 
 
