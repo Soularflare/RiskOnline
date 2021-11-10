@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
-import { findAvatars } from "./apiServices/microtransactionApi";
-import { fetchPts, findByUserData } from "./apiServices/userApi";
+import { fetchPts, fetchUserInfo} from "./apiServices/userApi";
 
 function Avatars({userData}){
     const [userPoints, setUserPoints] = useState(0);
@@ -10,19 +9,14 @@ function Avatars({userData}){
     const [userId, setUserId] = useState(0);
 
     useEffect(() => {
-        fetchPts(userData)
-        .then((points) => setUserPoints(points))
-        .catch((err) => console.log(err.toString()));
-
-        findByUserData(userData)
-        .then((id) => setUserId(id))
-        .catch((err) => console.log(err.toString()));
-
-        findAvatars(userId)                             //fix (fetchuserinfo)
-        .then((avatars) => {
-            setAvatarList(avatars);
-            for (let i = 0; i < avatars.length; i++) {
-                if(avatars[i].equipped == true){
+        
+        fetchUserInfo(userData)                             
+        .then((userInfo) => {
+            setAvatarList(userInfo.microtransactions);
+            setUserId(userInfo.userId);
+            setUserPoints(userInfo.points);
+            for (let i = 0; i < userInfo.microtransactions.length; i++) {
+                if(userInfo.microtransactions[i].equipped == true){
                     setEquipped(i);
                 }
             }
@@ -90,7 +84,9 @@ function Avatars({userData}){
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{height: '400px'}}>
             
-            <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            {avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>)}
+
+            {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="3" src={require('./avatars/avatar3.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="4" src={require('./avatars/avatar4.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
@@ -98,7 +94,7 @@ function Avatars({userData}){
             <input type="image" id="6" src={require('./avatars/avatar6.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="7" src={require('./avatars/avatar7.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="8" src={require('./avatars/avatar8.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
-            <input type="image" id="9" src={require('./avatars/avatar9.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
+            <input type="image" id="9" src={require('./avatars/avatar9.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/> */}
             
             
             </div>
