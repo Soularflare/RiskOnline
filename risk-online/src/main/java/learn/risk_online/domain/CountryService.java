@@ -16,6 +16,10 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
+    public List<Country> findCountriesWithGameId(int gameId){
+        return countryRepository.findAll(gameId);
+    }
+
     @Transactional
     public Result<Country> addCountries(List<Country> countries){
         Result<Country> result = new Result<>();

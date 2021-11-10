@@ -6,6 +6,14 @@ public class ProfileMicrotransaction {
     private boolean equipped;
     private Microtransaction microtransaction;
 
+    public ProfileMicrotransaction() {
+    }
+
+    public ProfileMicrotransaction(String profileId, boolean equipped) {
+        this.profileId = profileId;
+        this.equipped = equipped;
+    }
+
     public String getProfileId() {
         return profileId;
     }

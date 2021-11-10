@@ -18,6 +18,10 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    public List<Player> findPlayersByGameId(int gameId){
+        return playerRepository.findAll(gameId);
+    }
+
     @Transactional
     public Result<Player> addPlayers(List<Player> players){
         Result<Player> result = new Result<>();
