@@ -2,7 +2,7 @@ const url =  "http://localhost:8080/api";
 
 export async function findByUserData(userData){
     const init = {
-        method: "GET",
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
