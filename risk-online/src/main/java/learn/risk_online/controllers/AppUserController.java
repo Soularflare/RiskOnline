@@ -17,19 +17,19 @@ public class AppUserController {
         this.service = service;
     }
 
-    @GetMapping("/{username}/{password}")
-    public ResponseEntity<Object> findByUserData(@PathVariable String username, @PathVariable String password){
-            AppUser user = service.findByUserName(username);
+    @GetMapping
+    public ResponseEntity<Object> findByUserData(@RequestBody AppUser user){
+            AppUser existing = service.findByUserName(user.getUserName());
 
-        if(user == null){
+        if(existing == null){
             return new ResponseEntity<>("username or password invalid", HttpStatus.NOT_FOUND);
         }
-        if(!user.getPassword().equals(password)){
+        if(!user.getPassword().equals(user.getPassword())){
             return new ResponseEntity<>("username or password invalid", HttpStatus.NOT_FOUND);
         }
-        user.setPassword("");
+        existing.setPassword("");
 
-        return new ResponseEntity<>(user, HttpStatus.FOUND);
+        return new ResponseEntity<>(existing, HttpStatus.OK);
     }
 
     @PostMapping("/create")

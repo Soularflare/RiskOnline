@@ -6,7 +6,7 @@ import {AddUser} from './apiServices/userApi';
 
 function Login() {
     const [userData, setUserData] = useState({
-        username: "",
+        userName: "",
         password: ""  
       });
       const history = useHistory();
@@ -34,13 +34,13 @@ function Login() {
             <form onSubmit={onSubmit}>
             <div className="form-group row">
                 <div className="col-4 offset-4">
-            <label for="username" className="form-label">Username</label>
-            <input className="form-control" type="text" name="username" value={userData.username} onChange={onChange}></input>
+            <label htmlFor="userName" className="form-label">Username</label>
+            <input className="form-control" type="text" name="userName" value={userData.userName} onChange={onChange}></input>
             </div>
             </div>
             <div className="form-group row">
             <div className="col-4 offset-4">
-            <label for="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">Password</label>
             <input className="form-control" type="text" name="password" value={userData.password} onChange={onChange}></input>
             </div>
             </div>

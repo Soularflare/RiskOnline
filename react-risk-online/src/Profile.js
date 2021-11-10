@@ -23,7 +23,7 @@ function Profile({userData}){
         <div>
             <div className="container">
                 <img src="?" alt="profile avatar" className="offset-4"/>
-                <h1 className="offset-5" style={{color: '#f7544d'}}>{userData.username}</h1>
+                <h1 className="offset-5" style={{color: '#f7544d'}}>{userData.userName}</h1>
             </div>
             <h4 className="offset-1">Player Statistics</h4>
             <table className="table table-striped table-bordered offset-1" style={{width: '75%'}}>

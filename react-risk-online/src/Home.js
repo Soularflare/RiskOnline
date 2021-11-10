@@ -15,7 +15,7 @@ function Home({userData, logout}){
         </div>
         <img src={require('./risk-map.png').default} alt="map not found" height="200px" width="400px" className="offset-4"/>
         <div className="row d-grid gap-4 pt-5 mt-5">
-            <h1 className="display-5 fw-bolder offset-4" >Hello {userData? "," + userData.username: ""}</h1>
+            <h1 className="display-5 fw-bolder offset-4" >Hello {userData? "," + userData.userName: ""}</h1>
             {!userData && <Link to="/login" className="btn btn-primary btn-lg col-8 offset-2">Login</Link>}
             <Link to="/gameform" className="btn btn-primary btn-lg col-8 offset-2">New Game</Link>
             {userData && <Link to="/load" className="btn btn-primary btn-lg col-8 offset-2">Load Game</Link>}

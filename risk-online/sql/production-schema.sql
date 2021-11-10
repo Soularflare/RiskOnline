@@ -62,15 +62,7 @@ create table countries(
 	country_id int not null primary key,
     country varchar(50) not null
 );
-
-
--- unsure if this table is necessary or if this is how we want to implement it
--- useful potentially for expansion of game beyond computer players
--- 	create table player(
--- 		player_id int not null primary key auto_increment,
---         player_order varchar(15) not null
---     ); 
-    
+  
     
 create table game(
 	game_id int not null primary key auto_increment,
@@ -90,9 +82,6 @@ create table game_player(
 	constraint fk_game_user_player_user_id
 		foreign key(user_id)
         references game_user(user_id)
--- 	constraint fk_game_user_player_player_id
--- 		foreign key(player_id)
---         references player(player_id)
 	);        
 
 create table game_state(
@@ -115,17 +104,18 @@ create table game_state(
 insert into game_role (`role`) values
 	('ADMIN'),
     ('USER');
-
-    
--- insert into player (player_order) values
--- 	('player one'),
---     ('player two'),
---     ('player three'),
---     ('player four'),
---     ('player five'),
---     ('player six');
-    
-    
+   
+insert into microtransaction (micro_id, product, price) values
+(1, "Avatar1", 100),
+(2, "Avatar2", 100),
+(3, "Avatar3", 100),
+(4, "Avatar4", 100),
+(5, "Avatar5", 100),
+(6, "Avatar6", 100),
+(7, "Avatar7", 100),
+(8, "Avatar8", 100),
+(9, "Avatar9", 100);
+   
 insert into countries (country_id, country) values
 	(0, 'ALASKA'),
     (1, 'NW_TERRITORY'),
