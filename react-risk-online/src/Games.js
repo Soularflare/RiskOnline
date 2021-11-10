@@ -17,11 +17,11 @@ function Games({userData}){
         history.push(`/game/6/blue/${startForm}`);
     };
 
-    // useEffect(() => {
-    //     fetchUserInfo(userData)
-    //     .then((info) => setGames(info.ongoingGames))
-    //     .catch((err) => console.log(err.toString()));
-    // }), [];
+    useEffect(() => {
+        fetchUserInfo(userData)
+        .then((info) => setGames(info.ongoingGames))
+        .catch((err) => console.log(err.toString()));
+    }, []);
     return(
         <div className="container mt-5">
             <h1 className="offset-4" style={{color: '#f7544d'}}>Load Game</h1>
