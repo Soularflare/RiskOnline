@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useHistory } from "react-router";
 import MapSVG from './MapSVG.js';
 import { saveGame, loadGame, deleteGame } from './apiServices/gameApi';
-import { fetchPts, findByUserData, savePts } from './apiServices/userApi';
+import { fetchPts, fetchUserInfo, savePts } from './apiServices/userApi';
 import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
 
 
@@ -447,7 +447,7 @@ function Game({userData}) {
         }
     }
     const getUserId = (userData) => {
-        findByUserData(userData)
+        fetchUserInfo(userData)
         .then((user) => setUserId(user.userId))
         .catch((err) => console.log(err.toString()));
     };
