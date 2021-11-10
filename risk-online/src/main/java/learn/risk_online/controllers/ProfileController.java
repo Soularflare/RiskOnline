@@ -23,7 +23,7 @@ public class ProfileController {
         this.appUserService = appUserService;
     }
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Object> findByUserId(@RequestBody AppUser user){
         AppUser found = appUserService.findByUserName(user.getUserName());
         if(found == null){
@@ -36,7 +36,7 @@ public class ProfileController {
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
-    @GetMapping("/profile/points")
+    @PostMapping("/profile/points")
     private ResponseEntity<Object> fetchPoints(@RequestBody AppUser user){
         AppUser found = appUserService.findByUserName(user.getUserName());
         if(found == null){

@@ -21,7 +21,7 @@ async function addGame(gameObj) {
         },
         body: JSON.stringify(gameObj)
     }
-    console.log(gameObj);
+
 
     const response = await fetch(url + "/game", init);
     if(response.status === 201) {

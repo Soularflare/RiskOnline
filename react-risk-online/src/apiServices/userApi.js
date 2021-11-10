@@ -26,7 +26,7 @@ export async function AddUser(userData){
         },
         body: JSON.stringify(userData)
     }
-    console.log(userData);
+
     const response = await fetch(url + "/appuser/create", init);
     if(response.status === 201) {
         return response.json();
@@ -37,7 +37,7 @@ export async function AddUser(userData){
 
 export async function fetchPts(userData){
     const init = {
-        method: "GET",
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -69,7 +69,7 @@ export async function savePts(userData, num){
 
 export async function fetchUserInfo(userData){
     const init = {
-        method: "GET",
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
