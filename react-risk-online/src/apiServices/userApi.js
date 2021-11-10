@@ -1,23 +1,32 @@
 const url =  "http://localhost:8080/api";
 
-export async function findByUserData(username, password){
-    const response = await fetch(url + "/" + username + "/" + password);
-    if(response.status === 204) {
+export async function findByUserData(userData){
+    const init = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(userData)
+    }
+    const response = await fetch(url + "/appuser", init);
+    if(response.status === 200) {
         return response.json();
     }
     throw new Error("Invalid user");
 
 };
 
-export async function AddUser(username, password){
+export async function AddUser(userData){
     const init = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
+        body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/" + username + "/" + password, init);
+    const response = await fetch(url + "/appuser", init);
     if(response.status === 200) {
         return response.json();
     }
@@ -34,7 +43,7 @@ export async function fetchPts(userData){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/points", init);
+    const response = await fetch(url + "/appuser/points", init);
     if(response.status === 200) {
         return response.json();
     }
@@ -50,7 +59,7 @@ export async function savePts(userData, num){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/points/" + num, init);
+    const response = await fetch(url + "/appuser/points/" + num, init);
     if(response.status === 200) {
         return response.json();
     }
@@ -66,7 +75,7 @@ export async function fetchUserInfo(userData){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/info", init);
+    const response = await fetch(url + "/appuser/info", init);
     if(response.status === 200) {
         return response.json();
     }

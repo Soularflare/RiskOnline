@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { useEffect, useState } from "react/cjs/react.development";
 import {fetchUserInfo} from './apiServices/userApi';
 
 
 
 function Profile({userData}){
+    const history = useHistory();
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
@@ -12,6 +14,11 @@ function Profile({userData}){
             .then((info) => setUserInfo(info))
             .catch((err) => console.log(err.toString()));
     });
+
+    const toAvatars = evt => {
+        history.push(`/avatars/${userInfo.userId}`);
+    };
+    
     return(
         <div>
             <div className="container">
@@ -49,7 +56,7 @@ function Profile({userData}){
                 </tbody>
             </table>
             <div className="mt-5">
-            <Link to="/avatars" className="btn btn-primary ms-1 me-1">Avatars</Link>
+            <button onClick={toAvatars} className="btn btn-primary ms-1 me-1">Avatars</button>
             <Link to="/" className="btn btn-secondary ">Back</Link>
             </div>
         </div>

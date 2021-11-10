@@ -50,10 +50,10 @@ function App() {
       <Route path="/signup">
         <Signup></Signup>
       </Route>
-      <Route path="/profile/:userId">
+      <Route path="/profile">
         <Profile userData={userData}></Profile>
       </Route>
-      <Route path="/game/:numPlayers/:chosenColor">
+      <Route path="/game/:numPlayers/:chosenColor/:gameId">
         <Game userData={userData}></Game>
       </Route>
       <Route path="/gameform">
@@ -62,8 +62,8 @@ function App() {
       <Route path="/load">
         <Games></Games>
       </Route>
-      <Route path="/avatars">
-        <Avatars></Avatars>
+      <Route path="/avatars/:userId">
+        <Avatars userData={userData}></Avatars>
       </Route>
       <Route path="/">
         <Home userData={userData} logout={logout} ></Home>

@@ -71,3 +71,21 @@ export async function loadGame(gameId){
 
     return result;
 };
+
+export async function deleteGame(gameId){
+    const init = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        
+    }
+
+    const response = await fetch(url + "/game/" + gameId, init);
+    if(response.status === 204) {
+        return;
+    }
+    throw new Error("Unable to delete game");
+
+};

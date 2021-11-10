@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import MapSVG from './MapSVG.js';
-import { saveGame, loadGame } from './apiServices/gameApi';
-import { fetchPts, savePts } from './apiServices/userApi';
+import { saveGame, loadGame, deleteGame } from './apiServices/gameApi';
+import { fetchPts, findByUserData, savePts } from './apiServices/userApi';
 import { useHistory } from "react-router";
 import {checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica} from "./calculations/checkCountries";
 
@@ -97,7 +97,10 @@ function Game({userData}) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Lose"
-            //delete game
+            if(gameId != 0){
+                deleteGame(gameId)
+                .catch((err) => console.log(err.toString()));
+            }
         }
         else if (playerList[0].countries.length == 42){
             //win condition 
@@ -107,7 +110,10 @@ function Game({userData}) {
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Win! +10 Points"
             addPts(10);
-            //delete game
+            if(gameId != 0){
+                deleteGame(gameId)
+                .catch((err) => console.log(err.toString()));
+            }
         }
 
     }, [playerList]);
@@ -416,16 +422,22 @@ function Game({userData}) {
             setTroopCount(tmp);
         }
     }
+    const getUserId = (userData) => {
+        findByUserData(userData)
+        .then((user) => setUserId(user.userId))
+        .catch((err) => console.log(err.toString()));
+    };
 
     const start = evt => {
+        document.getElementById("start").style.border = "none";
         if (playerTurn.length === 0) {
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
             setActionState("reinforce");
             document.getElementById("action").innerHTML = actionState;
-            // if(userData){
-            //     getUserId(userData);
-            // }
+            if(userData){
+                getUserId(userData);
+            }
             //setup
             if(gameId == 0){
                 startGame(numPlayers, chosenColor);
@@ -498,8 +510,15 @@ function Game({userData}) {
         players.push({
             'gameId': gameId,
             'userId': userId,
-            'turnOrder': 0
-        })
+            'turnOrder': 0          
+        });
+        for (let i = 1; i < playerList.length; i++) {
+            players.push({
+                'gameId': gameId,
+                'userId': null,
+                'turnOrder': i          
+            });
+        }
         
         let countryList = [];
         for (let i = 0; i < playerList.length; i++) {
@@ -791,12 +810,9 @@ function rolldice(attackdice, defenderdice) {
 
             //save attack state
 
-            //if(attacks > 0){
-            //     setActionState("attack");
-            // }
-            // else {
-            setActionState("move");
-            //}
+            
+            setActionState("attack");
+            
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
         } 
@@ -882,7 +898,7 @@ function rolldice(attackdice, defenderdice) {
         }
         else {
             //highlight endturn btn
-
+            document.getElementById("start").style.border = "2px solid blue";
         }
     };
 

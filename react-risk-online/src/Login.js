@@ -20,7 +20,7 @@ function Login() {
   
       const onSubmit = (evt) => {
           evt.preventDefault();
-          findByUserData(userData.username, userData.password)
+          findByUserData(userData)
           .then(() => {
             user.login(userData);
             history.push("/");

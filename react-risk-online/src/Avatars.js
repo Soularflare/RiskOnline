@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react/cjs/react.development";
+import { fetchPts } from "./apiServices/userApi";
 
-function Avatars(){
+function Avatars({userData}){
+    const [userPoints, setUserPoints] = useState(0);
+
+    useEffect(() => {
+        fetchPts(userData)
+        .then((points) => setUserPoints(points))
+        .catch((err) => console.log(err.toString()));
+    }, []);
 
     const optionselect = evt => {
        
@@ -55,7 +64,7 @@ function Avatars(){
                 <h1 className="display-5 fw-bolder offset-5" style={{color: '#f7544d'}}>Avatars</h1>
             </div>
             <div className="offset-5" style={{marginTop: '100px'}}>
-            <h1 style={{marginBottom: '100px'}}>Points: 1200</h1>
+            <h1 style={{marginBottom: '100px'}}>Points: {userPoints}</h1>
             <h1 className="fw-bolder">Current Avatar:</h1>
             <img src={require('./risk-map.png').default} height="100px" alt="current_avatar" className="ms-5"/>
             </div>

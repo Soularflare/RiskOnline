@@ -20,7 +20,7 @@ function Login() {
   
       const onSubmit = (evt) => {
           evt.preventDefault();
-          AddUser(userData.username, userData.password)
+          AddUser(userData)
           .then(() => {
             user.login(userData);
             history.push("/");
