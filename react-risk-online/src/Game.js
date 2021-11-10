@@ -542,7 +542,7 @@ function Game({userData}) {
             'userId': userId,
             'turnOrder': 0          
         });
-        for (let i = 1; i < playerList.length; i++) {
+        for (let i = 0; i < playerList.length; i++) {
             players.push({
                 'gameId': gameId,
                 'userId': null,
@@ -552,11 +552,10 @@ function Game({userData}) {
         
         let countryList = [];
         for (let i = 0; i < playerList.length; i++) {
-            for (let j = 0; j < playerList[i].length; j++) {
-                countryList.push({'gameId': gameId, "playerPossession": i, ...playerList[i].countries});
-                
-            }
-            
+            let countries = playerList[i].countries;
+            for (let j = 0; j < countries.length; j++) {
+                countryList.push({'gameId': gameId, "playerPossession": i, 'countryId': countries[j].id, 'army': countries[j].army});
+            } 
         }
         const gameObj = {
             "gameId" : gameId,
