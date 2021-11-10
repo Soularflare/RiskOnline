@@ -26,8 +26,9 @@ export async function AddUser(userData){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/appuser", init);
-    if(response.status === 200) {
+    console.log(userData);
+    const response = await fetch(url + "/appuser/create", init);
+    if(response.status === 201) {
         return response.json();
     }
     throw new Error("User already exists");
@@ -43,7 +44,7 @@ export async function fetchPts(userData){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/appuser/points", init);
+    const response = await fetch(url + "/profile/points", init);
     if(response.status === 200) {
         return response.json();
     }
@@ -59,7 +60,7 @@ export async function savePts(userData, num){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/appuser/points/" + num, init);
+    const response = await fetch(url + "/profile/update/points/" + num, init);
     if(response.status === 200) {
         return response.json();
     }
@@ -75,7 +76,7 @@ export async function fetchUserInfo(userData){
         },
         body: JSON.stringify(userData)
     }
-    const response = await fetch(url + "/appuser/info", init);
+    const response = await fetch(url + "/profile", init);
     if(response.status === 200) {
         return response.json();
     }

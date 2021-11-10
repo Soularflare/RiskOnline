@@ -17,7 +17,7 @@ export async function addAvatar(id, userId){
         },
         
     }
-    const response = await fetch(url + "/appuser/" + id + "/" + userId, init);
+    const response = await fetch(url + "/profile/" + id + "/" + userId, init);
     if(response.status === 204) {
         return;
     }
@@ -33,7 +33,7 @@ export async function equipAvatar(id, userId){
         },
         
     }
-    const response = await fetch(url + "/appuser/" + id + "/" + userId, init);
+    const response = await fetch(url + "/profile/equip" + id + "/" + userId, init);
     if(response.status === 204) {
         return;
     }

@@ -20,14 +20,14 @@ function App() {
   }
 
   const login = (data) => {
-    if(data.username === "admin" && data.password ==="admin"){
+    if(data.userName === "admin" && data.password ==="admin"){
       setUserData({
-        username: data.username,
+        userName: data.userName,
         role: "ADMIN"
       });
     } else {
       setUserData({
-        username: data.username,
+        userName: data.userName,
         role: "USER"
       });
     }

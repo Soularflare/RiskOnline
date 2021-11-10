@@ -1053,7 +1053,7 @@ function validateAttack() {
                 <div className="col-2">
                     <div className="row border border-dark border-2">
                         <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt="user_avatar" />
-                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData? userData.username : "Username"}</h2>
+                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData? userData.userName : "Username"}</h2>
                     </div>
                     <div className="row">
                         {userData && <button className="btn btn-primary col-5" onClick={save}>Save Game</button>}
