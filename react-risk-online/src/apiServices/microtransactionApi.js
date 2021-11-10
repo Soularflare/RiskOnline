@@ -1,3 +1,5 @@
+const url =  "http://localhost:8080/api";
+
 export async function findAvatars(userId){
     const response = await fetch(url + "/appuser/");
     if(response.status === 200) {

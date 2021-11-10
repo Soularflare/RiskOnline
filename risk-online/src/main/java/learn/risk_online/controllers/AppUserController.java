@@ -17,7 +17,7 @@ public class AppUserController {
         this.service = service;
     }
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Object> findByUserData(@RequestBody AppUser user){
             AppUser existing = service.findByUserName(user.getUserName());
 

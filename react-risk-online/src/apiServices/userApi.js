@@ -1,6 +1,7 @@
 const url =  "http://localhost:8080/api";
 
 export async function findByUserData(userData){
+    console.log(userData);
     const init = {
         method: "POST",
         headers: {
@@ -37,7 +38,7 @@ export async function AddUser(userData){
 
 export async function fetchPts(userData){
     const init = {
-        method: "GET",
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -69,7 +70,7 @@ export async function savePts(userData, num){
 
 export async function fetchUserInfo(userData){
     const init = {
-        method: "GET",
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
