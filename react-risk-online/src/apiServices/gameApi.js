@@ -13,6 +13,7 @@ export async function saveGame(gameId, gameObj){
 };
 
 async function addGame(gameObj) {
+    console.log(gameObj);
     const init = {
         method: "POST",
         headers: {
