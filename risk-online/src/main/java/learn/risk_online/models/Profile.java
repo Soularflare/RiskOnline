@@ -5,13 +5,25 @@ import java.util.List;
 public class Profile {
     private String profileId;
     private String userId;
-    private String userName; //maybe change to Appuser user
+    private String userName;
     private int totalGames;
     private int wins;
     private int gameTime;
     private int points;
     private List<ProfileMicrotransaction> microtransactions;
     private List<Game> ongoingGames;
+
+    public Profile() {
+    }
+
+    public Profile(String userId, String userName, int totalGames, int wins, int gameTime, int points) {
+        this.userId = userId;
+        this.userName = userName;
+        this.totalGames = totalGames;
+        this.wins = wins;
+        this.gameTime = gameTime;
+        this.points = points;
+    }
 
     public List<Game> getOngoingGames() {
         return ongoingGames;

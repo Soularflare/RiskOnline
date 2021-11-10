@@ -45,6 +45,12 @@ class CountryJdbcRepositoryTest {
         assertEquals(nAfrica.getCountryName(), "N_AFRICA");
     }
 
+    @Test
+    void shouldNotFindBadCountryId(){
+        Country c = repository.findById(1, 42);
+        assertNull(c);
+    }
+
 
     //Add Test
     @Test

@@ -26,7 +26,7 @@ class AppUserJdbcRepositoryTest {
     @Test
     void shouldFindAll() {
         //Microtransaction microt = makeMicrot(1);
-        assertEquals(repository.findAll().size(),3);
+        assertEquals(repository.findAll().size(),6);
     }
 
     @Test
@@ -38,8 +38,8 @@ class AppUserJdbcRepositoryTest {
 
     @Test
     void shouldFindByUserName(){
-        AppUser user = new AppUser("4d980a71-3b3c-11ec-8708-0242ac110055", "userName", "password_hash",false);
-        AppUser actual = repository.findByUserName("userName");
+        AppUser user = new AppUser("4d980a71-3b3c-11ec-8708-0242ac110055", "userName1", "password_hash",false);
+        AppUser actual = repository.findByUserName("userName1");
         assertEquals(actual.getUserName(),user.getUserName());
     }
 

@@ -9,9 +9,13 @@ public interface ProfileRepository {
 
     Profile findByUserId(String userId);
 
-    Profile add(AppUser user);
+    Profile add(String userId);
 
-    boolean update(Profile profile);
+    boolean updateByProfileId(Profile profile);
+
+    boolean updateByUserId(Profile profile);
 
     boolean deleteByProfileId(String profileId);
+
+    boolean deleteByUserId(String userId);
 }

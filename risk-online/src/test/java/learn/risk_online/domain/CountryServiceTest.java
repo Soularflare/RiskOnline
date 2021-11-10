@@ -79,17 +79,6 @@ class CountryServiceTest {
         assertEquals(expected.getMessages(), actual.getMessages());
     }
 
-
-//    @Test
-//    void shouldNotNullCountry() {
-//
-//        Result<Country> expected = new Result<>();
-//        expected.addErrorMessage("Country cannot be null");
-//
-//        Result<Country> actual = service.addCountries(countries2);
-//        assertEquals(expected.getMessages(), actual.getMessages());
-//    }
-
     @Test
     void shouldNotAddInvalidId() {
         for(Country c : countries){

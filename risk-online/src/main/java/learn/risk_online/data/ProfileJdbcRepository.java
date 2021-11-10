@@ -2,7 +2,7 @@ package learn.risk_online.data;
 
 import learn.risk_online.data.mappers.ProfileMapper;
 import learn.risk_online.data.mappers.ProfileMicrotransactionMapper;
-import learn.risk_online.models.AppUser;
+
 import learn.risk_online.models.Game;
 import learn.risk_online.models.Profile;
 import learn.risk_online.models.ProfileMicrotransaction;
@@ -67,20 +67,20 @@ public class ProfileJdbcRepository implements ProfileRepository{
 
 
     @Override
-    public Profile add(AppUser user) {
+    public Profile add(String userId) {
         final String sql = "insert into user_profile (user_id) " +
                 "values (?);";
 
-        boolean success = jdbcTemplate.update(sql, user.getUserId()) > 0;
+        boolean success = jdbcTemplate.update(sql, userId) > 0;
 
         if(success){
-            return findByUserId(user.getUserId());
+            return findByUserId(userId);
         }
         return null;
     }
 
     @Override
-    public boolean update(Profile profile) {
+    public boolean updateByProfileId(Profile profile) {
         final String sql = "update user_profile set " +
                 "total_games = ?, " +
                 "wins = ?, " +
@@ -89,6 +89,18 @@ public class ProfileJdbcRepository implements ProfileRepository{
                 "where profile_id = ?;";
         return (jdbcTemplate.update(sql, profile.getTotalGames(), profile.getWins(),
                 profile.getGameTime(), profile.getPoints(), profile.getProfileId()) > 0);
+    }
+
+    @Override
+    public boolean updateByUserId(Profile profile) {
+        final String sql = "update user_profile set " +
+                "total_games = ?, " +
+                "wins = ?, " +
+                "game_time = ?, " +
+                "points = ? " +
+                "where user_id = ?;";
+        return (jdbcTemplate.update(sql, profile.getTotalGames(), profile.getWins(),
+                profile.getGameTime(), profile.getPoints(), profile.getUserId()) > 0);
     }
 
     @Override
@@ -105,7 +117,18 @@ public class ProfileJdbcRepository implements ProfileRepository{
         return (jdbcTemplate.update("delete from user_profile where profile_id = ?;", profileId) > 0);
     }
 
+    @Override
+    public boolean deleteByUserId(String userId) {
+        Profile profile = findByUserId(userId);
 
+        if(profile != null){
+            List<ProfileMicrotransaction> microtransactions = profile.getMicrotransactions();
+            for(ProfileMicrotransaction pm : microtransactions){
+                pmRepository.deleteByKeys(pm.getMicrotransaction().getId(), profile.getProfileId());
+            }
+        }
+        return (jdbcTemplate.update("delete from user_profile where profile_id = ?;", profile.getProfileId()) > 0);
+    }
 
 
     private void addMicrotransactions(Profile profile){

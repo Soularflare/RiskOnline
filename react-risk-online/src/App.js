@@ -53,7 +53,7 @@ function App() {
       <Route path="/profile/:userId">
         <Profile userData={userData}></Profile>
       </Route>
-      <Route path="/game/:numPlayers/:chosenColor">
+      <Route path="/game/:numPlayers/:chosenColor/:gameId">
         <Game userData={userData}></Game>
       </Route>
       <Route path="/gameform">

@@ -21,6 +21,14 @@ public class PlayerService {
     @Transactional
     public Result<Player> addPlayers(List<Player> players){
         Result<Player> result = new Result<>();
+        if(players == null ){
+            result.addErrorMessage("Players are required for a game");
+            return result;
+        }
+        if(players.size() == 0 ){
+            result.addErrorMessage("Players are required for a game");
+            return result;
+        }
 
         if(players.size() < 2){
             result.addErrorMessage("Minimum of 2 players must be saved");
