@@ -1,13 +1,3 @@
-const url =  "http://localhost:8080/api";
-
-export async function findAvatars(userId){
-    const response = await fetch(url + "/appuser/");
-    if(response.status === 200) {
-        return response.json();
-    }
-    throw new Error("Unable to fetch avatars");
-};
-
 
 
 export async function addAvatar(id, userId){
