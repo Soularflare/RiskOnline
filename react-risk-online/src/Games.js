@@ -35,11 +35,12 @@ function Games({userData}){
             </select>
             </div>
             </div>
-            </form>
             <div className="mt-3 offset-4">
             <button type="submit" className="btn btn-primary me-1">Start Game</button>
             <Link to="/" className="btn btn-secondary ms-1">Cancel</Link>
             </div>
+            </form>
+            
         </div>
     );
 };
