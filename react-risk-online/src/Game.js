@@ -109,7 +109,7 @@ function Game({userData}) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Win! +10 Points"
-            addPts(10);
+            addPts(10);                                             //fix
             if(gameId != 0){
                 deleteGame(gameId)
                 .catch((err) => console.log(err.toString()));

@@ -1,13 +1,32 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
-import { fetchPts } from "./apiServices/userApi";
+import { findAvatars } from "./apiServices/microtransactionApi";
+import { fetchPts, findByUserData } from "./apiServices/userApi";
 
 function Avatars({userData}){
     const [userPoints, setUserPoints] = useState(0);
+    const [equipped, setEquipped] = useState(0);
+    const [avatarList, setAvatarList] = useState([]);
+    const [userId, setUserId] = useState(0);
 
     useEffect(() => {
         fetchPts(userData)
         .then((points) => setUserPoints(points))
+        .catch((err) => console.log(err.toString()));
+
+        findByUserData(userData)
+        .then((id) => setUserId(id))
+        .catch((err) => console.log(err.toString()));
+
+        findAvatars(userId)                             //fix (fetchuserinfo)
+        .then((avatars) => {
+            setAvatarList(avatars);
+            for (let i = 0; i < avatars.length; i++) {
+                if(avatars[i].equipped == true){
+                    setEquipped(i);
+                }
+            }
+        })
         .catch((err) => console.log(err.toString()));
     }, []);
 
