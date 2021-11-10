@@ -45,9 +45,9 @@ public class GameService {
             return result;
         }
 
-        game = gameRepository.add(game);
+        Game saved = gameRepository.add(game);
 
-        if(game == null){
+        if(saved == null){
             result.addErrorMessage("failed to save game");
             return result;
         }
@@ -62,7 +62,7 @@ public class GameService {
             return result;
         }
         for(Country c : countries){
-            c.setGameId(game.getGameId());
+            c.setGameId(saved.getGameId());
         }
         Result<Country>  countryResult = countryService.addCountries(countries);
         if(!countryResult.isSuccess()){
@@ -83,7 +83,7 @@ public class GameService {
             return result;
         }
         for(Player p : players){
-            p.setGameId(game.getGameId());
+            p.setGameId(saved.getGameId());
         }
         Result<Player> playerResult = playerService.addPlayers(players);
         if(!playerResult.isSuccess()){
@@ -92,11 +92,13 @@ public class GameService {
             }
             return result;
         }
-
-        result.setPayload(game);
+        saved.setCountryList(countries);
+        saved.setPlayers(players);
+        result.setPayload(saved);
         return result;
     }
 
+    @Transactional
     public Result<Game> updateGame(Game game){
         Result<Game> result = validateGame(game);
         if(!result.isSuccess()){
@@ -110,12 +112,31 @@ public class GameService {
             result.addErrorMessage(String.format("gameId %s failed to update", game.getGameId()));
             return result;
         }
+
+        List<Country> countries = game.getCountryList();
+        if(countries == null){
+            result.addErrorMessage("Countries are required to save game");
+            return result;
+        }
+        if(countries.size() == 0){
+            result.addErrorMessage("Countries are required to save game");
+            return result;
+        }
+        Result<Country> countryResult = countryService.updateCountries(countries);
+        if(!countryResult.isSuccess()){
+            for(String s : countryResult.getMessages()){
+                result.addErrorMessage(s);
+            }
+            return result;
+        }
+        //dont need to update players
         return result;
     }
 
     public boolean deleteGameById(int gameId){
         return gameRepository.deleteById(gameId);
     }
+
 
     private Result<Game> validateGame(Game game) {
         Result<Game> result = new Result<>();

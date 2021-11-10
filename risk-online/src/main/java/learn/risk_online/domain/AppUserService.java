@@ -1,8 +1,10 @@
 package learn.risk_online.domain;
 
 import learn.risk_online.data.AppUserRepository;
+import learn.risk_online.data.ProfileRepository;
 import learn.risk_online.models.AppUser;
 
+import learn.risk_online.models.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +15,12 @@ import java.util.List;
 public class AppUserService {
 
     private final AppUserRepository appUserRepository;
+    private final ProfileService profileService;
 //    private final PasswordEncoder encoder;
 
-    public AppUserService(AppUserRepository appUserRepository) {
+    public AppUserService(AppUserRepository appUserRepository, ProfileRepository profileRepository, ProfileService profileService) {
         this.appUserRepository = appUserRepository;
+        this.profileService = profileService;
 //        this.encoder = encoder;
     }
 
@@ -53,7 +57,16 @@ public class AppUserService {
         if(user == null){
             result.addErrorMessage("user failed to create");
         }
-        result.setPayload(user);
+
+        Result<Profile> pResult = profileService.addProfile(user.getUserId());
+        if(!pResult.isSuccess()){
+            for(String s : pResult.getMessages()){
+                result.addErrorMessage(s);
+            }
+            return result;
+        }
+
+        result.setPayload(user); //maybe change to Profile?
         return result;
     }
 
@@ -62,6 +75,7 @@ public class AppUserService {
         if(!result.isSuccess()){
             return result;
         }
+
         if(user.getUserId() == null || user.getUserId().isBlank()){
             result.addErrorMessage("user id must be set for update");
             return result;
@@ -90,6 +104,12 @@ public class AppUserService {
         }
         return result;
     } //may want more checks maybe?
+
+    public boolean deleteUser(String userId){
+        return appUserRepository.deleteById(userId);
+    }
+
+
 
     private Result<AppUser> validatePassword(AppUser user) {
         var result = new Result<AppUser>();
@@ -137,7 +157,7 @@ public class AppUserService {
             return result;
         }
 
-        var existing = appUserRepository.findById(user.getUserName());
+        var existing = appUserRepository.findByUserName(user.getUserName());
         if(existing != null && existing.getUserId() != user.getUserId()){
             result.addErrorMessage("username is already in use");
             return result;

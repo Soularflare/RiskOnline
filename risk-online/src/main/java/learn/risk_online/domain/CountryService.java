@@ -16,12 +16,21 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
+    public List<Country> findCountriesWithGameId(int gameId){
+        return countryRepository.findAll(gameId);
+    }
+
     @Transactional
     public Result<Country> addCountries(List<Country> countries){
         Result<Country> result = new Result<>();
-
-
-
+        if(countries == null){
+            result.addErrorMessage("Countries are required to save game");
+            return result;
+        }
+        if(countries.size() == 0) {
+            result.addErrorMessage("Countries are required to save game");
+            return result;
+        }
         for(Country country : countries){
             result = validateCountries(country, countries);
             if(!result.isSuccess()){
@@ -42,6 +51,10 @@ public class CountryService {
         Result<Country> result = new Result<>();
 
         if(countries == null){
+            result.addErrorMessage("Countries are required to save game");
+            return result;
+        }
+        if(countries.size() == 0) {
             result.addErrorMessage("Countries are required to save game");
             return result;
         }

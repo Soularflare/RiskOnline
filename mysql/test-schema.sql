@@ -62,23 +62,6 @@ create table countries(
 	country_id int not null primary key,
     country varchar(50) not null
 );
-
--- unsure if this table is necessary or if this is how we want to implement it
--- useful potentially for expansion of game beyond computer players
--- create table player(
--- 		player_id int not null primary key auto_increment,
---         player_order varchar(15)
---     ); 
-    
--- insert into player (player_order) values
--- 	('player one'),
---     ('player two'),
---     ('player three'),
---     ('player four'),
---     ('player five'),
---     ('player six');
-    
---   select * from player;  
 	
 create table game(
 	game_id int not null primary key auto_increment,
@@ -98,9 +81,6 @@ create table game_player(
 	constraint fk_game_user_player_user_id
 		foreign key(user_id)
         references game_user(user_id)
--- 	constraint fk_game_user_player_player_id
--- 		foreign key(player_id)
---         references player(player_id)
 	);
     
 create table game_state(
@@ -185,7 +165,10 @@ delete from game_user;
 insert into game_user (user_id, user_name, password_hash) values
 	('4d980627-3b3c-11ec-8708-0242ac110002', 'user', '$2a$10$ZMZEHR/CeSDPh7o0dIUPJeSh6r2TGDMUuBSC.Vff6VGL2CGNUdB5q'),
     ('4d980a71-3b3c-11ec-8708-0242ac110002', 'admin', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2'),
-    ('4d980a71-3b3c-11ec-8708-0242ac110055', 'userName', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2');
+    ('4d980a71-3b3c-11ec-8708-0242ac110055', 'userName1', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2'),
+    ('3d980a71-3b3c-11ec-8708-0242ac110002', 'userName2', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2'),
+    ('2d980a71-3b3c-11ec-8708-0242ac110002', 'userName3', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2'),
+    ('1d980a71-3b3c-11ec-8708-0242ac110002', 'userName4', '$2a$10$L4c8Ky5D5O7WsVm89lTiPO3/pPtME0itveW5GuSI1.vVWSBS1bCJ2');
 
 insert into game_user_role (user_id, role_id) values
 	('4d980a71-3b3c-11ec-8708-0242ac110002', 1),
@@ -193,7 +176,11 @@ insert into game_user_role (user_id, role_id) values
 
 insert into user_profile (profile_id, user_id, total_games, wins, game_time, points) values
 	('69367d6d-3b3e-11ec-8708-0242ac110002', '4d980627-3b3c-11ec-8708-0242ac110002', 2, 1, 200, 1000),
-    ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100);
+    ('69367ff8-3b3e-11ec-8708-0242ac110002', '4d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100),
+    ('69367ff8-3b3e-11ec-8708-0242ac110005', '3d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100),
+    ('69367ff8-3b3e-11ec-8708-0242ac110003', '2d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100),
+    ('69367ff8-3b3e-11ec-8708-0242ac110001', '1d980a71-3b3c-11ec-8708-0242ac110002', 0, 0, 0, 100);
+
     
 insert into microtransaction (product, price) values
 	('Gummy Bear Avatar', 2),

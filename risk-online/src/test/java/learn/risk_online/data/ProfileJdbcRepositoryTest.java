@@ -44,15 +44,13 @@ class ProfileJdbcRepositoryTest {
     void shouldFindByUserId2(){
         Profile profile = repository.findByUserId("4d980627-3b3c-11ec-8708-0242ac110002");
         assertNotNull(profile);
-        assertEquals(3, profile.getOngoingGames().size());
+        assertTrue( profile.getOngoingGames().size() >= 2);
     }
 
     @Test
     void shouldAdd(){
-        AppUser user = new AppUser();
-        user.setUserId("4d980a71-3b3c-11ec-8708-0242ac110055");
 
-        Profile profile = repository.add(user);
+        Profile profile = repository.add("4d980a71-3b3c-11ec-8708-0242ac110055");
 
         assertNotNull(profile);
         assertEquals(0, profile.getTotalGames());
@@ -65,7 +63,18 @@ class ProfileJdbcRepositoryTest {
         Profile profile = repository.findByProfileId("69367d6d-3b3e-11ec-8708-0242ac110002");
         profile.setPoints(10000);
 
-        assertTrue(repository.update(profile));
+        assertTrue(repository.updateByProfileId(profile));
+        Profile updated = repository.findByProfileId("69367d6d-3b3e-11ec-8708-0242ac110002");
+        assertEquals(10000, updated.getPoints());
+
+    }
+
+    @Test
+    void shouldUpdate2(){
+        Profile profile = repository.findByProfileId("69367d6d-3b3e-11ec-8708-0242ac110002");
+        profile.setPoints(10000);
+
+        assertTrue(repository.updateByUserId(profile));
         Profile updated = repository.findByProfileId("69367d6d-3b3e-11ec-8708-0242ac110002");
         assertEquals(10000, updated.getPoints());
 
@@ -73,7 +82,17 @@ class ProfileJdbcRepositoryTest {
 
     @Test
     void shouldDelete(){
+        assertTrue(repository.deleteByProfileId("69367ff8-3b3e-11ec-8708-0242ac110003"));
+    }
 
+    @Test
+    void shouldNotDelete(){
+        assertFalse(repository.deleteByProfileId("4d980627-3b3c-11ec-8708-0242ac110002"));
+    }
+
+    @Test
+    void shouldDelete2(){
+        assertTrue(repository.deleteByUserId("1d980a71-3b3c-11ec-8708-0242ac110002"));
     }
 
 

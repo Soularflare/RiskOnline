@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class AppUserJdbcRepository implements AppUserRepository {
         return rowsUpdated > 0;
     }
 
+    @Transactional
     @Override
     public boolean deleteById(String id) {
         final String sql1 = "select gp.game_id, gp.turn_order, gp.user_id, gu.user_name " +
