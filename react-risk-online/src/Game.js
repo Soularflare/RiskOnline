@@ -20,6 +20,13 @@ function Game({userData}) {
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
     const [clickableCountries, setClickableCountries] = useState([]);
+    const [attackercountry, setAttacker] = useState({id:0,army:0});
+    const [defendercountry, setDefender] = useState({id:0,army:0});
+
+    useEffect(() => {
+        console.log("We made iT!!!!!!");
+        console.log(clickableCountries);
+    }, [clickableCountries]);
 
     useEffect(() => {
         
@@ -460,18 +467,31 @@ function Game({userData}) {
         }
     };
 
+    function findCountry(id){
+        for(let i=0;i<playerList.length;i++){
+            let countries = playerList[i].countries;
+            for(let j=0;j<countries.length;j++){
+                if(countries[j].id==id)
+                {
+                    return countries[j];
+                }
+            }
+        }
+    }
+
     const onCountrySelect = (id) => {
-       
+        //setClickable(false);
 
         const playercountries = playerList[0].countries;
         if(actionState === "reinforce" || actionState === "attack" || actionState === "move"){
-            //validate 
+            //validate
             
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             for (let i = 0; i < playercountries.length; i++) {
                 if(playercountries[i].id == id){
                     setCountrySelect(id);
+                    setAttacker(playercountries[i]);
                     document.getElementById("action").removeAttribute("disabled");
                     document.getElementById("action").style.opacity = "1.0";
                 }
@@ -488,21 +508,31 @@ function Game({userData}) {
                 setCountryTarget(id);
                 document.getElementById("action").removeAttribute("disabled");
                 document.getElementById("action").style.opacity = "1.0";
+                setDefender(findCountry(id));
+                // for (let i = 0; i < playercountries.length; i++) {
+                //     if(playercountries[i].id == id){
+                //         console.log("yes?");
+                //         setCountrySelect(id);
+                //         setDefender(playercountries[i]);
+                //     }
+                // }
             } else {
                 document.getElementById("action").setAttribute("disabled", "disabled");
                 document.getElementById("action").style.opacity = "0.4";  
-            for (let i = 0; i < playercountries.length; i++) {
+            /* for (let i = 0; i < playercountries.length; i++) {
                 if(playercountries[i].id == id){
                     setCountryTarget(id);
+                    setDefender(playercountries[i]);
                     document.getElementById("action").removeAttribute("disabled");
                     document.getElementById("action").style.opacity = "1.0";
                 }
-            }
+            } */
            
         }
     }
 
     };
+
 
     const save = (evt) => {
 
@@ -572,7 +602,48 @@ function Game({userData}) {
        }).catch((err) => console.log(err.toString())); 
     };
 
+    function getCountrylist(ourid)
+    {
+        let playList = playerList;
+        let list = [];
+        for(let i=0;i<playList[ourid].countries.length;i++){
+            list[i] = parseInt(playList[ourid].countries[i].id);
+        }
+        return list;
+    }
 
+    async function countriesToAttack(id)
+{
+    let arrayowned = getCountrylist(id);
+    console.log("Array of owned countries: ");
+    console.log(arrayowned);
+    const owned = arrayowned;
+    const init = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(owned) // 2.
+    };
+    const response = await fetch("http://localhost:8080/api", init);
+        if (response.status !== 201) {
+            console.log("Countries sent not valid.");
+            return Promise.reject("response is not 200 OK");
+        }
+            //console.log(response.json());
+            //setClickableCountries(response.json());
+            //console.log("done");
+        const json = await response.json().then(data => {console.log(data);
+            //setClickableCountries(data);
+            let array = changeArray(data);
+            console.log(array);
+            setClickableCountries(array);
+        });
+        //console.log(json);
+        return json;
+        
+}
 
     function getplayerid(country) {
         const id = country.id;
@@ -597,28 +668,32 @@ function Game({userData}) {
     let playList = playerList;
     console.log(playList);
 
-    newcountries = playerList[attackerid].countries; 
-    newcountries[newcountries.length] = defendingCountry;
-    player = playerList[attackerid];
+    let newcountries = playerList[attackerid].countries; 
+    //newcountries[newcountries.length] = defendingCountry;
+    defendingCountry.army = 1;
+    newcountries.push(defendingCountry);
+    let player = playerList[attackerid];
     player.countries = newcountries;
     playList[attackerid] = player;
 
 
-    let newcountries = playerList[defenderid].countries;
+    newcountries = playerList[defenderid].countries;
     let index; 
-    for(let i = 0; i<newcountries; i++)
+    for(let i = 0;i<newcountries.length;i++)
     {
-        if(newcountries[i].id = defendingCountry.id)
+        if(newcountries[i].id == defendingCountry.id)
         {
             index = i;
         }
     }
     newcountries.splice(index,1);
-    let player = playerList[defenderid];
+    player = playerList[defenderid];
     player.countries = newcountries;
     playList[defenderid] = player;
-
-    setPlayerList(playList);
+    console.log("Check now");
+    console.log(playList);
+    //setPlayerList(playList);
+    setPlayerList([...playList]);
  }
 
  function updateTroops(Country, troopsLost,defender,attackerid)
@@ -651,7 +726,7 @@ function Game({userData}) {
         let index;
         for(let i = 0;i<newcountries.length;i++)
         {
-            if(newcountries[i].id ==Country.id)
+            if(newcountries[i].id == Country.id)
             {
                 index = i;
                 console.log("updates");
@@ -707,6 +782,7 @@ function rolldice(attackdice, defenderdice) {
             attackerrolls.sort();
             console.log("Attacker rolls: "+ attackerrolls);
             highestattack = attackerrolls[attackerrolls.length-1];
+            console.log("Highest Defend: "+ highestdefend)
             if (highestattack > highestdefend) {
                 return 3;
             }
@@ -746,9 +822,20 @@ function rolldice(attackdice, defenderdice) {
     }
 }
 
- function attack(attackingCountry, defendingCountry,attackdice) { 
+ function attack(attackingCountry, defendingCountry) { 
     let defenderdice;
+    let attackdice;
     const attackerid = getplayerid(attackingCountry);
+    if(attackingCountry.army>=4)
+    {
+        attackdice = 3;
+    } 
+    else if(attackingCountry.army=3){
+        attackdice =2;
+    }
+    else{
+        attackdice = 1;
+    }
     if(defendingCountry.army>=2)
     {
         defenderdice = 2;
@@ -782,33 +869,91 @@ function rolldice(attackdice, defenderdice) {
 
 }      
 
+function validateAttack() {
+    if(attackercountry.id == 0 && attackercountry.army==0){
+        return false;
+    }
+    else if(defendercountry.id == 0 && defendercountry.army==0)
+    {
+        return false;
+    }
+    else if(attackercountry.army ==1)
+    {
+        return false;
+    }
+    else{
+        return true;
+    }
+}
 
 
-    const action = evt => {
+  function changeArray(array){
+      let newarray = [];
+      for(let i=0;i< array.length;i++){
+        newarray[i] = array[i].toString();
+      }
+      return newarray;
 
-        if (actionState === "attack") {
-            let attackingCountry = { id: 0, army: 10 };
-            let defendingCountry = { id: 1, army: 4 };
-            let attackdice = 3;
-            //attack functionality
-            console.log("Attacking beginning");
-            attack(attackingCountry, defendingCountry, attackdice);
-            //select country to attack from
+  }
 
-            //api call to get countries for which to attack 
 
-            //player must select number of die to roll as an attacker 
-            setActionState("confirm attack");
-            document.getElementById("action").setAttribute("disabled", "disabled");
-            document.getElementById("action").style.opacity = "0.4";
-            
+  const action = evt => {
+
+    if (actionState === "attack") {
+        let pCountries = [...playerList[playerTurn[0]].countries];
+        console.log("pCountries: ");
+        console.log(pCountries);
+        console.log("Countries to attack: ");
+    
+        countriesToAttack(0);
+        console.log(clickableCountries);
+        //console.log(toAttack);
+        
+        //attack functionality
+        
+        //select country to attack from
+
+        //api call to get countries for which to attack 
+
+        //player must select number of die to roll as an attacker 
+        setActionState("confirm attack");
+        document.getElementById("action").setAttribute("disabled", "disabled");
+        document.getElementById("action").style.opacity = "0.4";
+
+        
+    }
+    else if (actionState === "confirm attack") {
+        //let attackingCountry = { id: 0, army: 3 };
+        //let defendingCountry = { id: 1, army: 2 };
+        //let attackdice = 3;
+
+        //console.log("Attacking beginning");
+        //console.log(countriesToAttack(0));
+        //attack(attackingCountry, defendingCountry, attackdice);
+       
+        //countriesToAttack(0).then();
+        
+        
+
+        console.log("Attacker: ");
+        console.log(attackercountry);
+        console.log("Defender: ");
+        console.log(defendercountry);
+        let bool = validateAttack(attackercountry,defendercountry);
+        if(bool){
+            attack(attackercountry, defendercountry);
         }
-        else if (actionState === "confirm attack") {
-            let attackerid = 0;
-            let defenderid = 0;
-            //call attack(attackingCountry, defendingCountry,attackdice)
+        //call attack(attackingCountry, defendingCountry,attackdice)
 
-            //save attack state
+        //save attack state
+        //let newclickable = playerList[0].countries;
+        let newclickable = [...playerList[playerTurn[0]].countries];
+        let actual = [];
+        for(let i=0;i<newclickable.length;i++)
+        {
+            actual.push(newclickable[i].id);
+        }
+        setClickableCountries(actual);
 
             
             setActionState("attack");
