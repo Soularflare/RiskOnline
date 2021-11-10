@@ -3,6 +3,7 @@ import { useEffect, useState } from "react/cjs/react.development";
 import { fetchPts, fetchUserInfo} from "./apiServices/userApi";
 
 function Avatars({userData}){
+    const TOTAL_AVATARS = 9;
     const [userPoints, setUserPoints] = useState(0);
     const [equipped, setEquipped] = useState(0);
     const [avatarList, setAvatarList] = useState([]);
@@ -12,6 +13,14 @@ function Avatars({userData}){
         
         fetchUserInfo(userData)                             
         .then((userInfo) => {
+            const avatars = [];
+            let j = 0;
+            for (let i = 0; i < TOTAL_AVATARS; i++) {
+                if(i == userInfo.microtransactions[j].microtransaction.id){
+                    j++; 
+                }
+                
+            }
             setAvatarList(userInfo.microtransactions);
             setUserId(userInfo.userId);
             setUserPoints(userInfo.points);
@@ -79,7 +88,7 @@ function Avatars({userData}){
             <div className="offset-5" style={{marginTop: '100px'}}>
             <h1 style={{marginBottom: '100px'}}>Points: {userPoints}</h1>
             <h1 className="fw-bolder">Current Avatar:</h1>
-            <img src={require('./risk-map.png').default} height="100px" alt="current_avatar" className="ms-5"/>
+            <img src={require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5"/>
             </div>
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{height: '400px'}}>
