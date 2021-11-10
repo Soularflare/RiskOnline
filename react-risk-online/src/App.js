@@ -60,7 +60,7 @@ function App() {
         <GameForm></GameForm>
       </Route>
       <Route path="/load">
-        <Games></Games>
+        <Games userData={userData}></Games>
       </Route>
       <Route path="/avatars/:userId">
         <Avatars userData={userData}></Avatars>

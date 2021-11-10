@@ -18,7 +18,7 @@ function Profile({userData}){
     const toAvatars = evt => {
         history.push(`/avatars/${userInfo.userId}`);
     };
-    
+
     return(
         <div>
             <div className="container">

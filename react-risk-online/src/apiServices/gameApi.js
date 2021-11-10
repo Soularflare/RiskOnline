@@ -47,6 +47,8 @@ async function updateGame(gameId, gameObj) {
     throw new Error("Unable to update game");
 };
 
+
+
 export async function loadGame(gameId){
     let result = [];
     
