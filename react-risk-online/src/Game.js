@@ -542,7 +542,7 @@ function Game({userData}) {
             'userId': userId,
             'turnOrder': 0          
         });
-        for (let i = 0; i < playerList.length; i++) {
+        for (let i = 1; i < playerList.length; i++) {
             players.push({
                 'gameId': gameId,
                 'userId': null,

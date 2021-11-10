@@ -1,7 +1,6 @@
 const url =  "http://localhost:8080/api";
 
 export async function findByUserData(userData){
-    console.log(userData);
     const init = {
         method: "POST",
         headers: {
@@ -27,7 +26,7 @@ export async function AddUser(userData){
         },
         body: JSON.stringify(userData)
     }
-    console.log(userData);
+
     const response = await fetch(url + "/appuser/create", init);
     if(response.status === 201) {
         return response.json();
