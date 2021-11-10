@@ -1,4 +1,4 @@
-
+const url =  `${process.env.REACT_APP_API_URL}`;
 
 export async function addAvatar(id, userId){
     const init = {

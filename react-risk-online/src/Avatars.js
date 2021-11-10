@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
+import { addAvatar, equipAvatar } from "./apiServices/microtransactionApi";
 import { fetchPts, fetchUserInfo} from "./apiServices/userApi";
 
 function Avatars({userData}){
@@ -8,6 +9,7 @@ function Avatars({userData}){
     const [equipped, setEquipped] = useState(0);
     const [avatarList, setAvatarList] = useState([]);
     const [userId, setUserId] = useState(0);
+    const [selected, setSelected] = useState(0);
 
     useEffect(() => {
         
@@ -17,15 +19,23 @@ function Avatars({userData}){
             let j = 0;
             for (let i = 0; i < TOTAL_AVATARS; i++) {
                 if(i == userInfo.microtransactions[j].microtransaction.id){
+                    avatars.push({owned: true,...userInfo.microtransactions[j]});
                     j++; 
+                } else {
+                    avatars.push({
+                        owned: false,
+                        equipped: false,
+                        microtransaction: {id: i},
+                        cost: i*100
+                    })
                 }
                 
             }
-            setAvatarList(userInfo.microtransactions);
+            setAvatarList(avatars);
             setUserId(userInfo.userId);
             setUserPoints(userInfo.points);
-            for (let i = 0; i < userInfo.microtransactions.length; i++) {
-                if(userInfo.microtransactions[i].equipped == true){
+            for (let i = 0; i < avatars.length; i++) {
+                if(avatars[i].equipped == true){
                     setEquipped(i);
                 }
             }
@@ -33,9 +43,21 @@ function Avatars({userData}){
         .catch((err) => console.log(err.toString()));
     }, []);
 
+    useEffect(() => {
+        for(let i = 0; i< avatarList.length; i++){
+            if(avatarList[i].owned){
+                document.getElementById(i).style.opacity = "1.0";
+            }
+            if(avatarList[i].equipped == true){
+                setEquipped(i);
+            }
+        }
+    },[avatarList]);
+
     const optionselect = evt => {
        
         const id = evt.target.id;
+        setSelected(id);
         const img = document.getElementById(id);
         const images = document.getElementsByTagName("input");
         const cost = document.getElementById("cost");
@@ -49,9 +71,9 @@ function Avatars({userData}){
         img.style.border = "2px solid blue";
         const select = document.getElementById("select");
         
-        if(img.style.opacity === "0.4"){
+        if(!avatarList[id].owned){
             select.innerHTML = "Purchase";
-            cost.innerHTML = "100 Points";
+            cost.innerHTML = avatarList[id].cost + " Points";
 
         } else {
             select.innerHTML = "Equip";
@@ -67,16 +89,33 @@ function Avatars({userData}){
             saveAvatar();
         } else {
             buyAvatar();
-            saveAvatar();
+            
         }
     };
 
     const saveAvatar = () => {
-
+        equipAvatar(selected, userId)
+        .then(() => {
+            const avatar = avatarList[selected];
+            avatar.equipped = true;
+            setAvatarList([...avatar]);
+        })
     }; 
 
     const buyAvatar = () => {
-
+        const tmp = userPoints;
+        if(tmp > avatarList[selected].cost){
+        setUserPoints(tmp-avatarList[selected].cost);
+        addAvatar(selected, userId)
+        .then(() => {
+            saveAvatar();
+            const avatar = avatarList[selected];
+            avatar.owned = true;
+            setAvatarList([...avatar]);
+        })
+        .catch((err) => console.log(err.toString()));
+        
+        }
     };
 
     return(
