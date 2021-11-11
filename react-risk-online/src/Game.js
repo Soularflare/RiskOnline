@@ -45,7 +45,8 @@ function Game({ userData }) {
     useEffect(() => {
 
         if (playerTurn[0] === 0 || playerTurn.length === 0) {
-
+            console.log("test");
+            console.log(playerTurn);
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
             //setup reinforcement phase
@@ -481,13 +482,7 @@ function Game({ userData }) {
         console.log("IMP2");
         console.log(playSize);
         setPlayerTurn(playSize);
-        if(playSize[0]!=0)
-        {
-            cpuTurn();
-        }
-        else{
-            //start();
-        }
+      
         
     } 
 
@@ -617,6 +612,7 @@ function Game({ userData }) {
             console.log("IMP");
             console.log(playSize);
             setPlayerTurn(playSize);
+
         }
 
     };
