@@ -1,11 +1,15 @@
 
 const countriesOwned = (currentPlayer) => {
     const countriesArray = [...currentPlayer.countries];
-    const countryOwnedArray = [];
+    var countryOwnedArray = [];
+    //console.log("Reinforcement stuff");
+    //console.log(countriesArray);
 
-    for(let x = 0; x < countriesArray; x++){
+
+    for(let x = 0; x < countriesArray.length; x++){
         countryOwnedArray.push(parseInt(countriesArray[x].id));
     }
+    //console.log(countryOwnedArray);
     return countryOwnedArray;
 }
 

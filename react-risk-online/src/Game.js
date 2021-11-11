@@ -64,10 +64,13 @@ function Game({ userData }) {
                     clickable.push(cID);
                 }
                 setClickableCountries([...clickable]);
+                console.log("Clickable: ");
+                console.log(clickable);
 
                 const currentPlayer = playerList[playerTurn[0]];
                 const total = Math.floor(currentPlayer.countries.length / 3);
-
+                console.log("currentPlayer ");
+                console.log(currentPlayer);
                 if (checkAsia(currentPlayer)) {
                     total = total + 7;
                 }
@@ -871,9 +874,9 @@ function Game({ userData }) {
     //also be matched to its owner and removed
 
     function changeOwner(defendingCountry, attackerid, defenderid) {
-        console.log("reaches here");
+        //console.log("reaches here");
         let playList = playerList;
-        console.log(playList);
+        //console.log(playList);
 
         let newcountries = playerList[attackerid].countries;
         //newcountries[newcountries.length] = defendingCountry;
@@ -895,8 +898,8 @@ function Game({ userData }) {
         player = playerList[defenderid];
         player.countries = newcountries;
         playList[defenderid] = player;
-        console.log("Check now");
-        console.log(playList);
+        //console.log("Check now");
+        //console.log(playList);
         //setPlayerList(playList);
         setPlayerList([...playList]);
     }
