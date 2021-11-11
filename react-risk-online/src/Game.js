@@ -492,7 +492,7 @@ function Game({userData}) {
             if(gameId == 0){
                 startGame(numPlayers, chosenColor);
             } else {
-                loadGame();
+                load();
             }
             const playSize = [];
             for (let i = 0; i < playerList.length; i++) {
@@ -625,7 +625,7 @@ function Game({userData}) {
     }; 
 
     const load = () => {
-       loadGame()
+       loadGame(gameId)
        .then((game) => {
         const [gameState, players, countries] = game;
         setPlayerTurn([...gameState.players.length]);
