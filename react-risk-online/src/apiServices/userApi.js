@@ -82,3 +82,19 @@ export async function fetchUserInfo(userData){
     }
     throw new Error("User does not exist");
 };
+
+export async function saveUserInfo(userData, info){
+    const init = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify([userData, info])
+    }
+    const response = await fetch(url + "/profile", init);
+    if(response.status === 204) {
+        return;
+    }
+    throw new Error("User does not exist");
+};

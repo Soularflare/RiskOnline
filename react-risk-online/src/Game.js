@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useHistory } from "react-router";
 import MapSVG from './MapSVG.js';
 import { saveGame, loadGame, deleteGame } from './apiServices/gameApi';
-import { fetchPts, fetchUserInfo, savePts } from './apiServices/userApi';
+import { fetchPts, fetchUserInfo, savePts, saveUserInfo } from './apiServices/userApi';
 import { checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, checkSAmerica } from "./calculations/checkCountries";
 
 
@@ -11,6 +11,8 @@ import { checkAfrica, checkAsia, checkAustralia, checkEurope, checkNAmerica, che
 function Game({ userData }) {
     const history = useHistory();
     const [playerTurn, setPlayerTurn] = useState([]);
+    const [time, setTime] = useState(0);
+    const [gameTime, setGameTime] = useState(0);
     const [userId, setUserId] = useState(0);
     const [actionState, setActionState] = useState("");
     const [countrySelect, setCountrySelect] = useState(null);
@@ -49,7 +51,7 @@ function Game({ userData }) {
                     let cID = pCountries[y].id;
                     clickable.push(cID);
                 }
-                setClickableCountries(clickable);
+                setClickableCountries([...clickable]);
 
                 const currentPlayer = playerList[playerTurn[0]];
                 const total = Math.floor(currentPlayer.countries.length / 3);
@@ -104,6 +106,7 @@ function Game({ userData }) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Lose"
+            saveLossInfo();
             if (gameId != 0) {
                 deleteGame(gameId)
                     .catch((err) => console.log(err.toString()));
@@ -116,7 +119,7 @@ function Game({ userData }) {
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             infoData.innerHTML = "You Win! +10 Points"
-            addPts(10);
+            saveWinInfo();
             if (gameId != 0) {
                 deleteGame(gameId)
                     .catch((err) => console.log(err.toString()));
@@ -125,10 +128,32 @@ function Game({ userData }) {
 
     }, [playerList]);
 
-    const addPts = (num) => {
-        num += fetchPts(userData);
-        savePts(userData, num);
+    const saveWinInfo = () => {
+        fetchUserInfo(userData)
+            .then((info) => {
+                info.totalGames += 1;
+                info.Wins += 1;
+                info.gameTime += gameTime + Math.floor((Date.now() - time) / 60000);
+                info.points += 10;
+                saveUserInfo(userData, info)
+                    .then()
+                    .catch((err) => console.log(err.toString()));
+            })
+            .catch((err) => console.log(err.toString()));
     };
+
+    const saveLossInfo = () => {
+        fetchUserInfo(userData)
+            .then((info) => {
+                info.totalGames += 1;
+                info.gameTime += gameTime + Math.floor((Date.now() - time) / 60000);
+                saveUserInfo(userData, info)
+                    .then()
+                    .catch((err) => console.log(err.toString()));
+            })
+            .catch((err) => console.log(err.toString()));
+    };
+
 
 
     function startGame(playerNumber, colorChoice) {
@@ -455,6 +480,7 @@ function Game({ userData }) {
     const start = evt => {
         document.getElementById("start").style.border = "none";
         if (playerTurn.length === 0) {
+            setTime(Date.now());
             const startbtn = document.getElementById("start");
             startbtn.innerHTML = "End Turn";
             setActionState("reinforce");
@@ -588,7 +614,7 @@ function Game({ userData }) {
 
         const gameObj = {
             "gameId": gameId,
-            "timeElapsed": 0,
+            "timeElapsed": Math.floor((Date.now() - time) / 60000),
             "playerTurn": playerTurn[0],
             "countryList": countryList,
             "players": players
@@ -601,27 +627,31 @@ function Game({ userData }) {
     const load = () => {
         loadGame(gameId)
             .then((game) => {
-                console.log(game);
                 const pL = game.players;
                 const cL = game.countryList;
-  
+                setGameTime(game.timeElapsed);
+
                 let colors = ["blue", "green", "purple", "red", "white", "black", "yellow", "orange"];
                 let color = "";
                 let pList = [];
                 let pTurns = [];
-                
+                let click = [];
+
                 for (let i = 0; i < pL.length; i++) {
                     let cList = [];
                     pTurns.push(i);
                     color = colors.splice(Math.floor(Math.random() * colors.length), 1);
 
                     for (let j = 0; j < cL.length; j++) {
-                        let pos =cL[j].playerPossession;
-                        if(pos === i) {
+                        let pos = cL[j].playerPossession;
+                        if (pos === i) {
                             cList.push({
                                 id: cL[j].countryId,
                                 army: cL[j].army
                             });
+                        }
+                        if(pos === 0){
+                            click.push(parseInt(cL[j].countryId));
                         }
                     }
                     const player = {
@@ -630,9 +660,10 @@ function Game({ userData }) {
                     }
                     pList.push(player);
                 }
-                setPlayerTurn(pTurns);
-                setPlayerList([...pList]);
 
+
+                setPlayerList([...pList]);
+                setPlayerTurn([...pTurns]);
             }).catch((err) => console.log(err.toString()));
     };
 
