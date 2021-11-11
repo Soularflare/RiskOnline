@@ -13,7 +13,7 @@ function Profile({userData}){
         fetchUserInfo(userData)
             .then((info) => setUserInfo(info))
             .catch((err) => console.log(err.toString()));
-    });
+    }, []);
 
     const toAvatars = evt => {
         history.push(`/avatars/${userInfo.userId}`);

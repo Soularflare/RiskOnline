@@ -133,9 +133,9 @@ function Avatars({ userData }) {
                 <img src={require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5" />
             </div>
             <h1 className="offset-2">Avatars</h1>
-            <div className="container col-8 border border-dark offset-2" style={{ height: '400px' }}>
-
-                {avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
+            <div className="container col-8 border border-dark offset-2" style={{height: '400px'}}>
+            
+            {avatarList.length>0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>)}
 
                 {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
