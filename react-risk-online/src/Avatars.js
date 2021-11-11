@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
-import { addAvatar, equipAvatar } from "./apiServices/microtransactionApi";
+import { addAvatar, equipAvatar, updatePoints } from "./apiServices/microtransactionApi";
 import { fetchPts, fetchUserInfo } from "./apiServices/userApi";
 
 function Avatars({ userData }) {
@@ -104,19 +104,22 @@ function Avatars({ userData }) {
     const saveAvatar = () => {
         equipAvatar(selected, userId)
             .then(() => {
+                const newList = avatarList;
                 const avatar = avatarList[selected];
                 avatar.equipped = true;
-                setAvatarList([...avatar]);
+                newList[selected] = avatar;
+                setAvatarList([...newList]);
             })
     };
 
     const buyAvatar = () => {
-        const tmp = userPoints;
+        let tmp = userPoints;
         if (tmp > avatarList[selected].cost) {
-            setUserPoints(tmp - avatarList[selected].cost);
+            tmp = tmp - avatarList[selected].cost;
+            setUserPoints(tmp);
             addAvatar(selected, userId)
                 .then(() => {
-                    saveAvatar();
+                    updatePoints(tmp, userId);
                     const avatar = avatarList[selected];
                     avatar.owned = true;
                     setAvatarList([...avatar]);

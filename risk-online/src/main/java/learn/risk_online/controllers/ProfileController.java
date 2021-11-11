@@ -6,9 +6,12 @@ import learn.risk_online.domain.ProfileService;
 import learn.risk_online.domain.Result;
 import learn.risk_online.models.AppUser;
 import learn.risk_online.models.Profile;
+import learn.risk_online.models.ProfileMicrotransaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -82,6 +85,21 @@ public class ProfileController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/points/{points}/{userId}")
+    public ResponseEntity<Object> update(@PathVariable int points, @PathVariable String userId) {
+
+        Profile profile = service.findByUserId(userId);
+        if(profile == null){
+            return new ResponseEntity<>("failed to find profile associated with user", HttpStatus.BAD_REQUEST);
+        }
+        profile.setPoints(points);
+        Result<Profile> result = service.updateProfile(profile);
+        if(!result.isSuccess()){
+            return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

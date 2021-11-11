@@ -22,17 +22,16 @@ function Game({ userData }) {
     const [troopCount, setTroopCount] = useState(0);
     const [reinforcements, setReinforcements] = useState(0);
     const [clickableCountries, setClickableCountries] = useState([]);
-    const [attackercountry, setAttacker] = useState({ id: 0, army: 0 });
-    const [defendercountry, setDefender] = useState({ id: 0, army: 0 });
+    const [attackercountry, setAttacker] = useState({ id: '0', army: 0 });
+    const [defendercountry, setDefender] = useState({ id: '0', army: 0 });
 
-    const [CPUattacker, setCPUAttacker] = useState({id:0,army:0});
-    const [CPUdefender, setCPUdefender] = useState({id:0,army:0});
+    const [CPUattacker, setCPUAttacker] = useState({ id: '0', army: 0 });
+    const [CPUdefender, setCPUdefender] = useState({ id: '0', army: 0 });
 
     useEffect(() => {
         //console.log("We made iT!!!!!!");
         //console.log(CPUdefender);
-        if(CPUdefender.army != 0)
-        {
+        if (CPUdefender.army != 0) {
             cpuAttackfunc();
         }
     }, [CPUdefender]);
@@ -64,13 +63,10 @@ function Game({ userData }) {
                     clickable.push(cID);
                 }
                 setClickableCountries([...clickable]);
-                console.log("Clickable: ");
-                console.log(clickable);
 
                 const currentPlayer = playerList[playerTurn[0]];
-                const total = Math.floor(currentPlayer.countries.length / 3);
-                console.log("currentPlayer ");
-                console.log(currentPlayer);
+                let total = Math.floor(currentPlayer.countries.length / 3);
+
                 if (checkAsia(currentPlayer)) {
                     total = total + 7;
                 }
@@ -101,18 +97,45 @@ function Game({ userData }) {
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
             setClickableCountries([]);
-            cpuTurn();
-        }
-    }, [playerTurn]);
+            let total;
+            if (playerTurn.length > 0) {
+                const currentPlayer = playerList[playerTurn[0]];
+                total = Math.floor(currentPlayer.countries.length / 3);
+
+                if (checkAsia(currentPlayer)) {
+                    total = total + 7;
+                }
+                if (checkNAmerica(currentPlayer)) {
+                    total = total + 5;
+                }
+                if (checkEurope(currentPlayer)) {
+                    total = total + 5;
+                }
+                if (checkAfrica(currentPlayer)) {
+                    total = total + 3;
+                }
+                if (checkSAmerica(currentPlayer)) {
+                    total = total + 2;
+                }
+                if (checkAustralia(currentPlayer)) {
+                    total = total + 2;
+                }
+
+                if (total <= 3) {
+                    setReinforcements(3);
+                } else {
+                    setReinforcements(total);
+                }
+            }
+                cpuTurn(total);
+            }
+        }, [playerTurn]);
 
     useEffect(() => {
-
         document.getElementById("action").innerHTML = actionState;
-
     }, [actionState]);
 
     useEffect(() => {
-
         const infoData = document.getElementById("info");
         if (playerList[0].countries.length == 0 && playerTurn.length > 1) {
             //loss condition 
@@ -399,18 +422,17 @@ function Game({ userData }) {
 
     }
 
-    const randomlyReinforce = (reinforceCountries, userPlayer, playList) => {
-        let rfs = reinforcements;
-        rfs = 100;
+    const randomlyReinforce = (total, reinforceCountries, userPlayer, playList) => {
+        let rfs = total;
+
         do {
-            //console.log(rfs);
             let randAdd;
             for (let x = 0; x < reinforceCountries.length; x++) {
                 if (rfs === 0) {
                     randAdd = 0;
-                    console.log("end");
+
                 } else {
-                    console.log("rotation");
+
                     randAdd = Math.floor(Math.random() * 3); // 0, 1, 2 
                     if (randAdd > rfs) {
                         randAdd = rfs;
@@ -418,17 +440,12 @@ function Game({ userData }) {
                     rfs = rfs - randAdd;
 
                     for (let i = 0; i < userPlayer.countries.length; i++) {
-                        //console.log(userPlayer.countries[i].id);
-                        //console.log(reinforceCountries[x].id);
                         if (userPlayer.countries[i].id == reinforceCountries[x].id) {
-                            //console.log(userPlayer.countries[i].army);
                             userPlayer.countries[i].army += randAdd;
-                            //console.log(userPlayer.countries[i].army);
                         }
                     }
                     playList[playerTurn[0]] = userPlayer;
-                    //console.log("userPlayer:");
-                    //console.log(userPlayer.countries);
+
                 }
             }
         } while (rfs > 0);
@@ -461,64 +478,53 @@ function Game({ userData }) {
 
         // feed attackNumber, attackCountry, defendCountry into Attack function
     }
-    function cpuAttackfunc(){
+    function cpuAttackfunc() {
         let bool = false;
 
-        do{
-            if(CPUattacker.army <=1)
-            {
+        do {
+            if (CPUattacker.army <= 1) {
                 bool = true;
             }
-            else
-            {
-                attack(CPUattacker,CPUdefender);
+            else {
+                attack(CPUattacker, CPUdefender);
                 //getEnemy(CPUattacker);
             }
-        }while(!bool);
+        } while (!bool);
         //attack(CPUattacker,CPUdefender);
         let playSize = playerTurn;
         playSize.push(playSize.shift());
-        console.log("IMP2");
-        console.log(playSize);
-        setPlayerTurn(playSize);
-        if(playSize[0]!=0)
-        {
-            cpuTurn();
-        }
-        else{
-            //start();
-        }
-        
-    } 
+
+        setPlayerTurn([...playSize]);
+    }
 
     async function getEnemy(atkCountry) {
         let owned = [];
         owned.push(parseInt(atkCountry.id));
         let toAttack = [];
         countriesToAttackCPU(owned);
-        //console.log("toAttack");
-        //console.log(toAttack);
+
     }
 
-    const cpuTurn = () => {
+    const cpuTurn = (total) => {
         let reinforceCountries = [];
         const playList = playerList;
-        console.log(playerTurn[0]);
+
         const userPlayer = playList[playerTurn[0]];
         //console.log("Yes?");
         reinforceCountries = countriesToReinforce(); // gets list of owned border countries -- needs finishing
         //console.log(userPlayer.color);
         //console.log(userPlayer.v);
         //console.log(reinforceCountries);
-        randomlyReinforce(reinforceCountries, userPlayer, playList); // reinforce computer countries
 
-         //maybe move ???
+        randomlyReinforce(total, reinforceCountries, userPlayer, playList); // reinforce computer countries
+
+        //maybe move ???
         console.log(playerList);
         console.log(reinforceCountries);
 
         let firstAttack = true;
-        let atkCountry = {id:0,army:0};
-        let enemyCountry = {id:0,army:0};
+        let atkCountry = { id: 0, army: 0 };
+        let enemyCountry = { id: 0, army: 0 };
 
         for (let x = 0; x < reinforceCountries.length; x++) {
             let a = reinforceCountries[x].army;
@@ -526,13 +532,13 @@ function Game({ userData }) {
                 reinforceCountries.splice(x, 1);
             }
         }
-        
-        atkCountry = reinforceCountries[Math.floor(Math.random() *(reinforceCountries.length-1))]
+
+        atkCountry = reinforceCountries[Math.floor(Math.random() * (reinforceCountries.length - 1))]
         setCPUAttacker(atkCountry);
         console.log(atkCountry);
         getEnemy(atkCountry);
         //console.log(enemyCountry);
-       
+
         // do {
         //     for (let x = 0; x < reinforceCountries.length; x++) {
         //         let a = parseInt(reinforceCountries[x].army);
@@ -622,10 +628,15 @@ function Game({ userData }) {
     };
 
     function findCountry(id) {
+        console.log("id");
+        console.log(id);
         for (let i = 0; i < playerList.length; i++) {
             let countries = playerList[i].countries;
+            console.log(countries);
             for (let j = 0; j < countries.length; j++) {
-                if (countries[j].id == id) {
+                if (countries[j].id == id.toString()) {
+                    console.log("country")
+                    console.log(countries[j]);
                     return countries[j];
                 }
             }
@@ -808,42 +819,41 @@ function Game({ userData }) {
 
     }
 
-    async function countriesToAttackCPU(owned)
-{
-    // let arrayowned = getCountrylist(id);
-    // console.log("Array of owned countries: ");
-    // console.log(arrayowned);
-    // const owned = arrayowned;
-    const init = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(owned) // 2.
-    };
-    const response = await fetch("http://localhost:8080/api", init);
+    async function countriesToAttackCPU(owned) {
+        // let arrayowned = getCountrylist(id);
+        // console.log("Array of owned countries: ");
+        // console.log(arrayowned);
+        // const owned = arrayowned;
+        const init = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(owned) // 2.
+        };
+        const response = await fetch("http://localhost:8080/api", init);
         if (response.status !== 201) {
             console.log("Countries sent not valid.");
             return Promise.reject("response is not 200 OK");
         }
-            //console.log(response.json());
-            //setClickableCountries(response.json());
-            //console.log("done");
+        //console.log(response.json());
+        //setClickableCountries(response.json());
+        //console.log("done");
         const json = await response.json().then(data => {
             console.log(data)
-            let enemyid =data[Math.floor(Math.random() *(data.length-1))]
+            let enemyid = data[Math.floor(Math.random() * (data.length - 1))]
             let enemy = findCountry(enemyid);
             console.log("enemy");
             console.log(enemy);
             setCPUdefender(enemy);
-        //     for(let i =0;i<playerList[playerTurn[0]].countries.length;i++)
-        //     {
-        //         if(playerList[playerTurn[0]].countries[i].id = enemyid)
-        //         {
-        //             setCPUAttacker(playerList[playerTurn[0]].countries[i]);
-        //         }
-        // }
+            //     for(let i =0;i<playerList[playerTurn[0]].countries.length;i++)
+            //     {
+            //         if(playerList[playerTurn[0]].countries[i].id = enemyid)
+            //         {
+            //             setCPUAttacker(playerList[playerTurn[0]].countries[i]);
+            //         }
+            // }
             //setCPUAttacker(data);
             //setClickableCountries(data);
             //let array = changeArray(data);
@@ -852,8 +862,8 @@ function Game({ userData }) {
         });
         //console.log(json);
         return json;
-        
-}
+
+    }
 
     function getplayerid(country) {
         const id = country.id;

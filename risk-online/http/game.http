@@ -17,7 +17,7 @@ Accept: application/json
   "countryList": [{
   "gameId": 0,
   "countryId": 0,
-  "playerPossession": 2,
+  "playerPossession": 0,
   "army": 1
 }, {
   "gameId": 0,
