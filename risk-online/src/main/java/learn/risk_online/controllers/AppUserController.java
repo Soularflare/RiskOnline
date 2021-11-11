@@ -24,7 +24,7 @@ public class AppUserController {
         if(existing == null){
             return new ResponseEntity<>("username or password invalid", HttpStatus.NOT_FOUND);
         }
-        if(!user.getPassword().equals(user.getPassword())){
+        if(!user.getPassword().equals(existing.getPassword())){
             return new ResponseEntity<>("username or password invalid", HttpStatus.NOT_FOUND);
         }
         existing.setPassword("");
