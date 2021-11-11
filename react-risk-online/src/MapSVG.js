@@ -54,6 +54,8 @@ function MapSVG({ playerList, onCountrySelect, clickableCountries}) {
         createTerColors();
     }, [playerList]);
 
+
+
     const handleClick = (evt) => {
         let newOpacity = [...opacity];
         // const num = parseInt(evt.target.id);

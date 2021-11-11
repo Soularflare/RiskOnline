@@ -26,8 +26,8 @@ function Game({ userData }) {
     const [defendercountry, setDefender] = useState({ id: 0, army: 0 });
 
     useEffect(() => {
-        //console.log("We made iT!!!!!!");
-        //console.log(clickableCountries);
+        console.log("We made iT!!!!!!");
+        console.log(clickableCountries);
     }, [clickableCountries]);
 
     useEffect(() => {
@@ -491,9 +491,9 @@ function Game({ userData }) {
             //setup
             if (gameId == 0) {
                 startGame(numPlayers, chosenColor);
+                
             } else {
                 load();
-                console.log(playerList);
             }
             const playSize = [];
             for (let i = 0; i < playerList.length; i++) {
@@ -518,8 +518,8 @@ function Game({ userData }) {
             console.log("IMP");
             console.log(playSize);
             setPlayerTurn(playSize);
-
         }
+
     };
 
     function findCountry(id) {
@@ -625,6 +625,7 @@ function Game({ userData }) {
     };
 
     const load = () => {
+         let click = [];
         loadGame(gameId)
             .then((game) => {
                 const pL = game.players;
@@ -635,8 +636,6 @@ function Game({ userData }) {
                 let color = "";
                 let pList = [];
                 let pTurns = [];
-                let click = [];
-
                 for (let i = 0; i < pL.length; i++) {
                     let cList = [];
                     pTurns.push(i);
@@ -650,9 +649,6 @@ function Game({ userData }) {
                                 army: cL[j].army
                             });
                         }
-                        if(pos === 0){
-                            click.push(parseInt(cL[j].countryId));
-                        }
                     }
                     const player = {
                         "color": color[0],
@@ -660,8 +656,13 @@ function Game({ userData }) {
                     }
                     pList.push(player);
                 }
+                for(let x = 0; x < pList[0].countries.length; x++){
+                    click.push(parseInt(pList[0].countries[x].id))
+                }
+
                 setPlayerList([...pList]);
                 setPlayerTurn([...pTurns]);
+                setClickableCountries([...click]);
             }).catch((err) => console.log(err.toString()));
     };
 

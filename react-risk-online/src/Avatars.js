@@ -16,24 +16,25 @@ function Avatars({ userData }) {
             .then((userInfo) => {
                 const avatars = [];
                 let j = 0;
-                for (let i = 0; i < TOTAL_AVATARS; i++) {
-                    if (i == userInfo.microtransactions[j].microtransaction.id) {
-                        avatars.push({ owned: true, ...userInfo.microtransactions[j] });
-                        j++;
-                    } else {
-                        avatars.push({
-                            owned: false,
-                            equipped: false,
-                            microtransaction: { id: i },
-                            cost: i * 100
-                        })
+                let microTrans = userInfo.microtransactions;
+                if (microTrans.length > 0) {
+                    for (let i = 0; i < TOTAL_AVATARS; i++) {
+                        if (i == userInfo.microtransactions[j].microtransaction.id) {
+                            avatars.push({ owned: true, ...userInfo.microtransactions[j] });
+                            j++;
+                        } else {
+                            avatars.push({
+                                owned: false,
+                                equipped: false,
+                                microtransaction: { id: i },
+                                cost: i * 100
+                            })
+                        }
                     }
-
+                    setAvatarList(avatars);
                 }
-                console.log(avatars);
-                setAvatarList(avatars);
-                console.log(avatars);
-                console.log(avatarList);
+
+
                 setUserId(userInfo.userId);
                 setUserPoints(userInfo.points);
                 for (let i = 0; i < avatars.length; i++) {
@@ -43,6 +44,8 @@ function Avatars({ userData }) {
                 }
             })
             .catch((err) => console.log(err.toString()));
+
+        console.log(avatarList);
     }, []);
 
     useEffect(() => {
@@ -130,12 +133,12 @@ function Avatars({ userData }) {
             <div className="offset-5" style={{ marginTop: '100px' }}>
                 <h1 style={{ marginBottom: '100px' }}>Points: {userPoints}</h1>
                 <h1 className="fw-bolder">Current Avatar:</h1>
-                <img src={require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5" />
+                {/* <img src={require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5" /> */}
             </div>
             <h1 className="offset-2">Avatars</h1>
-            <div className="container col-8 border border-dark offset-2" style={{height: '400px'}}>
-            
-            {avatarList.length>0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>)}
+            <div className="container col-8 border border-dark offset-2" style={{ height: '400px' }}>
+
+                {/* {avatarList.length>0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>)} */}
 
                 {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
