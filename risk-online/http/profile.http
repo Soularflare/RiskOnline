@@ -1,0 +1,12 @@
+@url = http://localhost:8080/api/profile
+
+###
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{ 
+  "userName": "Player1",
+ "password": "password1!"
+ }

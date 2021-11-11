@@ -492,8 +492,8 @@ function Game({ userData }) {
             if (gameId == 0) {
                 startGame(numPlayers, chosenColor);
             } else {
-                // loadGame(gameId);
                 load();
+                console.log(playerList);
             }
             const playSize = [];
             for (let i = 0; i < playerList.length; i++) {
@@ -660,8 +660,6 @@ function Game({ userData }) {
                     }
                     pList.push(player);
                 }
-
-
                 setPlayerList([...pList]);
                 setPlayerTurn([...pTurns]);
             }).catch((err) => console.log(err.toString()));
