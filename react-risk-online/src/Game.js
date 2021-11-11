@@ -37,14 +37,13 @@ function Game({ userData }) {
     }, [CPUdefender]);
 
     useEffect(() => {
-        console.log("We made iT!!!!!!");
-        console.log(clickableCountries);
     }, [clickableCountries]);
 
     useEffect(() => {
-
+        console.log("use effect loop")
+        console.log(playerList);
         if (playerTurn[0] === 0 || playerTurn.length === 0) {
-
+            
             document.getElementById("start").removeAttribute("disabled");
             document.getElementById("start").style.opacity = "1.0";
             //setup reinforcement phase
@@ -91,12 +90,19 @@ function Game({ userData }) {
                 } else {
                     setReinforcements(total);
                 }
+                console.log("use effect loop 2")
+                console.log(playerList);
             }
 
         } else {
+            console.log("use effect else")
+            console.log(playerList);
+
             document.getElementById("start").setAttribute("disabled", "disabled");
             document.getElementById("start").style.opacity = "0.4";
             setClickableCountries([]);
+            console.log("else log");
+            console.log(playerList);
             let total;
             if (playerTurn.length > 0) {
                 const currentPlayer = playerList[playerTurn[0]];
@@ -127,6 +133,8 @@ function Game({ userData }) {
                     setReinforcements(total);
                 }
             }
+            console.log("else log 2");
+            console.log(playerList);
                 cpuTurn(total);
             }
         }, [playerTurn]);
@@ -378,6 +386,8 @@ function Game({ userData }) {
             default:
                 break;
         }
+        console.log("starting list");
+        console.log(playList);
         setPlayerList([...playList]);
     }
 
@@ -478,6 +488,7 @@ function Game({ userData }) {
 
         // feed attackNumber, attackCountry, defendCountry into Attack function
     }
+
     function cpuAttackfunc() {
         let bool = false;
 
@@ -515,10 +526,13 @@ function Game({ userData }) {
         //console.log(userPlayer.color);
         //console.log(userPlayer.v);
         //console.log(reinforceCountries);
+        console.log("look here");
+        console.log(playerList);
 
         randomlyReinforce(total, reinforceCountries, userPlayer, playList); // reinforce computer countries
 
         //maybe move ???
+        console.log("look here 2");
         console.log(playerList);
         console.log(reinforceCountries);
 
@@ -583,6 +597,9 @@ function Game({ userData }) {
     };
 
     const start = evt => {
+        console.log("start/end button")
+        console.log(playerList);
+
         document.getElementById("start").style.border = "none";
         if (playerTurn.length === 0) {
             setTime(Date.now());
