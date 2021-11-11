@@ -645,7 +645,7 @@ function Game({ userData }) {
                         let pos = cL[j].playerPossession;
                         if (pos === i) {
                             cList.push({
-                                id: cL[j].countryId,
+                                id: `${cL[j].countryId}`,
                                 army: cL[j].army
                             });
                         }
@@ -657,7 +657,7 @@ function Game({ userData }) {
                     pList.push(player);
                 }
                 for(let x = 0; x < pList[0].countries.length; x++){
-                    click.push(parseInt(pList[0].countries[x].id))
+                    click.push(pList[0].countries[x].id.toString());
                 }
 
                 setPlayerList([...pList]);

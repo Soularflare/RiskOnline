@@ -12,37 +12,35 @@ function Avatars({ userData }) {
     const [selected, setSelected] = useState(0);
 
     useEffect(() => {
+
         fetchUserInfo(userData)
             .then((userInfo) => {
                 const avatars = [];
                 let j = 0;
-                let microTrans = userInfo.microtransactions;
-                if (microTrans.length > 0) {
-                    for (let i = 0; i < TOTAL_AVATARS; i++) {
-                        if (i == userInfo.microtransactions[j].microtransaction.id) {
-                            avatars.push({ owned: true, ...userInfo.microtransactions[j] });
-                            j++;
-                        } else {
-                            avatars.push({
-                                owned: false,
-                                equipped: false,
-                                microtransaction: { id: i },
-                                cost: i * 100
-                            })
-                        }
+                for (let i = 0; i < TOTAL_AVATARS; i++) {
+                    if (userInfo.microtransactions.length > 0 && i == userInfo.microtransactions[j].microtransaction.id) {
+                        avatars.push({ owned: true, ...userInfo.microtransactions[j] });
+                        j++;
+                    } else {
+                        avatars.push({
+                            owned: false,
+                            equipped: false,
+                            microtransaction: { id: i },
+                            cost: i * 100
+                        })
                     }
-                    setAvatarList(avatars);
-                }
 
 
-                setUserId(userInfo.userId);
-                setUserPoints(userInfo.points);
-                for (let i = 0; i < avatars.length; i++) {
-                    if (avatars[i].equipped == true) {
-                        setEquipped(i);
+                    setUserId(userInfo.userId);
+                    setUserPoints(userInfo.points);
+                    for (let i = 0; i < avatars.length; i++) {
+                        if (avatars[i].equipped == true) {
+                            setEquipped(i);
+                        }
                     }
                 }
             })
+
             .catch((err) => console.log(err.toString()));
 
         console.log(avatarList);
@@ -138,7 +136,7 @@ function Avatars({ userData }) {
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{ height: '400px' }}>
 
-                {/* {avatarList.length>0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>)} */}
+                {avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
 
                 {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
