@@ -12,12 +12,12 @@ Accept: application/json
 
 {
   "gameId": 0,
-  "timeElapsed": 0,
-  "playerTurn": 1,
+  "timeElapsed": 12,
+  "playerTurn": 0,
   "countryList": [{
   "gameId": 0,
   "countryId": 0,
-  "playerPossession": 0,
+  "playerPossession": 2,
   "army": 1
 }, {
   "gameId": 0,
@@ -227,7 +227,7 @@ Accept: application/json
 }],
 "players": [
 {"gameId": 0,
-"userId": "130db43f-418c-11ec-8708-0242ac110002",
+"userId": "7bc85cc2-4261-11ec-988f-0242ac110002",
 "turnOrder": 0},
 {"gameId": 0,
 "userId": null,

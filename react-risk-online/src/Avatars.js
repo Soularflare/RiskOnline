@@ -6,7 +6,7 @@ import { fetchPts, fetchUserInfo } from "./apiServices/userApi";
 function Avatars({ userData }) {
     const TOTAL_AVATARS = 9;
     const [userPoints, setUserPoints] = useState(0);
-    const [equipped, setEquipped] = useState(0);
+    const [equipped, setEquipped] = useState(null);
     const [avatarList, setAvatarList] = useState([]);
     const [userId, setUserId] = useState(0);
     const [selected, setSelected] = useState(0);
@@ -15,11 +15,10 @@ function Avatars({ userData }) {
         fetchUserInfo(userData)
             .then((userInfo) => {
                 console.log(userInfo);
-                console.log(userData);
                 const avatars = [];
                 let j = 0;
-                for (let i = 0; i < TOTAL_AVATARS; i++) {
-                    if (userInfo.microtransactions.length > 0 && i == userInfo.microtransactions[j].microtransaction.id) {
+                for (let i = 1; i <= TOTAL_AVATARS; i++) {
+                    if (userInfo.microtransactions.length > j && i == userInfo.microtransactions[j].microtransaction.id) {
                         avatars.push({ owned: true, ...userInfo.microtransactions[j] });
                         j++;
                     } else {
@@ -34,14 +33,16 @@ function Avatars({ userData }) {
 
                     setUserId(userInfo.userId);
                     setUserPoints(userInfo.points);
+
+                    setAvatarList(avatars);
                     for (let i = 0; i < avatars.length; i++) {
                         if (avatars[i].equipped == true) {
                             setEquipped(i);
                         }
                     }
+                    // setAvatarList([...avatars]); 
                 }
             })
-
             .catch((err) => console.log(err.toString()));
 
         // console.log(avatarList);
@@ -49,12 +50,14 @@ function Avatars({ userData }) {
 
     useEffect(() => {
         // console.log(avatarList);
-        for (let i = 0; i < avatarList.length; i++) {
-            if (avatarList[i].owned) {
-                document.getElementById(i).style.opacity = "1.0";
-            }
-            if (avatarList[i].equipped == true) {
-                setEquipped(i);
+        if (avatarList.length == TOTAL_AVATARS) {
+            for (let i = 0; i <= avatarList.length; i++) {
+                if (avatarList[i].owned) {
+                    document.getElementById(i + 1).style.opacity = "1.0";
+                }
+                if (avatarList[i].equipped == true) {
+                    setEquipped(i);
+                }
             }
         }
     }, [avatarList]);
@@ -76,9 +79,9 @@ function Avatars({ userData }) {
         img.style.border = "2px solid blue";
         const select = document.getElementById("select");
 
-        if (!avatarList[id].owned) {
+        if (!avatarList[id - 1].owned) {
             select.innerHTML = "Purchase";
-            cost.innerHTML = avatarList[id].cost + " Points";
+            cost.innerHTML = avatarList[id - 1].cost + " Points";
 
         } else {
             select.innerHTML = "Equip";
@@ -119,7 +122,6 @@ function Avatars({ userData }) {
                     setAvatarList([...avatar]);
                 })
                 .catch((err) => console.log(err.toString()));
-
         }
     };
 
@@ -132,12 +134,13 @@ function Avatars({ userData }) {
             <div className="offset-5" style={{ marginTop: '100px' }}>
                 <h1 style={{ marginBottom: '100px' }}>Points: {userPoints}</h1>
                 <h1 className="fw-bolder">Current Avatar:</h1>
-                {/* <img src={require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5" /> */}
+                <img src={equipped != null && require(`./avatars/avatar${avatarList[equipped].microtransaction.id}.png`).default} height="100px" alt="current_avatar" className="ms-5" />
+
             </div>
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{ height: '400px' }}>
 
-                {avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
+                {avatarList.length > 0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
 
                 {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>

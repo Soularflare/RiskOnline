@@ -70,10 +70,11 @@ public class ProfileController {
     }
 
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<Object> update(@PathVariable String userId, @RequestBody Profile profile){
-        if(userId != profile.getUserId()){
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+    @PutMapping("/update/{userName}")
+    public ResponseEntity<Object> update(@PathVariable String userName, @RequestBody Profile profile){
+        AppUser found = appUserService.findByUserName(userName);
+        if(found == null){
+            return new ResponseEntity<>("failed to find user", HttpStatus.BAD_REQUEST);
         }
 
         Result<Profile> result = service.updateProfile(profile);

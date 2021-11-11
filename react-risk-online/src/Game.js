@@ -132,7 +132,7 @@ function Game({ userData }) {
         fetchUserInfo(userData)
             .then((info) => {
                 info.totalGames += 1;
-                info.Wins += 1;
+                info.wins += 1;
                 info.gameTime += gameTime + Math.floor((Date.now() - time) / 60000);
                 info.points += 10;
                 saveUserInfo(userData, info)

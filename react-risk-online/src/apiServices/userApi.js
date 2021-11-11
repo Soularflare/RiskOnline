@@ -90,9 +90,12 @@ export async function saveUserInfo(userData, info){
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify([userData, info])
+        body: JSON.stringify(info)
     }
-    const response = await fetch(url + "/profile", init);
+    console.log(init.body);
+    console.log(userData);
+    console.log(info);
+    const response = await fetch(url + "/profile/update/" + userData.userName, init);
     if(response.status === 204) {
         return;
     }
