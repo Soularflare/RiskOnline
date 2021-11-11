@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react/cjs/react.development";
-import {fetchUserInfo} from './apiServices/userApi';
+import { fetchUserInfo } from './apiServices/userApi';
 
 
 
-function Profile({userData}){
+function Profile({ userData }) {
     const history = useHistory();
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
         fetchUserInfo(userData)
-            .then((info) => setUserInfo(info))
+            .then((info) => {
+                setUserInfo(info)})
             .catch((err) => console.log(err.toString()));
     }, []);
 
@@ -19,15 +20,15 @@ function Profile({userData}){
         history.push(`/avatars/${userInfo.userId}`);
     };
 
-    return(
+    return (
         <div>
             <div className="container">
-                <img src="?" alt="profile avatar" className="offset-4"/>
-                <h1 className="offset-5" style={{color: '#f7544d'}}>{userData.userName}</h1>
+                <img src="?" alt="profile avatar" className="offset-4" />
+                <h1 className="offset-5" style={{ color: '#f7544d' }}>{userData.userName}</h1>
             </div>
             <h4 className="offset-1">Player Statistics</h4>
-            <table className="table table-striped table-bordered offset-1" style={{width: '75%'}}>
-                
+            <table className="table table-striped table-bordered offset-1" style={{ width: '75%' }}>
+
                 <tbody>
                     <tr>
                         <th scope="row">Points</th>
@@ -35,19 +36,19 @@ function Profile({userData}){
                     </tr>
                     <tr>
                         <th scope="row">Games Played</th>
-                        <td>{userInfo.gamesPlayed}</td>
+                        <td>{userInfo.totalGames}</td>
                     </tr>
                     <tr>
                         <th scope="row">Games Won</th>
-                        <td>{userInfo.gamesWon}</td>
+                        <td>{userInfo.wins}</td>
                     </tr>
                     <tr>
                         <th scope="row">Games Lost</th>
-                        <td>{userInfo.gamesLost}</td>
+                        <td>{userInfo.totalGames - userInfo.wins}</td>
                     </tr>
                     <tr>
                         <th scope="row">Win/Loss %</th>
-                        <td>{(userInfo.gamesWon/userInfo.gamesPlayed) * 100}%</td>
+                        <td>{(userInfo.wins / userInfo.totalGames) * 100}%</td>
                     </tr>
                     <tr>
                         <th scope="row">Total Game Time</th>
@@ -56,8 +57,8 @@ function Profile({userData}){
                 </tbody>
             </table>
             <div className="mt-5">
-            <button onClick={toAvatars} className="btn btn-primary ms-1 me-1">Avatars</button>
-            <Link to="/" className="btn btn-secondary ">Back</Link>
+                <button onClick={toAvatars} className="btn btn-primary ms-1 me-1">Avatars</button>
+                <Link to="/" className="btn btn-secondary ">Back</Link>
             </div>
         </div>
     );

@@ -7,6 +7,5 @@ Content-Type: application/json
 Accept: application/json
 
 { 
-  "userName": "Player1",
- "password": "password1!"
+  "userName": "Player1"
  }

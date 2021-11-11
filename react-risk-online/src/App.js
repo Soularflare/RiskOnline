@@ -50,7 +50,7 @@ function App() {
       <Route path="/signup">
         <Signup></Signup>
       </Route>
-      <Route path="/profile">
+      <Route path="/profile/:userId">
         <Profile userData={userData}></Profile>
       </Route>
       <Route path="/game/:numPlayers/:chosenColor/:gameId">

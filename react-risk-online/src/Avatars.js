@@ -12,9 +12,10 @@ function Avatars({ userData }) {
     const [selected, setSelected] = useState(0);
 
     useEffect(() => {
-
         fetchUserInfo(userData)
             .then((userInfo) => {
+                console.log(userInfo);
+                console.log(userData);
                 const avatars = [];
                 let j = 0;
                 for (let i = 0; i < TOTAL_AVATARS; i++) {
@@ -43,11 +44,11 @@ function Avatars({ userData }) {
 
             .catch((err) => console.log(err.toString()));
 
-        console.log(avatarList);
+        // console.log(avatarList);
     }, []);
 
     useEffect(() => {
-        console.log(avatarList);
+        // console.log(avatarList);
         for (let i = 0; i < avatarList.length; i++) {
             if (avatarList[i].owned) {
                 document.getElementById(i).style.opacity = "1.0";

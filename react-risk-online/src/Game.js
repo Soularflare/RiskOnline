@@ -491,7 +491,7 @@ function Game({ userData }) {
             //setup
             if (gameId == 0) {
                 startGame(numPlayers, chosenColor);
-                
+
             } else {
                 load();
             }
@@ -620,12 +620,13 @@ function Game({ userData }) {
             "players": players
         };
         saveGame(gameId, gameObj)
+            .then(console.log(gameObj))
             .then(() => history.push("/"))
             .catch((err) => console.log(err.toString()));
     };
 
     const load = () => {
-         let click = [];
+        let click = [];
         loadGame(gameId)
             .then((game) => {
                 const pL = game.players;
@@ -656,7 +657,7 @@ function Game({ userData }) {
                     }
                     pList.push(player);
                 }
-                for(let x = 0; x < pList[0].countries.length; x++){
+                for (let x = 0; x < pList[0].countries.length; x++) {
                     click.push(pList[0].countries[x].id.toString());
                 }
 
@@ -1102,7 +1103,7 @@ function Game({ userData }) {
                 <div className="col-2">
                     <div className="row border border-dark border-2">
                         <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt="user_avatar" />
-                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData ? userData.username : "Username"}</h2>
+                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData ? userData.userName : "Username"}</h2>
                     </div>
                     <div className="row">
                         {userData && <button className="btn btn-primary col-5" onClick={save}>Save Game</button>}
