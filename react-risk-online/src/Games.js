@@ -8,13 +8,11 @@ function Games({ userData }) {
     const history = useHistory();
 
     const onChange = (evt) => {
-
         setStartForm(evt.target.value);
     }
 
     const onSubmit = (evt) => {
         evt.preventDefault();
-        console.log(startForm);
         history.push(`/game/6/blue/${startForm}`);
 
     };
@@ -31,9 +29,9 @@ function Games({ userData }) {
             <div className="form-group row">
                 <div className="col-4 offset-4">
             <label for="game" className="form-label">Game</label>
-            <select className="form-select" name="game" required>
+            <select className="form-select" name="game" required onChange={onChange}>
                 <option selected>Select a game</option>
-                {games.map(g => <option key={g.gameId} value={g.gameId}>game {g.gameId}</option>)}
+                {games.map(g => <option key={g.gameId} value={g.gameId}>Game {g.gameId}</option>)}
             </select>
             </div>
             </div>
