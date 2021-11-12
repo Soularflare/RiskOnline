@@ -8,11 +8,21 @@ import { fetchUserInfo } from './apiServices/userApi';
 function Profile({ userData }) {
     const history = useHistory();
     const [userInfo, setUserInfo] = useState({});
+    const [avatarId, setAvatarId] = useState(0);
 
     useEffect(() => {
         fetchUserInfo(userData)
             .then((info) => {
-                setUserInfo(info)})
+                setUserInfo(info);
+                if(info.microtransactions.length > 0){
+                    for (let i = 0; i < info.microtransactions.length; i++) {
+                        if(info.microtransactions[i].equipped){
+                            setAvatarId(info.microtransactions[i].microtransaction.id);
+                        }
+                        
+                    }
+                }
+            })
             .catch((err) => console.log(err.toString()));
     }, []);
 
@@ -23,7 +33,7 @@ function Profile({ userData }) {
     return (
         <div>
             <div className="container">
-                <img src="?" alt="profile avatar" className="offset-4" />
+                <img src={avatarId != 0 ? require(`./avatars/avatar${avatarId}.png`).default : require('./risk-map.png').default} alt="profile avatar" className="offset-4" />
                 <h1 className="offset-5" style={{ color: '#f7544d' }}>{userData.userName}</h1>
             </div>
             <h4 className="offset-1">Player Statistics</h4>

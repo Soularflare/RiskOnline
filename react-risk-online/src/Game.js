@@ -14,6 +14,7 @@ function Game({ userData }) {
     const [time, setTime] = useState(0);
     const [gameTime, setGameTime] = useState(0);
     const [userId, setUserId] = useState(0);
+    const [avatarId, setAvatarId] = useState(0);
     const [actionState, setActionState] = useState("");
     const [countrySelect, setCountrySelect] = useState(null);
     const [countryTarget, setCountryTarget] = useState(null);
@@ -513,7 +514,17 @@ function Game({ userData }) {
     }
     const getUserId = (userData) => {
         fetchUserInfo(userData)
-            .then((user) => setUserId(user.userId))
+            .then((user) => {
+                setUserId(user.userId);
+                if(user.microtransactions.length > 0){
+                    for (let i = 0; i < user.microtransactions.length; i++) {
+                        if(user.microtransactions[i].equipped){
+                            setAvatarId(user.microtransactions[i].microtransaction.id);
+                        }
+                        
+                    }
+                }
+            })
             .catch((err) => console.log(err.toString()));
     };
 
@@ -1090,8 +1101,8 @@ function Game({ userData }) {
             <div className="row">
                 <div className="col-2">
                     <div className="row border border-dark border-2">
-                        <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt={require('./risk-map.png').default} />
-                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData ? userData.userName : "Username"}</h2>
+                        <img className="col-6 ps-0" src={avatarId != 0 ? require(`./avatars/avatar${avatarId}.png`).default : require('./risk-map.png').default} height="100px" alt="avatar" />
+                        <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData ? userData.userName : "Guest"}</h2>
                     </div>
                     <div className="row">
                         {userData && <button className="btn btn-primary col-5" onClick={save}>Save Game</button>}
