@@ -573,7 +573,7 @@ function Game({ userData }) {
         const playercountries = playerList[0].countries;
         if (actionState === "reinforce" || actionState === "attack" || actionState === "move") {
             //validate
-
+            console.log("Clicked");
             document.getElementById("action").setAttribute("disabled", "disabled");
             document.getElementById("action").style.opacity = "0.4";
             for (let i = 0; i < playercountries.length; i++) {
@@ -599,8 +599,11 @@ function Game({ userData }) {
                 setDefender(findCountry(id));
 
             } else {
-                document.getElementById("action").setAttribute("disabled", "disabled");
-                document.getElementById("action").style.opacity = "0.4";
+                setCountryTarget(id);
+                document.getElementById("action").removeAttribute("disabled");
+                document.getElementById("action").style.opacity = "1.0";
+                //document.getElementById("action").setAttribute("disabled", "disabled");
+                //document.getElementById("action").style.opacity = "0.4";
             }
         }
 
