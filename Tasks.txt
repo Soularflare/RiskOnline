@@ -1,0 +1,30 @@
+Tasks
+
+-DataBase:
+		Create schema
+
+-Backend:
+		Models
+		Data
+		Domain
+		Service
+
+-Front end:
+		Login
+		Profile
+		Avatars
+		New game
+		Load game
+		Game page
+		Stripe payment
+		Api
+		Adjacency 
+		Player_Territories
+		Turn
+		Win condition
+		reinforcements
+
+-Deployment:
+		EC2 Instance
+		RDS
+		Docker/ Docker Compose
