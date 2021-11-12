@@ -1260,7 +1260,7 @@ function Game({ userData }) {
             <div className="row">
                 <div className="col-2">
                     <div className="row border border-dark border-2">
-                        <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt="user_avatar" />
+                        <img className="col-6 ps-0" src={require('./risk-map.png').default} height="100px" alt={require('./risk-map.png').default} />
                         <h2 className="col-6 ps-0" style={{ color: '#f7544d' }}>{userData ? userData.userName : "Username"}</h2>
                     </div>
                     <div className="row">
