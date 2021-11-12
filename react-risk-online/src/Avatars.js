@@ -7,7 +7,7 @@ function Avatars({ userData }) {
     const TOTAL_AVATARS = 9;
     const [userPoints, setUserPoints] = useState(0);
     const [equipped, setEquipped] = useState(null);
-    const [avatarList, setAvatarList] = useState([]);
+    const [avatarList, setAvatarList] = useState([{owned: false, equipped: false, microtransaction: {}, cost: 900}]);
     const [userId, setUserId] = useState(0);
     const [selected, setSelected] = useState(0);
 
@@ -17,23 +17,41 @@ function Avatars({ userData }) {
                 console.log(userInfo);
                 const avatars = [];
                 let j = 0;
+                console.log("LOOK HERE");
+                console.log(userInfo.microtransactions);
                 for (let i = 1; i <= TOTAL_AVATARS; i++) {
-                    if (userInfo.microtransactions.length > j && i == userInfo.microtransactions[j].microtransaction.id) {
-                        avatars.push({ owned: true, ...userInfo.microtransactions[j] });
-                        j++;
-                    } else {
+             
                         avatars.push({
                             owned: false,
                             equipped: false,
                             microtransaction: { id: i },
                             cost: i * 100
                         })
+                    
                     }
 
+                for(let x = 0;x<userInfo.microtransactions.length;x++){
+                    for(let y = 0; y< avatars.length; y++)
+                    {
+                        console.log("Whats up doc?");
+                        console.log(avatars);
+                        if(avatars[y].microtransaction.id == userInfo.microtransactions[x].microtransaction.id){
+                            
+                            //avatars.push({ owned: true, ...userInfo.microtransactions[x] });
+                            avatars[y] = { owned: true, equipped: userInfo.microtransactions[x].equipped, ...userInfo.microtransactions[x] };
+
+                        }
+                    }
+                }
+                    // if (userInfo.microtransactions.length > j && i == userInfo.microtransactions[j].microtransaction.id) {
+                    //     avatars.push({ owned: true, ...userInfo.microtransactions[j] });
+                    //     j++;
+                    // }
 
                     setUserId(userInfo.userId);
                     setUserPoints(userInfo.points);
-
+                    console.log("Avatars:");
+                    console.log(avatars);
                     setAvatarList([...avatars]);
                     for (let i = 0; i < avatars.length; i++) {
                         if (avatars[i].equipped == true) {
@@ -41,7 +59,7 @@ function Avatars({ userData }) {
                         }
                     }
                     // setAvatarList([...avatars]); 
-                }
+                
             })
             .catch((err) => console.log(err.toString()));
 
@@ -51,7 +69,9 @@ function Avatars({ userData }) {
     useEffect(() => {
         // console.log(avatarList);
         if (avatarList.length == TOTAL_AVATARS) {
-            for (let i = 0; i <= avatarList.length; i++) {
+            for (let i = 0; i < avatarList.length; i++) {
+                console.log("AvatarList");
+                console.log(avatarList);
                 if (avatarList[i].owned) {
                     document.getElementById(i + 1).style.opacity = "1.0";
                 }
@@ -114,13 +134,16 @@ function Avatars({ userData }) {
 
     const buyAvatar = () => {
         let tmp = userPoints;
-        if (tmp > avatarList[selected].cost) {
-            tmp = tmp - avatarList[selected].cost;
+        if (tmp > avatarList[selected-1].cost) {
+            console.log("Cost");
+            console.log(avatarList[selected-1].cost);
+            tmp = tmp - avatarList[selected-1].cost;
+
             setUserPoints(tmp);
             addAvatar(selected, userId)
                 .then(() => {
                     updatePoints(tmp, userId);
-                    const avatar = avatarList[selected];
+                    const avatar = avatarList[selected-1];
                     avatar.owned = true;
                     setAvatarList([...avatar]);
                 })
@@ -143,7 +166,7 @@ function Avatars({ userData }) {
             <h1 className="offset-2">Avatars</h1>
             <div className="container col-8 border border-dark offset-2" style={{ height: '400px' }}>
 
-                {avatarList.length > 0 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
+                {avatarList.length > 1 && avatarList.map(a => <input type="image" id={a.microtransaction.id} key={a.microtransaction.id} src={require(`./avatars/avatar${a.microtransaction.id}.png`).default} height="75px" alt="avatar" className="ms-4 my-2" onClick={optionselect} style={{ opacity: '0.4' }} />)}
 
                 {/* <input type="image" id="1" src={require('./avatars/avatar1.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>
             <input type="image" id="2" src={require('./avatars/avatar2.png').default} height="75px" alt="current_avatar" className="ms-4 my-2" onClick={optionselect} style={{opacity: '0.4'}}/>

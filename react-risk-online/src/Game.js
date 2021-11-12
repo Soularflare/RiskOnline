@@ -486,14 +486,19 @@ function Game({ userData }) {
         let atkCountry = { id: 0, army: 0 };
         let enemyCountry = { id: 0, army: 0 };
 
+        let newRCountries = [];
+        for (let x = 0; x < reinforceCountries.length; x++) {
+            newRCountries[x] = reinforceCountries[x];
+        }
+
         for (let x = 0; x < reinforceCountries.length; x++) {
             let a = reinforceCountries[x].army;
             if (a < 2) {
-                // reinforceCountries.splice(x, 1);
+                newRCountries.splice(x, 1);
             }
         }
 
-        atkCountry = reinforceCountries[Math.floor(Math.random() * (reinforceCountries.length - 1))]
+        atkCountry = newRCountries[Math.floor(Math.random() * (newRCountries.length - 1))]
         setCPUAttacker(atkCountry);
         getEnemy(atkCountry);
 
