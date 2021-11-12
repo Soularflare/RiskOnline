@@ -34,7 +34,7 @@ function Avatars({ userData }) {
                     setUserId(userInfo.userId);
                     setUserPoints(userInfo.points);
 
-                    setAvatarList(avatars);
+                    setAvatarList([...avatars]);
                     for (let i = 0; i < avatars.length; i++) {
                         if (avatars[i].equipped == true) {
                             setEquipped(i);
